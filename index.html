@@ -39,6 +39,12 @@
       width: auto;
     }
     
+    /* Custom green to match logo */
+    .navbar-custom {
+      background-color: #2d5937 !important;
+      border-bottom: 3px solid #1e3d26;
+    }
+    
     .service-icon {
       font-size: 3rem;
       color: #28a745;
@@ -64,8 +70,8 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
-    <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container-fluid">
       <!-- Desktop Version: Logo on Left with Text -->
       <a class="navbar-brand fw-bold d-none d-md-flex align-items-center" href="#home">
         <img src="images/lucky7_logo_ai.jpg" alt="Lucky 7 Towing Logo" class="logo-img me-2">
@@ -312,7 +318,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-success text-white text-center py-4">
+  <footer class="navbar-custom text-white text-center py-4">
     <div class="container">
       <div class="row">
         <div class="col-md-8 mx-auto">
