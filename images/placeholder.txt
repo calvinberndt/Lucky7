@@ -1,0 +1,11 @@
+# Images Directory
+
+This directory contains images for the Lucky 7 Towing website.
+
+Images needed:
+- tow-truck-yellow.jpg (Yellow Lucky 7 tow truck)
+- tow-truck-red.jpg (Red Lucky 7 tow truck) 
+- tow-truck-classic.jpg (Lucky 7 truck with classic car)
+- hero-bg.jpg (Background image for hero section)
+
+Note: Replace this placeholder with actual images from your photo collection. 
