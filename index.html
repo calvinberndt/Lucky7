@@ -13,12 +13,29 @@
     .hero-bg {
       background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/lucky7_redtowtruck.png');
       background-size: cover;
-      background-position: center;
+      background-position: center -30px;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
       min-height: 70vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Mobile background positioning */
+    @media (max-width: 767px) {
+      .hero-bg {
+        background-size: cover;
+        background-position: center 0px;
+      }
     }
     
     .logo-img {
       height: 60px;
+      width: auto;
+    }
+    
+    .logo-img-large {
+      height: 80px;
       width: auto;
     }
     
@@ -49,11 +66,23 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold d-flex align-items-center" href="#home">
+      <!-- Desktop Version: Logo on Left with Text -->
+      <a class="navbar-brand fw-bold d-none d-md-flex align-items-center" href="#home">
         <img src="images/lucky7_logo_ai.jpg" alt="Lucky 7 Towing Logo" class="logo-img me-2">
         Lucky 7 Towing
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      
+      <!-- Mobile Version: Centered Logo Only -->
+      <div class="w-100 d-flex justify-content-center d-block d-md-none position-relative">
+        <a class="navbar-brand" href="#home">
+          <img src="images/lucky7_logo_ai.jpg" alt="Lucky 7 Towing Logo" class="logo-img-large">
+        </a>
+        <button class="navbar-toggler position-absolute d-block d-md-none" style="right: 0; top: 50%; transform: translateY(-50%);" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      
+      <button class="navbar-toggler d-none d-md-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
