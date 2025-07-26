@@ -80,6 +80,41 @@
       object-fit: cover;
       border-radius: 8px;
     }
+    
+    /* Mobile-only animations */
+    @media (max-width: 767px) {
+      .service-card {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.6s ease-out;
+      }
+      
+      .service-card.animate {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Only apply the hidden state if JavaScript is enabled and animation hasn't triggered yet */
+      .service-card:not(.animate) {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      
+      .service-card:nth-child(1) { transition-delay: 0.1s; }
+      .service-card:nth-child(2) { transition-delay: 0.2s; }
+      .service-card:nth-child(3) { transition-delay: 0.3s; }
+      .service-card:nth-child(4) { transition-delay: 0.4s; }
+      .service-card:nth-child(5) { transition-delay: 0.5s; }
+      .service-card:nth-child(6) { transition-delay: 0.6s; }
+      
+      .service-icon {
+        transition: transform 0.3s ease;
+      }
+      
+      .service-card:hover .service-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -207,7 +242,7 @@
       </div>
       <div class="row g-4">
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-truck service-icon mb-3"></i>
               <h5 class="card-title">Emergency Towing</h5>
@@ -216,7 +251,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-tools service-icon mb-3"></i>
               <h5 class="card-title">Roadside Assistance</h5>
@@ -225,7 +260,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-arrow-right-circle service-icon mb-3"></i>
               <h5 class="card-title">Long-Distance Towing</h5>
@@ -234,7 +269,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-car-front service-icon mb-3"></i>
               <h5 class="card-title">Accident Recovery</h5>
@@ -243,7 +278,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-fuel-pump service-icon mb-3"></i>
               <h5 class="card-title">Fuel Delivery</h5>
@@ -252,7 +287,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm">
+          <div class="card h-100 border-0 shadow-sm service-card">
             <div class="card-body text-center p-4">
               <i class="bi bi-lightning service-icon mb-3"></i>
               <h5 class="card-title">Jump Start Service</h5>
@@ -535,6 +570,28 @@
         }
       });
     });
+    
+    // Mobile scroll animations for service cards
+    function animateOnScroll() {
+      // Only run on mobile devices
+      if (window.innerWidth > 767) return;
+      
+      const serviceCards = document.querySelectorAll('.service-card');
+      const triggerBottom = window.innerHeight * 0.8; // Trigger when 80% of viewport height is reached
+      
+      serviceCards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        
+        if (cardTop < triggerBottom) {
+          card.classList.add('animate');
+        }
+      });
+    }
+    
+    // Run on scroll and on page load
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+    window.addEventListener('resize', animateOnScroll);
   </script>
 </body>
 </html> 
