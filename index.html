@@ -83,6 +83,7 @@
     
     /* Mobile-only animations */
     @media (max-width: 767px) {
+      /* Service Cards Animation */
       .service-card {
         opacity: 1;
         transform: translateY(0);
@@ -94,7 +95,6 @@
         transform: translateY(0);
       }
       
-      /* Only apply the hidden state if JavaScript is enabled and animation hasn't triggered yet */
       .service-card:not(.animate) {
         opacity: 0;
         transform: translateY(50px);
@@ -114,6 +114,71 @@
       .service-card:hover .service-icon {
         transform: scale(1.1) rotate(5deg);
       }
+      
+      /* About Section Animation */
+      .about-content {
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.8s ease-out;
+      }
+      
+      .about-content:not(.animate) {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      
+      .about-image {
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.8s ease-out;
+      }
+      
+      .about-image:not(.animate) {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      
+      /* Gallery Animation */
+      .gallery-item {
+        opacity: 1;
+        transform: scale(1);
+        transition: all 0.6s ease-out;
+      }
+      
+      .gallery-item:not(.animate) {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      
+      .gallery-item:nth-child(1) { transition-delay: 0.1s; }
+      .gallery-item:nth-child(2) { transition-delay: 0.2s; }
+      .gallery-item:nth-child(3) { transition-delay: 0.3s; }
+      
+      /* Contact Section Animation */
+      .contact-card {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.8s ease-out;
+      }
+      
+      .contact-card:not(.animate) {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      
+      .contact-info {
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.6s ease-out;
+      }
+      
+      .contact-info:not(.animate) {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      
+      .contact-info:nth-child(1) { transition-delay: 0.2s; }
+      .contact-info:nth-child(2) { transition-delay: 0.4s; }
       
       /* Pulsate animation for service icons */
       @keyframes pulsate {
@@ -239,7 +304,7 @@
   <section id="about" class="py-5">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-lg-6">
+        <div class="col-lg-6 about-content">
           <h2 class="display-5 fw-bold mb-4">About Lucky 7 Towing</h2>
                       <p class="lead">For over 20 years, Lucky 7 Towing has been the trusted name in professional towing and roadside assistance across rural Northeastern Wisconsin.</p>
             <p>We proudly serve the communities of <strong>Shawano, Bonduel, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, and Gillett</strong>, along with the surrounding areas. Whether you're stranded on a country road or need vehicle recovery in town, our experienced team knows the local area and is ready to help — 24/7.</p>
@@ -269,7 +334,7 @@
           </div>
         </div>
                  <div class="col-lg-6">
-           <img src="images/lucky7_yellowtowtruck.png" alt="Lucky 7 Yellow Towing Truck" class="img-fluid rounded shadow">
+           <img src="images/lucky7_yellowtowtruck.png" alt="Lucky 7 Yellow Towing Truck" class="img-fluid rounded shadow about-image">
          </div>
       </div>
     </div>
@@ -350,13 +415,13 @@
       </div>
              <div class="row g-4">
          <div class="col-lg-4 col-md-6">
-           <img src="images/lucky7_yellowtowtruck.png" alt="Yellow Lucky 7 Towing Truck" class="img-fluid gallery-img w-100 shadow">
+           <img src="images/lucky7_yellowtowtruck.png" alt="Yellow Lucky 7 Towing Truck" class="img-fluid gallery-img w-100 shadow gallery-item">
          </div>
          <div class="col-lg-4 col-md-6">
-           <img src="images/lucky7_redtowtruck.png" alt="Red Lucky 7 Towing Truck" class="img-fluid gallery-img w-100 shadow">
+           <img src="images/lucky7_redtowtruck.png" alt="Red Lucky 7 Towing Truck" class="img-fluid gallery-img w-100 shadow gallery-item">
          </div>
          <div class="col-lg-4 col-md-6">
-           <img src="images/lucky7_yellowtow_dirty.png" alt="Lucky 7 Yellow Towing Truck in Action" class="img-fluid gallery-img w-100 shadow">
+           <img src="images/lucky7_yellowtow_dirty.png" alt="Lucky 7 Yellow Towing Truck in Action" class="img-fluid gallery-img w-100 shadow gallery-item">
          </div>
        </div>
     </div>
@@ -386,7 +451,7 @@
           </div>
           
           <div class="row text-start">
-                         <div class="col-md-6">
+                         <div class="col-md-6 contact-info">
                <h4><i class="bi bi-geo-alt me-2"></i>Service Area</h4>
                <p><strong>Rural Northeastern Wisconsin:</strong><br>
                Shawano • Bonduel • Wittenberg<br>
@@ -394,7 +459,7 @@
                Cecil • Keshena • Gillet<br>
                <em>& surrounding communities</em></p>
              </div>
-            <div class="col-md-6">
+            <div class="col-md-6 contact-info">
               <h4><i class="bi bi-envelope me-2"></i>Contact Info</h4>
                              <p>
                  <strong>Phone:</strong> (715) 853-8513<br>
@@ -613,19 +678,57 @@
       });
     });
     
-    // Mobile scroll animations for service cards
+    // Mobile scroll animations for all sections
     function animateOnScroll() {
       // Only run on mobile devices
       if (window.innerWidth > 767) return;
       
-      const serviceCards = document.querySelectorAll('.service-card');
       const triggerBottom = window.innerHeight * 0.8; // Trigger when 80% of viewport height is reached
       
+      // Service cards animation
+      const serviceCards = document.querySelectorAll('.service-card');
       serviceCards.forEach(card => {
         const cardTop = card.getBoundingClientRect().top;
-        
         if (cardTop < triggerBottom) {
           card.classList.add('animate');
+        }
+      });
+      
+      // About section animation
+      const aboutContent = document.querySelector('.about-content');
+      const aboutImage = document.querySelector('.about-image');
+      if (aboutContent && aboutImage) {
+        const aboutTop = aboutContent.getBoundingClientRect().top;
+        if (aboutTop < triggerBottom) {
+          aboutContent.classList.add('animate');
+          aboutImage.classList.add('animate');
+        }
+      }
+      
+      // Gallery animation
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(item => {
+        const itemTop = item.getBoundingClientRect().top;
+        if (itemTop < triggerBottom) {
+          item.classList.add('animate');
+        }
+      });
+      
+      // Contact section animation
+      const contactCard = document.querySelector('.contact-card');
+      const contactInfo = document.querySelectorAll('.contact-info');
+      
+      if (contactCard) {
+        const contactTop = contactCard.getBoundingClientRect().top;
+        if (contactTop < triggerBottom) {
+          contactCard.classList.add('animate');
+        }
+      }
+      
+      contactInfo.forEach(info => {
+        const infoTop = info.getBoundingClientRect().top;
+        if (infoTop < triggerBottom) {
+          info.classList.add('animate');
         }
       });
     }
