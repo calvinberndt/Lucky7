@@ -114,6 +114,48 @@
       .service-card:hover .service-icon {
         transform: scale(1.1) rotate(5deg);
       }
+      
+      /* Pulsate animation for service icons */
+      @keyframes pulsate {
+        0% { 
+          transform: scale(1); 
+          color: #28a745;
+        }
+        25% { 
+          transform: scale(1.4); 
+          color: #20c997;
+        }
+        50% { 
+          transform: scale(1.2); 
+          color: #17a2b8;
+        }
+        75% { 
+          transform: scale(1.3); 
+          color: #20c997;
+        }
+        100% { 
+          transform: scale(1); 
+          color: #28a745;
+        }
+      }
+      
+      .service-card.animate .service-icon {
+        animation: pulsate 1.2s ease-in-out;
+        animation-fill-mode: both;
+      }
+      
+      /* Specific delays for each card's icon */
+      .service-card:nth-child(1).animate .service-icon { animation-delay: 0.2s; }
+      .service-card:nth-child(2).animate .service-icon { animation-delay: 0.4s; }
+      .service-card:nth-child(3).animate .service-icon { animation-delay: 0.6s; }
+      .service-card:nth-child(4).animate .service-icon { animation-delay: 0.8s; }
+      .service-card:nth-child(5).animate .service-icon { animation-delay: 1.0s; }
+      .service-card:nth-child(6).animate .service-icon { animation-delay: 1.2s; }
+      
+      /* Override transition during animation */
+      .service-card.animate .service-icon {
+        transition: none;
+      }
     }
   </style>
 </head>
