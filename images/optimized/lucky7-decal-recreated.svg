@@ -34,9 +34,9 @@
     <path d="M496 73c60-45 140-36 197 24 62-13 126 18 151 73 32 70 4 143-53 179 61 43 78 124 34 190-45 68-135 86-210 43-4 69-48 129-114 151-78 25-158-15-190-85-73 2-134-47-147-117-13-72 23-137 84-168-58-26-88-87-72-149 18-71 90-111 166-91 31-48 91-73 154-50Z" fill="url(#leafVeins)" opacity=".86"/>
     <path d="M614 548c26 52 64 88 113 106 18 7 27 26 20 43-8 19-29 28-48 20-62-25-110-71-143-138Z" fill="url(#leafDark)" stroke="#070907" stroke-width="18" stroke-linejoin="round"/>
 
-    <path d="M91 292h260l77 85H170Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
-    <path d="M909 292H649l-77 85h258Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
-    <path d="M251 370h498L500 628Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
+    <path d="M91 292h260l77 85H170Z" fill="url(#whiteMetal)" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
+    <path d="M909 292H649l-77 85h258Z" fill="url(#whiteMetal)" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
+    <path d="M238 366h524L500 651Z" fill="url(#whiteMetal)" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
 
     <path d="M421 334c8-47 23-66 54-68 68-5 151 7 203 33 15 8 18 28 5 38l-100 73c-35 26-55 68-65 133-4 25 7 36 39 36h30c26 0 37 31 14 43-50 24-102 35-158 32-40-2-60-20-61-55-1-79 28-152 88-217l-83 39c-25 12-46-12-41-40Z" fill="url(#redSeven)" stroke="#070907" stroke-width="30" stroke-linejoin="round"/>
     <path d="M421 334c8-47 23-66 54-68 68-5 151 7 203 33 15 8 18 28 5 38l-100 73c-35 26-55 68-65 133-4 25 7 36 39 36h30c26 0 37 31 14 43-50 24-102 35-158 32-40-2-60-20-61-55-1-79 28-152 88-217l-83 39c-25 12-46-12-41-40Z" fill="url(#redSeven)" stroke="#fbf5e9" stroke-width="7" stroke-linejoin="round"/>
