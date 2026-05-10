@@ -376,9 +376,36 @@ svg {
   text-transform: uppercase;
 }
 
+.hero-checks li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--red);
+  box-shadow: 0 0 0 5px rgba(189, 23, 39, 0.14);
+}
+
 .hero-checks svg {
-  width: 22px;
-  height: 22px;
+  display: none;
+}
+
+.button-primary svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+}
+
+.mobile-call-text {
+  align-items: center;
+  text-align: center;
+}
+
+.mobile-call-text strong {
+  white-space: nowrap;
+}
+
+.hero-checks svg {
   color: var(--red);
   fill: rgba(189, 23, 39, 0.12);
 }
@@ -529,6 +556,10 @@ svg {
   align-items: center;
 }
 
+.about {
+  max-width: 900px;
+}
+
 .section h2,
 .contact h2 {
   max-width: 780px;
@@ -566,7 +597,6 @@ svg {
   fill: rgba(46, 138, 79, 0.16);
 }
 
-.photo-panel,
 .fleet-card {
   margin: 0;
   overflow: hidden;
@@ -576,24 +606,16 @@ svg {
   box-shadow: var(--shadow);
 }
 
-.photo-panel img,
 .fleet-card img {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
-.photo-panel figcaption,
 .fleet-card figcaption {
   padding: 16px 18px 18px;
   color: #fff;
   background: linear-gradient(135deg, rgba(5, 6, 6, 0.95), rgba(15, 54, 34, 0.86));
-}
-
-.photo-panel figcaption {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 14px;
-  font-weight: 800;
 }
 
 .services {
@@ -769,82 +791,22 @@ svg {
 
 .coverage-map {
   position: relative;
-  min-height: 440px;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at 52% 48%, rgba(30, 107, 61, 0.44), transparent 38%),
-    rgba(255, 255, 255, 0.06);
-  background-size: 44px 44px, 44px 44px, auto, auto;
+  background: #08110d;
   box-shadow: var(--shadow);
 }
 
-.map-pin {
-  position: absolute;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 12px;
-  border-radius: 999px;
-  color: #111;
-  background: var(--amber);
-  font-size: 13px;
-  font-weight: 950;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
-}
-
-.map-pin::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  margin-right: 8px;
-  border-radius: 999px;
-  background: var(--red);
-}
-
-.pin-shawano {
-  left: 44%;
-  top: 42%;
-}
-
-.pin-bonduel {
-  left: 58%;
-  top: 31%;
-}
-
-.pin-pulaski {
-  left: 65%;
-  top: 62%;
-}
-
-.pin-gillett {
-  left: 30%;
-  top: 68%;
-}
-
-.map-route {
-  position: absolute;
-  inset: 18% 14%;
-  border: 2px solid rgba(242, 170, 40, 0.64);
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  border-radius: 50%;
-}
-
-.map-route::after {
-  content: "";
-  position: absolute;
-  top: 18%;
-  right: 18%;
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: var(--amber);
-  box-shadow: 0 0 30px rgba(242, 170, 40, 0.75);
-  animation: beaconPulse 1.5s ease-in-out infinite;
+.coverage-map img {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center;
 }
 
 .contact {
@@ -1217,7 +1179,7 @@ svg {
     display: grid;
     gap: 1px;
     line-height: 1;
-    text-align: left;
+    text-align: center;
   }
 
   .mobile-call-text span {
@@ -1307,7 +1269,12 @@ svg {
   }
 
   .coverage-map {
-    min-height: 360px;
+    min-height: 0;
+  }
+
+  .coverage-map img {
+    min-height: 300px;
+    aspect-ratio: 4 / 3;
   }
 
   .contact {
@@ -1350,25 +1317,6 @@ svg {
     font-size: 42px;
   }
 
-  .map-pin {
-    font-size: 12px;
-  }
-
-  .pin-shawano {
-    left: 32%;
-  }
-
-  .pin-bonduel {
-    left: 50%;
-  }
-
-  .pin-pulaski {
-    left: 48%;
-  }
-
-  .pin-gillett {
-    left: 18%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
