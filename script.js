@@ -1,110 +1,74 @@
-// Smooth scrolling for navigation links
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        const navbarHeight = document.querySelector('.navbar').offsetHeight;
-        const targetPosition = target.offsetTop - navbarHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
+const header = document.querySelector("[data-header]");
+const nav = document.querySelector("[data-nav]");
+const navToggle = document.querySelector("[data-nav-toggle]");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function updateScrolledState() {
+  document.body.classList.toggle("is-scrolled", window.scrollY > 480);
+}
+
+function closeNav() {
+  if (!nav || !navToggle) return;
+  nav.classList.remove("is-open");
+  document.body.classList.remove("nav-open");
+  navToggle.setAttribute("aria-expanded", "false");
+  navToggle.setAttribute("aria-label", "Open navigation");
+}
+
+if (nav && navToggle) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    document.body.classList.toggle("nav-open", isOpen);
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+  });
+}
+
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", (event) => {
+    const targetId = anchor.getAttribute("href");
+    const target = targetId ? document.querySelector(targetId) : null;
+    if (!target) return;
+
+    event.preventDefault();
+    closeNav();
+
+    const offset = header ? header.offsetHeight : 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+    window.scrollTo({
+      top,
+      behavior: reduceMotion ? "auto" : "smooth",
     });
   });
 });
 
-// Mobile scroll animations for all sections
-function animateOnScroll() {
-  // Only run on mobile devices
-  if (window.innerWidth > 767) return;
-  
-  const triggerBottom = window.innerHeight * 0.8; // Trigger when 80% of viewport height is reached
-  
-  // Service cards animation
-  const serviceCards = document.querySelectorAll('.service-card');
-  serviceCards.forEach(card => {
-    const cardTop = card.getBoundingClientRect().top;
-    if (cardTop < triggerBottom) {
-      card.classList.add('animate');
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.18,
+      rootMargin: "0px 0px -40px 0px",
     }
-  });
-  
-  // About section animation
-  const aboutContent = document.querySelector('.about-content');
-  const aboutImage = document.querySelector('.about-image');
-  if (aboutContent && aboutImage) {
-    const aboutTop = aboutContent.getBoundingClientRect().top;
-    if (aboutTop < triggerBottom) {
-      aboutContent.classList.add('animate');
-      aboutImage.classList.add('animate');
-    }
-  }
-  
-  // Gallery animation
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  galleryItems.forEach(item => {
-    const itemTop = item.getBoundingClientRect().top;
-    if (itemTop < triggerBottom) {
-      item.classList.add('animate');
-    }
-  });
-  
-  // Contact section animation
-  const contactCard = document.querySelector('.contact-card');
-  const contactInfo = document.querySelectorAll('.contact-info');
-  
-  if (contactCard) {
-    const contactTop = contactCard.getBoundingClientRect().top;
-    if (contactTop < triggerBottom) {
-      contactCard.classList.add('animate');
-    }
-  }
-  
-  contactInfo.forEach(info => {
-    const infoTop = info.getBoundingClientRect().top;
-    if (infoTop < triggerBottom) {
-      info.classList.add('animate');
-    }
-  });
+  );
+
+  document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+} else {
+  document.querySelectorAll(".reveal").forEach((item) => item.classList.add("is-visible"));
 }
 
-// Optimized scroll event handling with throttling
-let ticking = false;
+updateScrolledState();
+window.addEventListener("scroll", updateScrolledState, { passive: true });
 
-function requestTick() {
-  if (!ticking) {
-    requestAnimationFrame(animateOnScroll);
-    ticking = true;
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeNav();
   }
-}
-
-function handleScroll() {
-  ticking = false;
-}
-
-// Initialize animations when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Run on scroll and on page load
-  window.addEventListener('scroll', requestTick, { passive: true });
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('load', animateOnScroll);
-  window.addEventListener('resize', animateOnScroll, { passive: true });
-  
-  // Initial animation check
-  animateOnScroll();
 });
-
-// Floating call button analytics (optional)
-document.addEventListener('DOMContentLoaded', function() {
-  const floatingCallBtn = document.querySelector('.floating-call-btn');
-  if (floatingCallBtn) {
-    floatingCallBtn.addEventListener('click', function() {
-      // Track call button clicks (you can add analytics here)
-      console.log('Floating call button clicked');
-    });
-  }
-}); 
