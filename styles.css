@@ -15,8 +15,8 @@
   --radius: 8px;
   --max: 1180px;
   --header-height: 86px;
-  --display-font: Impact, Haettenschweiler, "Arial Narrow Bold", "Franklin Gothic Condensed", system-ui, sans-serif;
-  --body-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display-font: "Bebas Neue", "Arial Narrow", "Franklin Gothic Condensed", system-ui, sans-serif;
+  --body-font: "Inter Tight", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * {
@@ -93,7 +93,7 @@ svg {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 24px;
-  padding: 0 46px;
+  padding: 0 44px;
   color: var(--white);
   background: linear-gradient(180deg, rgba(5, 6, 6, 0.96), rgba(5, 6, 6, 0.82));
   border-bottom: 1px solid var(--line);
@@ -103,20 +103,20 @@ svg {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 0;
   min-width: 0;
   text-decoration: none;
 }
 
 .brand img {
-  width: 78px;
-  height: 56px;
+  width: 104px;
+  height: 80px;
   object-fit: contain;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.58));
 }
 
 .brand span {
-  display: grid;
-  line-height: 1.02;
+  display: none;
 }
 
 .brand strong {
@@ -137,14 +137,14 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 34px;
 }
 
 .primary-nav a {
   position: relative;
   color: rgba(255, 255, 255, 0.88);
   font-size: 14px;
-  font-weight: 950;
+  font-weight: 850;
   letter-spacing: 0;
   text-decoration: none;
   text-transform: uppercase;
@@ -174,15 +174,20 @@ svg {
   align-items: center;
   gap: 10px;
   min-height: 48px;
-  padding: 0 18px;
-  border: 1px solid rgba(242, 170, 40, 0.42);
-  border-radius: 6px;
+  padding: 0 19px;
+  border: 1px solid rgba(242, 170, 40, 0.52);
+  border-radius: 3px;
   color: var(--white);
   background: linear-gradient(135deg, var(--red), var(--red-deep));
   font-size: 18px;
   font-weight: 950;
   text-decoration: none;
   box-shadow: 0 18px 36px rgba(189, 23, 39, 0.28);
+}
+
+.mobile-header-call,
+.mobile-call-text {
+  display: none;
 }
 
 .header-call svg,
@@ -198,7 +203,8 @@ svg {
 
 .hero {
   position: relative;
-  min-height: 92vh;
+  min-height: 680px;
+  height: min(880px, 100svh);
   padding: var(--header-height) 40px 0;
   display: grid;
   align-items: center;
@@ -218,8 +224,8 @@ svg {
 .hero::before {
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(5, 6, 6, 0.96) 0%, rgba(5, 6, 6, 0.88) 34%, rgba(5, 6, 6, 0.34) 68%, rgba(5, 6, 6, 0.18) 100%),
-    linear-gradient(180deg, rgba(5, 6, 6, 0.42), rgba(5, 6, 6, 0.16) 46%, rgba(5, 6, 6, 0.84));
+    linear-gradient(90deg, rgba(5, 6, 6, 0.96) 0%, rgba(5, 6, 6, 0.86) 34%, rgba(5, 6, 6, 0.34) 64%, rgba(5, 6, 6, 0.05) 100%),
+    linear-gradient(180deg, rgba(5, 6, 6, 0.34), rgba(5, 6, 6, 0.05) 42%, rgba(5, 6, 6, 0.82));
 }
 
 .hero::after {
@@ -231,17 +237,17 @@ svg {
 .hero-copy {
   position: relative;
   z-index: 4;
-  width: min(640px, 100%);
+  width: min(610px, 100%);
   margin-left: max(0px, calc((100vw - var(--max)) / 2));
-  padding: 42px 0 78px;
+  padding: 26px 0 56px;
 }
 
 .hero-logo {
-  width: 152px;
+  width: 174px;
   height: auto;
-  margin: 0 0 22px;
+  margin: 0 0 20px -10px;
   object-fit: contain;
-  filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.66));
 }
 
 .hero-location,
@@ -249,7 +255,7 @@ svg {
   margin: 0 0 12px;
   color: var(--red);
   font-family: var(--display-font);
-  font-size: 24px;
+  font-size: 23px;
   line-height: 1;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -261,30 +267,63 @@ svg {
   margin: 0;
   font-family: var(--display-font);
   font-size: 92px;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 0.94;
   text-transform: uppercase;
 }
 
 .hero h1 {
-  max-width: 610px;
+  position: relative;
+  max-width: 600px;
+  font-size: clamp(76px, 7.2vw, 108px);
+  line-height: 0.88;
   text-shadow: 0 16px 38px rgba(0, 0, 0, 0.48);
 }
 
+.hero h1 span {
+  display: block;
+}
+
+.hero h1::after,
+.section-heading h2::after {
+  content: "";
+  display: block;
+  width: 168px;
+  height: 3px;
+  margin-top: 12px;
+  background: linear-gradient(90deg, var(--red), rgba(189, 23, 39, 0));
+}
+
+.section-heading h2::after {
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(90deg, rgba(189, 23, 39, 0), var(--red), rgba(189, 23, 39, 0));
+}
+
 .hero-lede {
-  max-width: 520px;
-  margin: 22px 0 0;
-  color: rgba(255, 255, 255, 0.88);
+  display: grid;
+  gap: 8px;
+  max-width: 540px;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.hero-lede strong {
+  color: #fff;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 26px;
 }
 
 .button {
@@ -293,8 +332,8 @@ svg {
   justify-content: center;
   gap: 10px;
   min-height: 54px;
-  padding: 0 24px;
-  border-radius: 6px;
+  padding: 0 28px;
+  border-radius: 3px;
   font-size: 16px;
   font-weight: 950;
   text-decoration: none;
@@ -318,36 +357,30 @@ svg {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.proof-grid {
+.hero-checks {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  max-width: 560px;
-  margin: 34px 0 0;
+  margin: 27px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.proof-grid div {
-  min-height: 92px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--amber);
-  border-radius: 6px;
-  background: rgba(14, 17, 15, 0.82);
-}
-
-.proof-grid dt {
+.hero-checks li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
   color: #fff;
-  font-family: var(--display-font);
-  font-size: 32px;
+  font-size: 16px;
+  font-weight: 850;
   letter-spacing: 0;
-  line-height: 1;
+  text-transform: uppercase;
 }
 
-.proof-grid dd {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 850;
+.hero-checks svg {
+  width: 22px;
+  height: 22px;
+  color: var(--red);
+  fill: rgba(189, 23, 39, 0.12);
 }
 
 .hero-media {
@@ -360,8 +393,8 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% center;
-  filter: contrast(1.12) saturate(1.12) brightness(0.9);
+  object-position: 64% center;
+  filter: contrast(1.08) saturate(1.08) brightness(0.94);
 }
 
 .beacon {
@@ -410,15 +443,35 @@ svg {
 
 .dispatch-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(320px, 1.7fr) repeat(3, minmax(0, 0.82fr));
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  background: linear-gradient(135deg, #090a0a, #151817);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(135deg, #080909, #131615);
+  background-size: 18px 18px, auto;
+}
+
+.strip-brand {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 132px;
+  padding: 22px 40px 22px 48px;
+  border-right: 1px solid var(--line);
+}
+
+.strip-brand img {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.56));
 }
 
 .strip-item {
-  min-height: 116px;
-  padding: 26px 42px;
+  min-height: 132px;
+  padding: 27px 28px;
   border-right: 1px solid var(--line);
 }
 
@@ -427,11 +480,14 @@ svg {
 }
 
 .strip-item strong,
-.strip-item span {
+.strip-item span,
+.strip-brand strong,
+.strip-brand span {
   display: block;
 }
 
-.strip-item strong {
+.strip-item strong,
+.strip-brand strong {
   color: #fff;
   font-family: var(--display-font);
   font-size: 28px;
@@ -440,11 +496,23 @@ svg {
   text-transform: uppercase;
 }
 
-.strip-item span {
+.strip-brand strong {
+  font-size: clamp(30px, 2.6vw, 42px);
+}
+
+.strip-item span,
+.strip-brand span {
   margin-top: 10px;
   color: var(--muted);
   font-size: 15px;
   font-weight: 750;
+}
+
+.strip-brand span {
+  color: #3fb162;
+  font-size: 16px;
+  font-weight: 850;
+  text-transform: uppercase;
 }
 
 .section {
@@ -531,8 +599,10 @@ svg {
 .services {
   max-width: none;
   background:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
     radial-gradient(circle at 16% 18%, rgba(189, 23, 39, 0.18), transparent 28%),
     linear-gradient(180deg, #080909, #101210);
+  background-size: 18px 18px, auto, auto;
 }
 
 .section-heading,
@@ -555,14 +625,67 @@ svg {
 }
 
 .service-card {
+  position: relative;
+  overflow: hidden;
   min-height: 286px;
   padding: 25px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
-    var(--panel);
+  background: var(--panel);
   box-shadow: 0 20px 58px rgba(0, 0, 0, 0.28);
+}
+
+.service-card::before,
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.service-card::before {
+  background: center / cover;
+  opacity: 0.36;
+  filter: grayscale(0.2) contrast(1.12) brightness(0.74);
+  transform: scale(1.02);
+  transition: transform 420ms ease, opacity 420ms ease;
+}
+
+.service-card::after {
+  background:
+    linear-gradient(180deg, rgba(5, 6, 6, 0.3), rgba(5, 6, 6, 0.86)),
+    linear-gradient(90deg, rgba(5, 6, 6, 0.92), rgba(5, 6, 6, 0.5));
+}
+
+.service-card:nth-child(1)::before {
+  background-image: url("images/optimized/lucky7-ai-hero.webp");
+  background-position: 58% center;
+}
+
+.service-card:nth-child(2)::before {
+  background-image: url("images/optimized/yellow-action.webp");
+  background-position: center;
+}
+
+.service-card:nth-child(3)::before {
+  background-image: url("images/optimized/red-flatbed-black.webp");
+  background-position: center;
+}
+
+.service-card:nth-child(4)::before {
+  background-image: url("images/optimized/yellow-flatbed.webp");
+  background-position: center;
+}
+
+.service-card:hover::before {
+  opacity: 0.48;
+  transform: scale(1.07);
+}
+
+.service-card svg,
+.service-card h3,
+.service-card p {
+  position: relative;
+  z-index: 1;
 }
 
 .service-card svg {
@@ -592,6 +715,7 @@ svg {
 .fleet {
   max-width: none;
   background:
+    radial-gradient(circle at 84% 18%, rgba(30, 107, 61, 0.22), transparent 30%),
     linear-gradient(180deg, #0b0d0c, #070808);
 }
 
@@ -608,6 +732,7 @@ svg {
 .fleet-card-large img {
   height: 100%;
   min-height: 548px;
+  object-position: 62% center;
 }
 
 .fleet-card figcaption {
@@ -629,11 +754,17 @@ svg {
   font-weight: 700;
 }
 
+.fleet-button {
+  display: flex;
+  width: fit-content;
+  margin: 24px auto 0;
+}
+
 .coverage {
   max-width: none;
   background:
     linear-gradient(90deg, rgba(5, 6, 6, 0.95), rgba(5, 6, 6, 0.72)),
-    url("images/optimized/red-flatbed-black.webp") center / cover;
+    url("images/optimized/lucky7-ai-hero.webp") center / cover;
 }
 
 .coverage-map {
@@ -896,7 +1027,7 @@ svg {
   }
 
   .hero h1 {
-    font-size: 78px;
+    font-size: 82px;
   }
 
   .section h2,
@@ -915,18 +1046,14 @@ svg {
   }
 
   .site-header {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
     gap: 12px;
     padding: 0 18px;
   }
 
   .brand img {
-    width: 66px;
-    height: 46px;
-  }
-
-  .brand small {
-    display: none;
+    width: 86px;
+    height: 66px;
   }
 
   .header-call {
@@ -934,6 +1061,7 @@ svg {
   }
 
   .nav-toggle {
+    order: 3;
     display: grid;
     gap: 5px;
     width: 44px;
@@ -950,6 +1078,32 @@ svg {
     height: 2px;
     border-radius: 999px;
     background: currentColor;
+  }
+
+  .mobile-header-call {
+    order: 2;
+    justify-self: end;
+    display: grid;
+    gap: 1px;
+    color: var(--amber);
+    text-align: right;
+    text-decoration: none;
+  }
+
+  .mobile-header-call small {
+    color: var(--amber);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .mobile-header-call strong {
+    color: var(--amber);
+    font-family: var(--display-font);
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 1;
   }
 
   .primary-nav {
@@ -981,14 +1135,15 @@ svg {
   }
 
   .hero {
+    height: auto;
     min-height: auto;
-    padding: calc(var(--header-height) + 300px) 18px 0;
+    padding: calc(var(--header-height) + 320px) 18px 0;
     align-items: end;
   }
 
   .hero::before {
     background:
-      linear-gradient(180deg, rgba(5, 6, 6, 0.02) 0%, rgba(5, 6, 6, 0.18) 28%, rgba(5, 6, 6, 0.9) 55%, rgba(5, 6, 6, 1) 100%);
+      linear-gradient(180deg, rgba(5, 6, 6, 0.02) 0%, rgba(5, 6, 6, 0.12) 30%, rgba(5, 6, 6, 0.88) 55%, rgba(5, 6, 6, 1) 100%);
   }
 
   .hero-copy {
@@ -1008,9 +1163,14 @@ svg {
 
   .hero h1 {
     font-size: 58px;
+    max-width: 360px;
   }
 
   .hero-lede {
+    font-size: 16px;
+  }
+
+  .hero-lede strong {
     font-size: 18px;
   }
 
@@ -1018,8 +1178,22 @@ svg {
     width: 100%;
   }
 
+  .hero-actions .button-primary {
+    color: #111;
+    background: linear-gradient(135deg, #f2aa28, #f8c65e);
+    box-shadow: 0 18px 42px rgba(242, 170, 40, 0.22);
+  }
+
+  .desktop-call-text {
+    display: none;
+  }
+
+  .mobile-call-text {
+    display: inline;
+  }
+
   .hero-media img {
-    object-position: 57% top;
+    object-position: 64% top;
   }
 
   .route-line {
@@ -1028,7 +1202,6 @@ svg {
     max-width: 52vw;
   }
 
-  .proof-grid,
   .dispatch-strip,
   .split,
   .coverage,
@@ -1046,6 +1219,18 @@ svg {
 
   .strip-item:last-child {
     border-bottom: 0;
+  }
+
+  .strip-brand {
+    min-height: 0;
+    padding: 24px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .strip-brand img {
+    width: 90px;
+    height: 69px;
   }
 
   .section,
@@ -1095,24 +1280,15 @@ svg {
 
 @media (max-width: 520px) {
   .hero {
-    padding-top: calc(var(--header-height) + 270px);
+    padding-top: calc(var(--header-height) + 290px);
   }
 
   .hero h1 {
-    font-size: 48px;
+    font-size: 52px;
   }
 
-  .proof-grid {
-    gap: 8px;
-  }
-
-  .proof-grid div {
-    min-height: 0;
-    padding: 13px;
-  }
-
-  .proof-grid dt {
-    font-size: 26px;
+  .hero-checks {
+    gap: 10px;
   }
 
   .section h2,

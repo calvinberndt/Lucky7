@@ -22,7 +22,10 @@
 
   <link rel="icon" type="image/jpeg" href="https://lucky7towingtransport.com/images/lucky7_logo_ai.jpg">
   <link rel="apple-touch-icon" href="https://lucky7towingtransport.com/images/lucky7_logo_ai.jpg">
-  <link rel="preload" href="images/optimized/red-flatbed-hero.webp" as="image" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@500;650;750;850;900&display=swap" rel="stylesheet">
+  <link rel="preload" href="images/optimized/lucky7-ai-hero.webp" as="image" type="image/webp">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -54,7 +57,7 @@
 
   <header class="site-header" data-header>
     <a class="brand" href="#home" aria-label="Lucky 7 Towing home">
-      <img src="images/optimized/lucky7-logo-mark.webp" alt="" width="120" height="68">
+      <img src="images/optimized/lucky7-real-decal-cutout.webp" alt="" width="120" height="92">
       <span>
         <strong>Lucky 7</strong>
         <small>Towing &amp; Transport</small>
@@ -66,6 +69,11 @@
       <span></span>
       <span></span>
     </button>
+
+    <a class="mobile-header-call" href="tel:7158538513">
+      <small>24/7&nbsp;dispatch</small>
+      <strong>(715)&nbsp;853&#8209;8513</strong>
+    </a>
 
     <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation" data-nav>
       <a href="#home">Home</a>
@@ -84,35 +92,27 @@
   <main id="main">
     <section class="hero" id="home">
       <div class="hero-copy reveal is-visible">
-        <img class="hero-logo" src="images/optimized/lucky7-logo-mark.webp" alt="Lucky 7 Transport" width="260" height="146">
+        <img class="hero-logo" src="images/optimized/lucky7-real-decal-cutout.webp" alt="Lucky 7 Transport" width="260" height="200">
         <p class="hero-location">Northeast Wisconsin's</p>
-        <h1>Trusted towing &amp; recovery.</h1>
-        <p class="hero-lede">Fast response. Proven care. AAA approved towing, roadside assistance, vehicle recovery, and long-distance transport.</p>
+        <h1>Trusted towing <span>&amp; recovery</span></h1>
+        <p class="hero-lede"><strong>Fast response. Proven care.</strong><span>AAA approved towing, roadside assistance, vehicle recovery, and long-distance transport.</span></p>
         <div class="hero-actions">
           <a class="button button-primary" href="tel:7158538513">
             <svg aria-hidden="true"><use href="#icon-phone"></use></svg>
-            Call&nbsp;Now
+            <span class="desktop-call-text">Call&nbsp;Now</span>
+            <span class="mobile-call-text">Tap&nbsp;to&nbsp;Call&nbsp;(715)&nbsp;853&#8209;8513</span>
           </a>
-          <a class="button button-secondary" href="#services">See Services</a>
+          <a class="button button-secondary" href="#contact">Request Service</a>
         </div>
-        <dl class="proof-grid">
-          <div>
-            <dt>24/7</dt>
-            <dd>Emergency dispatch</dd>
-          </div>
-          <div>
-            <dt>AAA</dt>
-            <dd>Approved provider</dd>
-          </div>
-          <div>
-            <dt>20+</dt>
-            <dd>Years serving Wisconsin</dd>
-          </div>
-        </dl>
+        <ul class="hero-checks">
+          <li><svg aria-hidden="true"><use href="#icon-phone"></use></svg><span>24/7 dispatch</span></li>
+          <li><svg aria-hidden="true"><use href="#icon-pin"></use></svg><span>Based in Shawano, WI</span></li>
+          <li><svg aria-hidden="true"><use href="#icon-shield"></use></svg><span>Fully insured</span></li>
+        </ul>
       </div>
 
       <div class="hero-media reveal is-visible">
-        <img src="images/optimized/red-flatbed-hero.webp" alt="Lucky 7 red flatbed tow truck hauling a classic car" width="1440" height="648">
+        <img src="images/optimized/lucky7-ai-hero.webp" alt="Lucky 7 red flatbed tow truck hauling a classic car" width="2200" height="1042">
         <span class="beacon beacon-one"></span>
         <span class="beacon beacon-two"></span>
         <div class="route-line" aria-hidden="true"></div>
@@ -120,6 +120,13 @@
     </section>
 
     <section class="dispatch-strip" aria-label="Fast towing details">
+      <div class="strip-brand reveal">
+        <img src="images/optimized/lucky7-real-decal-cutout.webp" alt="" width="96" height="74" loading="lazy">
+        <div>
+          <strong>Local people. Local roads. Local company.</strong>
+          <span>Proudly serving Shawano &amp; Northeast Wisconsin.</span>
+        </div>
+      </div>
       <div class="strip-item reveal">
         <strong>24/7 dispatch</strong>
         <span>Emergency towing when you are stranded.</span>
@@ -134,33 +141,11 @@
       </div>
     </section>
 
-    <section class="section split" id="about">
-      <div class="section-copy reveal">
-        <p class="section-label">Local operator</p>
-        <h2>Built for rural Wisconsin calls.</h2>
-        <p>Country roads, late nights, winter shoulders, long pulls, and small-town access all need a towing team that understands the area. Lucky 7 serves Shawano and surrounding communities with professional equipment and practical local experience.</p>
-        <div class="feature-list">
-          <div>
-            <svg aria-hidden="true"><use href="#icon-shield"></use></svg>
-            <span>AAA approved service provider</span>
-          </div>
-          <div>
-            <svg aria-hidden="true"><use href="#icon-pin"></use></svg>
-            <span>Rural and long-distance coverage</span>
-          </div>
-        </div>
-      </div>
-      <figure class="photo-panel reveal">
-        <img src="images/optimized/lucky7-door-logo.webp" alt="Lucky 7 Transport logo decal on a red tow truck door" width="1200" height="540" loading="lazy">
-        <figcaption>Real Lucky 7 door decal and truck branding.</figcaption>
-      </figure>
-    </section>
-
     <section class="section services" id="services">
       <div class="section-heading reveal">
-        <p class="section-label">Services</p>
-        <h2>Roadside help without the runaround.</h2>
-        <p>Call for direct help with towing, recovery, roadside problems, and vehicle transport across Northeast Wisconsin.</p>
+        <p class="section-label">Our services</p>
+        <h2>Towing, roadside, recovery, and transport.</h2>
+        <p>Direct help for breakdowns, accident scenes, lockouts, jump starts, and vehicle moves across Northeast Wisconsin.</p>
       </div>
       <div class="service-grid">
         <article class="service-card reveal">
@@ -188,12 +173,12 @@
 
     <section class="section fleet" id="fleet">
       <div class="section-heading reveal">
-        <p class="section-label">Fleet</p>
-        <h2>Real trucks, real jobs.</h2>
+        <p class="section-label">Our fleet</p>
+        <h2>Clean equipment for rough roads.</h2>
       </div>
       <div class="fleet-grid">
         <figure class="fleet-card fleet-card-large reveal">
-          <img src="images/optimized/red-flatbed-hero.webp" alt="Lucky 7 red flatbed tow truck with a classic car loaded" width="1440" height="648" loading="lazy">
+          <img src="images/optimized/lucky7-ai-hero.webp" alt="Lucky 7 red flatbed tow truck with a classic car loaded" width="2200" height="1042" loading="lazy">
           <figcaption>
             <strong>Flatbed transport</strong>
             <span>Classic cars, local hauls, and long-distance moves.</span>
@@ -214,6 +199,7 @@
           </figcaption>
         </figure>
       </div>
+      <a class="button button-secondary fleet-button reveal" href="#contact">Request Service</a>
     </section>
 
     <section class="section coverage" id="coverage">
@@ -225,7 +211,7 @@
         <span class="map-route"></span>
       </div>
       <div class="section-copy reveal">
-        <p class="section-label">Coverage</p>
+        <p class="section-label">24/7 dispatch</p>
         <h2>Serving Shawano and the surrounding communities.</h2>
         <p>Available for calls in Shawano, Bonduel, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, Gillett, Appleton, and surrounding rural Northeast Wisconsin communities.</p>
         <a class="button button-primary" href="tel:7158538513">
@@ -233,6 +219,28 @@
           Call&nbsp;Dispatch
         </a>
       </div>
+    </section>
+
+    <section class="section split" id="about">
+      <div class="section-copy reveal">
+        <p class="section-label">Local operator</p>
+        <h2>Built for rural Wisconsin calls.</h2>
+        <p>Country roads, late nights, winter shoulders, long pulls, and small-town access all need a towing team that understands the area. Lucky 7 serves Shawano and surrounding communities with professional equipment and practical local experience.</p>
+        <div class="feature-list">
+          <div>
+            <svg aria-hidden="true"><use href="#icon-shield"></use></svg>
+            <span>AAA approved service provider</span>
+          </div>
+          <div>
+            <svg aria-hidden="true"><use href="#icon-pin"></use></svg>
+            <span>Rural and long-distance coverage</span>
+          </div>
+        </div>
+      </div>
+      <figure class="photo-panel reveal">
+        <img src="images/optimized/lucky7-door-logo.webp" alt="Lucky 7 Transport logo decal on a red tow truck door" width="1200" height="540" loading="lazy">
+        <figcaption>Real Lucky 7 door decal and truck branding.</figcaption>
+      </figure>
     </section>
 
     <section class="contact" id="contact">
