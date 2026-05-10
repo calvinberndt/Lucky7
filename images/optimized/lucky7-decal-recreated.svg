@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" role="img" aria-labelledby="title desc">
   <title id="title">Lucky 7 Transport</title>
-  <desc id="desc">Clean recreated Lucky 7 Transport clover decal logo based on the real truck door mark.</desc>
+  <desc id="desc">Clean recreated Lucky 7 Transport clover badge logo.</desc>
   <defs>
     <filter id="drop" x="-12%" y="-12%" width="124%" height="124%">
-      <feDropShadow dx="0" dy="13" stdDeviation="13" flood-color="#000" flood-opacity=".45"/>
+      <feDropShadow dx="0" dy="12" stdDeviation="11" flood-color="#000" flood-opacity=".42"/>
     </filter>
-    <linearGradient id="leaf" x1="195" y1="106" x2="779" y2="648" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#68df7b"/>
-      <stop offset=".5" stop-color="#2eaa4d"/>
-      <stop offset="1" stop-color="#157c37"/>
+    <linearGradient id="leaf" x1="170" y1="86" x2="830" y2="690" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#71eb78"/>
+      <stop offset=".5" stop-color="#36ba54"/>
+      <stop offset="1" stop-color="#16863a"/>
     </linearGradient>
     <linearGradient id="leafDark" x1="185" y1="135" x2="780" y2="665" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#28a94a"/>
@@ -19,46 +19,46 @@
       <stop offset=".55" stop-color="#f3f4ee"/>
       <stop offset="1" stop-color="#cfd5ce"/>
     </linearGradient>
-    <linearGradient id="redSeven" x1="388" y1="227" x2="589" y2="578" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#e23635"/>
-      <stop offset=".55" stop-color="#b91622"/>
-      <stop offset="1" stop-color="#7f1119"/>
+    <linearGradient id="redSeven" x1="405" y1="292" x2="580" y2="645" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff202f"/>
+      <stop offset=".52" stop-color="#d41426"/>
+      <stop offset="1" stop-color="#9a111a"/>
     </linearGradient>
-    <pattern id="leafVeins" width="88" height="88" patternUnits="userSpaceOnUse" patternTransform="rotate(-7)">
-      <path d="M-6 44c28-27 60-27 88 0m-88 2c28 27 60 27 88 0" fill="none" stroke="#0b6c31" stroke-width="3" opacity=".33"/>
+    <pattern id="leafVeins" width="112" height="112" patternUnits="userSpaceOnUse" patternTransform="rotate(-2)">
+      <path d="M-10 56c36-34 76-34 112 0m-112 4c36 34 76 34 112 0" fill="none" stroke="#0a662e" stroke-width="3" opacity=".36"/>
     </pattern>
   </defs>
 
   <g filter="url(#drop)">
-    <path d="M494 74c56-50 151-38 169 36 76-23 154 31 151 109 75 23 110 108 63 174-48 68-137 72-196 21 7 80-56 148-134 140-28 69-118 97-179 50-38-29-50-70-44-113-72 9-134-44-128-116-83-29-100-137-29-190 38-28 88-31 130-9 23-62 111-87 197-102Z" fill="url(#leaf)" stroke="#171a17" stroke-width="20" stroke-linejoin="round"/>
-    <path d="M494 74c56-50 151-38 169 36 76-23 154 31 151 109 75 23 110 108 63 174-48 68-137 72-196 21 7 80-56 148-134 140-28 69-118 97-179 50-38-29-50-70-44-113-72 9-134-44-128-116-83-29-100-137-29-190 38-28 88-31 130-9 23-62 111-87 197-102Z" fill="url(#leafVeins)" opacity=".85"/>
-    <path d="M559 522c11 49 36 86 75 111l-55 44c-43-39-69-89-75-146Z" fill="url(#leafDark)" stroke="#171a17" stroke-width="18" stroke-linejoin="round"/>
+    <path d="M496 73c60-45 140-36 197 24 62-13 126 18 151 73 32 70 4 143-53 179 61 43 78 124 34 190-45 68-135 86-210 43-4 69-48 129-114 151-78 25-158-15-190-85-73 2-134-47-147-117-13-72 23-137 84-168-58-26-88-87-72-149 18-71 90-111 166-91 31-48 91-73 154-50Z" fill="url(#leaf)" stroke="#070907" stroke-width="22" stroke-linejoin="round"/>
+    <path d="M496 73c60-45 140-36 197 24 62-13 126 18 151 73 32 70 4 143-53 179 61 43 78 124 34 190-45 68-135 86-210 43-4 69-48 129-114 151-78 25-158-15-190-85-73 2-134-47-147-117-13-72 23-137 84-168-58-26-88-87-72-149 18-71 90-111 166-91 31-48 91-73 154-50Z" fill="url(#leafVeins)" opacity=".86"/>
+    <path d="M614 548c26 52 64 88 113 106 18 7 27 26 20 43-8 19-29 28-48 20-62-25-110-71-143-138Z" fill="url(#leafDark)" stroke="#070907" stroke-width="18" stroke-linejoin="round"/>
 
-    <path d="M103 246h238l55 80H185Z" fill="url(#whiteMetal)" stroke="#151515" stroke-width="16" stroke-linejoin="round"/>
-    <path d="M897 246H659l-55 80h211Z" fill="url(#whiteMetal)" stroke="#151515" stroke-width="16" stroke-linejoin="round"/>
-    <path d="M267 324h466L615 557H385Z" fill="url(#whiteMetal)" stroke="#151515" stroke-width="17" stroke-linejoin="round"/>
+    <path d="M91 292h260l77 85H170Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
+    <path d="M909 292H649l-77 85h258Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
+    <path d="M251 370h498L500 628Z" fill="none" stroke="#070907" stroke-width="25" stroke-linejoin="round"/>
 
-    <path d="M425 218h188l-61 119c50 5 86 23 106 55 22 34 18 78-12 130-33 59-87 88-160 88-45 0-84-10-117-29l34-90c25 18 52 27 81 27 25 0 44-9 58-26 13-16 17-33 10-49-8-19-30-28-67-28h-43l-18-45 52-87H398Z" fill="url(#redSeven)" stroke="#151515" stroke-width="28" stroke-linejoin="round"/>
-    <path d="M425 218h188l-61 119c50 5 86 23 106 55 22 34 18 78-12 130-33 59-87 88-160 88-45 0-84-10-117-29l34-90c25 18 52 27 81 27 25 0 44-9 58-26 13-16 17-33 10-49-8-19-30-28-67-28h-43l-18-45 52-87H398Z" fill="url(#redSeven)" stroke="#f8f3e7" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M421 334c8-47 23-66 54-68 68-5 151 7 203 33 15 8 18 28 5 38l-100 73c-35 26-55 68-65 133-4 25 7 36 39 36h30c26 0 37 31 14 43-50 24-102 35-158 32-40-2-60-20-61-55-1-79 28-152 88-217l-83 39c-25 12-46-12-41-40Z" fill="url(#redSeven)" stroke="#070907" stroke-width="30" stroke-linejoin="round"/>
+    <path d="M421 334c8-47 23-66 54-68 68-5 151 7 203 33 15 8 18 28 5 38l-100 73c-35 26-55 68-65 133-4 25 7 36 39 36h30c26 0 37 31 14 43-50 24-102 35-158 32-40-2-60-20-61-55-1-79 28-152 88-217l-83 39c-25 12-46-12-41-40Z" fill="url(#redSeven)" stroke="#fbf5e9" stroke-width="7" stroke-linejoin="round"/>
 
-    <path d="M178 355h265m-235 34h252m-225 34h232M557 355h265m-282 34h252m-259 34h232" fill="none" stroke="#151515" stroke-width="17" stroke-linecap="round"/>
-    <path d="M178 355h265m-235 34h252m-225 34h232M557 355h265m-282 34h252m-259 34h232" fill="none" stroke="#f7f6ef" stroke-width="9" stroke-linecap="round"/>
+    <path d="M292 427h183m-213 31h224m-187 31h183M525 427h183m-194 31h224m-204 31h183" fill="none" stroke="#070907" stroke-width="15" stroke-linecap="round"/>
 
     <text x="503" y="314" text-anchor="middle"
-      transform="skewX(-5)"
+      transform="skewX(-7)"
       font-family="Impact, Arial Black, sans-serif"
-      font-size="172" font-weight="900" letter-spacing="-7"
-      fill="#f8f8ef" stroke="#151515" stroke-width="34" paint-order="stroke">LUCKY</text>
+      font-size="191" font-weight="900" letter-spacing="-10"
+      fill="#f8f8ef" stroke="#070907" stroke-width="39" paint-order="stroke">LUCKY</text>
     <text x="503" y="314" text-anchor="middle"
-      transform="skewX(-5)"
+      transform="skewX(-7)"
       font-family="Impact, Arial Black, sans-serif"
-      font-size="172" font-weight="900" letter-spacing="-7"
-      fill="url(#whiteMetal)" stroke="#f8f8ef" stroke-width="3" paint-order="stroke">LUCKY</text>
+      font-size="191" font-weight="900" letter-spacing="-10"
+      fill="#fffef7" stroke="#12a73a" stroke-width="4" paint-order="stroke">LUCKY</text>
 
-    <path d="M252 444h496c21 0 38 17 38 38s-17 38-38 38H252c-21 0-38-17-38-38s17-38 38-38Z" fill="#111" stroke="#151515" stroke-width="15"/>
+    <path d="M248 482h504c25 0 46 20 46 45s-21 45-46 45H248c-25 0-46-20-46-45s21-45 46-45Z" fill="#080908" stroke="#070907" stroke-width="16"/>
     <text x="500" y="501" text-anchor="middle"
       font-family="Arial Black, Impact, sans-serif"
-      font-size="63" font-weight="900" letter-spacing="8"
+      font-size="69" font-weight="900" letter-spacing="7"
+      transform="translate(0 45)"
       fill="#f8f8ef">TRANSPORT</text>
   </g>
 </svg>
