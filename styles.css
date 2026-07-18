@@ -641,7 +641,8 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   padding: 10px;
   box-shadow: var(--shadow-soft);
 }
-.map-panel svg { display: block; width: 100%; height: auto; }
+/* direct child only — the nested Bonduel clover SVG sizes by its own attrs */
+.map-panel > svg { display: block; width: 100%; height: auto; }
 
 .map-paper { fill: #fbf7ea; }
 .map-frame { fill: none; stroke: var(--green-700); stroke-width: 1.5; stroke-dasharray: 5 7; opacity: .45; }
@@ -1156,6 +1157,9 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
     transform: translateY(-12px);
     opacity: 0; visibility: hidden; pointer-events: none;
     box-shadow: 0 24px 40px rgba(0,0,0,.45);
+    max-height: calc(100vh - var(--header-h));
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
   }
   .site-nav.open {
     transform: none; opacity: 1; visibility: visible; pointer-events: auto;

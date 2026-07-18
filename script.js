@@ -218,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
       function frame(ts) {
         if (t0 === null) t0 = ts;
         var gone = (ts - t0) / 1000 * SPEED;
+        if (!mapVisible) gone = total; // scrolled away: finish the route instantly
         if (gone >= total) {
           var last = segs[segs.length - 1];
           setTruck(last.b[0], last.b[1]);
