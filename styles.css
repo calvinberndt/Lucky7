@@ -745,6 +745,49 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .review-links a { color: var(--amber-400); text-underline-offset: 3px; }
 .review-links a:hover { color: var(--cream-text); }
 
+/* ---------- FAQ ---------- */
+
+.faq { background: var(--cream-100); border-top: 2px dashed rgba(45, 89, 55, .25); }
+.faq-shell { max-width: 820px; }
+.faq-list { margin-top: 1.8rem; }
+
+.faq-item {
+  background: var(--cream-50);
+  border: 2px solid var(--green-800);
+  border-radius: var(--radius);
+  margin-bottom: .8rem;
+  box-shadow: 3px 4px 0 rgba(30, 61, 38, .14);
+  overflow: hidden;
+}
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1rem 3rem 1rem 1.2rem;
+  font-family: var(--font-cond); font-weight: 700;
+  font-size: 1.18rem; letter-spacing: .04em;
+  color: var(--green-800);
+  position: relative;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "";
+  position: absolute; right: 1.1rem; top: 50%;
+  width: 12px; height: 12px;
+  border-right: 3px solid var(--red-600);
+  border-bottom: 3px solid var(--red-600);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform .25s ease;
+}
+.faq-item[open] summary::after { transform: translateY(-30%) rotate(225deg); }
+.faq-item summary:hover { color: var(--red-600); }
+.faq-item > p {
+  margin: 0;
+  padding: 0 1.2rem 1.1rem;
+  color: rgba(24, 31, 25, .82);
+  border-top: 1px dashed rgba(45, 89, 55, .3);
+  padding-top: .9rem;
+}
+
 /* ---------- contact ---------- */
 
 .contact {
@@ -802,6 +845,13 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .footer-row img { border-radius: 8px; border: 2px solid var(--green-800); }
 .footer-row p { margin: 0; }
 .footer-row p span { color: rgba(244, 237, 218, .5); font-size: .85rem; }
+.footer-cities {
+  font-family: var(--font-cond); font-weight: 600;
+  font-size: .88rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(244, 237, 218, .55);
+}
+.footer-cities a { color: rgba(244, 237, 218, .8); text-underline-offset: 3px; }
+.footer-cities a:hover { color: var(--amber-400); }
 .footer-credit { font-size: .78rem; color: rgba(244, 237, 218, .38); }
 
 /* ---------- floating call button (mobile) ---------- */
