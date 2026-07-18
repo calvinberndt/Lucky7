@@ -1,6 +1,6 @@
 /* Hero Section Styles */
 .hero-bg {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/lucky7_redtowtruck.png');
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/hero_redtowtruck.jpg');
   background-size: cover;
   background-position: center -30px;
   background-repeat: no-repeat;
