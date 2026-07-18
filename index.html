@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
   <link rel="apple-touch-icon" href="images/favicon-180.png">
 
-  <link rel="preload" href="images/hero-truck-1244.jpg" as="image">
+  <link rel="preload" href="images/hero-morgan-1076.webp" as="image" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -53,9 +53,24 @@
   </svg>
 
   <header class="site-header" id="top">
+    <div class="topbar">
+      <div class="shell topbar-row">
+        <p class="topbar-note">
+          <span><svg class="i" aria-hidden="true"><use href="#clover"/></svg>Open 24/7</span>
+          <span class="topbar-sep" aria-hidden="true"></span>
+          <span>AAA Approved Provider</span>
+          <span class="topbar-sep" aria-hidden="true"></span>
+          <span>Bonduel &amp; Shawano County, WI</span>
+        </p>
+        <a class="topbar-phone" href="tel:7158538513">
+          <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
+          (715) 853-8513
+        </a>
+      </div>
+    </div>
     <div class="shell header-row">
       <a class="brand" href="#home" aria-label="Lucky 7 Towing and Transport — back to top">
-        <svg class="brand-clover" aria-hidden="true"><use href="#clover"/></svg>
+        <img class="brand-badge" src="images/favicon-192.png" width="46" height="46" alt="">
         <span class="brand-text">
           <span class="brand-name">Lucky <em>7</em></span>
           <span class="brand-sub">Towing &amp; Transport</span>
@@ -74,10 +89,9 @@
         </a>
       </nav>
       <div class="header-actions">
-        <a class="call-btn" href="tel:7158538513">
+        <a class="call-btn" href="tel:7158538513" aria-label="Call Lucky 7 now: (715) 853-8513">
           <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
           <span class="call-btn-num">(715) 853-8513</span>
-          <span class="call-btn-247">24/7</span>
         </a>
         <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
           <span class="menu-bar"></span><span class="menu-bar"></span><span class="menu-bar"></span>
@@ -111,9 +125,9 @@
             <li class="chip">Licensed &amp; Insured</li>
           </ul>
         </div>
-        <figure class="hero-art reveal" style="--d:.2s">
-          <img src="images/hero-truck-1244.jpg" width="1244" height="720" alt="Lucky 7's red Chevy C5500 flatbed tow truck with flame decals, nicknamed Pete" fetchpriority="high">
-          <figcaption>&ldquo;Pete&rdquo; &mdash; the C5500 flatbed</figcaption>
+        <figure class="hero-art reveal" style="--d:.1s">
+          <img class="hero-truck" src="images/hero-morgan-1076.webp" width="1076" height="452" alt="Lucky 7's red Freightliner flatbed rolling in with a classic Morgan roadster secured on the bed" fetchpriority="high">
+          <figcaption>Precious cargo welcome &mdash; a classic Morgan riding home</figcaption>
         </figure>
       </div>
       <div class="hazard-divider" aria-hidden="true"></div>
@@ -122,7 +136,9 @@
     <!-- ============ HOW IT WORKS ============ -->
     <section class="steps" aria-labelledby="steps-title">
       <div class="shell">
-        <p class="kicker reveal">Stuck right now?</p>
+        <p class="scenario reveal">Flat tire on a county road. Deer strike at dusk. A gauge that lied about the gas.
+        <em>It happens to everyone out here &mdash; save the number before you need it.</em></p>
+        <p class="kicker reveal">When it does</p>
         <h2 class="reveal" id="steps-title" style="--d:.06s">Here&rsquo;s how it goes</h2>
         <ol class="step-list">
           <li class="step reveal" style="--d:.1s">
@@ -200,9 +216,9 @@
     <!-- ============ TRUST BAND ============ -->
     <section class="trust grain" aria-label="Credentials and experience">
       <div class="shell trust-row">
-        <div class="stat"><span class="stat-num">20<span class="plus">+</span></span><span class="stat-label">Years on these roads</span></div>
+        <div class="stat"><span class="stat-num"><span class="count" data-count="20">20</span><span class="plus">+</span></span><span class="stat-label">Years on these roads</span></div>
         <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Live dispatch</span></div>
-        <div class="stat"><span class="stat-num">5.0<svg class="i star" aria-hidden="true"><use href="#star"/></svg></span><span class="stat-label">Google rating</span></div>
+        <div class="stat"><span class="stat-num"><span class="count" data-count="5.0" data-decimals="1">5.0</span><svg class="i star" aria-hidden="true"><use href="#star"/></svg></span><span class="stat-label">Google rating</span></div>
         <div class="stat"><span class="stat-num">AAA</span><span class="stat-label">Approved provider</span></div>
         <div class="stat"><span class="stat-num">US DOT</span><span class="stat-label">1237637</span></div>
       </div>
@@ -212,13 +228,16 @@
     <section class="about" id="about" aria-labelledby="about-title">
       <div class="shell about-grid">
         <div class="about-copy">
-          <p class="kicker reveal">About Lucky 7</p>
+          <p class="kicker reveal">The guy who shows up</p>
           <h2 class="reveal" id="about-title" style="--d:.06s">Owner-operated out of Bonduel for 20+ years</h2>
-          <p class="reveal" style="--d:.12s">Lucky 7 Towing &amp; Transport is Matt Torphy — a driver who knows every county road,
-          fire lane, and back forty between Shawano and the state line. When you call, you get the
-          person who shows up, and your vehicle gets handled like it&rsquo;s his own.</p>
-          <p class="reveal" style="--d:.18s">From daily breakdowns to classic cars that ride the flatbed like royalty, we&rsquo;ve
-          hauled just about everything Northeastern Wisconsin can throw at a truck.</p>
+          <p class="reveal" style="--d:.12s">Behind Lucky 7 is <strong>Matt Torphy</strong>. He answers the phone, he drives the
+          flatbed, and he&rsquo;s spent more than twenty years pulling neighbors out of ditches,
+          snowbanks, and plain bad days — on every county road, fire lane, and back forty between
+          Shawano and the state line.</p>
+          <p class="reveal" style="--d:.18s">Some calls are a dead battery in a driveway. Some are a classic Morgan that has to
+          arrive exactly as it left. Either way, your vehicle rides like it&rsquo;s his own.</p>
+          <p class="reveal about-names" style="--d:.22s">One outfit, two names: the truck doors say <strong>Lucky 7 Transport</strong>, most
+          folks around town say <strong>Lucky 7 Towing</strong>. Same clover, same Matt, same number.</p>
           <div class="aaa-panel reveal" style="--d:.24s">
             <h3>AAA members — you&rsquo;re covered</h3>
             <p>We&rsquo;re an authorized AAA service provider. Show your membership card and your
@@ -226,8 +245,9 @@
           </div>
         </div>
         <figure class="photo-mat tilt-r reveal" style="--d:.2s">
-          <img src="images/about-morgan-1000.jpg" width="1000" height="450" alt="A classic Morgan roadster secured on Lucky 7's red flatbed tow truck" loading="lazy">
-          <figcaption>A classic Morgan riding home on the flatbed</figcaption>
+          <img src="images/hero-truck-1244.jpg" width="1244" height="720" alt="Lucky 7's red Chevy C5500 flatbed with flame decals, nicknamed Pete, on a black background" loading="lazy">
+          <figcaption>&ldquo;Pete,&rdquo; the C5500 flatbed &mdash; flames and all</figcaption>
+          <img class="badge-sticker" src="images/badge-320.jpg" width="128" height="70" alt="Lucky 7 Transport clover badge" loading="lazy">
         </figure>
       </div>
     </section>
@@ -366,6 +386,7 @@
           <span class="phone-plate-num"><svg class="i" aria-hidden="true"><use href="#phone"/></svg>(715) 853-8513</span>
         </a>
         <div class="contact-meta reveal" style="--d:.2s">
+          <p class="contact-address">N3026 State Hwy 47 &middot; Bonduel, WI 54107</p>
           <a class="ghost-btn light" href="mailto:mattsdvf@tds.net">Email: mattsdvf@tds.net</a>
           <ul class="contact-facts">
             <li>Open 24 hours, 7 days</li>
@@ -382,7 +403,7 @@
   <footer class="site-footer">
     <div class="shell footer-row">
       <img src="images/badge-320.jpg" width="160" height="87" alt="Lucky 7 Transport clover badge logo" loading="lazy">
-      <p>&copy; 2026 Lucky 7 Towing &middot; Bonduel, Wisconsin<br>
+      <p>&copy; 2026 Lucky 7 Towing &middot; N3026 State Hwy 47, Bonduel, WI 54107<br>
       <span>Professional towing you can trust. Licensed &amp; insured.</span></p>
       <p class="footer-credit">Site by Calvin Berndt</p>
     </div>
@@ -425,8 +446,10 @@
     ],
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "N3026 State Hwy 47",
       "addressLocality": "Bonduel",
       "addressRegion": "WI",
+      "postalCode": "54107",
       "addressCountry": "US"
     },
     "geo": { "@type": "GeoCoordinates", "latitude": "44.7400", "longitude": "-88.4450" },

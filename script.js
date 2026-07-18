@@ -63,4 +63,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
   reveals.forEach(function (el) { observer.observe(el); });
+
+  // --- stat count-up (static values stay in the HTML for no-JS/reduced motion) ---
+  var counters = document.querySelectorAll('.count[data-count]');
+  if (counters.length) {
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        countObserver.unobserve(entry.target);
+        var el = entry.target;
+        var target = parseFloat(el.getAttribute('data-count'));
+        var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        var start = null;
+        var DURATION = 950;
+        function tick(ts) {
+          if (start === null) start = ts;
+          var t = Math.min((ts - start) / DURATION, 1);
+          var eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = (target * eased).toFixed(decimals);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { countObserver.observe(el); });
+  }
 });
