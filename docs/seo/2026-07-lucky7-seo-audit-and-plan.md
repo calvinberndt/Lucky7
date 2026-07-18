@@ -185,5 +185,62 @@ Your 20-prompt stack assumes an existing GBP + paid tool logins. Status for Luck
 
 ---
 
+---
+
+## Day-1 execution log — July 18, 2026 (afternoon session)
+
+Matt's answers unblocked everything; executed end-to-end in his logged-in Chrome.
+
+### Corrections to the morning audit
+
+- **The GBP exists** (it just doesn't surface in regular web search — service-area
+  listing): "Lucky 7 Towing", 5.0★ × 7 reviews, verified, managed by Matt's account,
+  509 views / 111 customer interactions. The morning "no GBP" finding is retracted;
+  the *citations = zero* finding stands.
+- **Search Console exists and is verified** (domain property, sitemap submitted
+  June 2025). 3-month data: 68 clicks, 2,840 impressions, 2.4% CTR, **avg position
+  12.2** — top of page 2. "towing near me" 50 impressions vs. tow-truck-phrased
+  queries ≈1 impression → empirically confirms Matt's observation; fixed on-site today.
+- **Ahrefs (free plan)**: DR 0; all 89 referring domains are flagged SPAM link farms —
+  zero legitimate links/citations. No disavow needed at this scale; ignore.
+
+### GBP changes made today (all "pending review", ~10 min each)
+
+| Change | Detail |
+|---|---|
+| Categories | Added **Auto wrecker** + **Transportation service** (primary stays Towing service) — main "tow truck near me" lever |
+| Address | Published **N3026 State Hwy 47, Bonduel, WI 54107** (was hidden/SAB); no re-verification demanded |
+| Service area | Added missing **Cecil, WI** (now 13 areas) |
+| Description | Rewrote (669/750 chars): tow truck, flatbed, roadside keywords + all towns + AAA + family-owned |
+| Services | Added **Car lockouts** (list already had car towing, battery, fuel delivery, local/long-distance hauling, motorcycle towing, special vehicle towing, tire change) |
+| Reviews | Replied to all 5 unreplied reviews (Jim, Chris, Kimberly, Bojangles, Haylee) — **100% response rate**, in Matt's voice; Edit/Delete available if he wants changes |
+
+**Review link for Matt (text this after every job):**
+`https://g.page/r/CW4OS5cVuNBqEBM/review` — QR code available under
+GBP → Ask for reviews (print it for the truck cab / invoices).
+
+### Website changes shipped (PR #3)
+
+Street address in schema/contact/footer + `hasMap`; title/H1/description/copy now
+carry "tow truck" phrasing; `knowsAbout` extended.
+
+### Still open (needs Matt or next session)
+
+1. **Opening date** on GBP (needs exact year — "over 20 years" suggests ≤2006).
+2. **Social profiles** on GBP — create the Facebook business page first (rural
+   Wisconsin runs on Facebook), then link it.
+3. Citations: Bing Places, Apple Business Connect, Yelp, BBB, Nextdoor — need owner
+   account creation (can't be done for you); AAA provider-directory check via your
+   territory manager.
+4. Per-service descriptions inside GBP services list (nice-to-have).
+5. GBP posts cadence + weekly photo uploads (job photos exist and are good).
+6. Watch GSC position for "tow truck near me"-class queries in ~2–4 weeks to measure
+   today's changes; avg position 12.2 → top-10 is the near-term goal.
+7. Merge-order note: PR #3 (this SEO work) and PR #4 (vintage-roadside redesign from
+   the parallel session) both rewrite index.html — merge one, rebase the other, and
+   re-verify schema/address blocks survive.
+
 *Prepared with Claude Code · sources: repo history, lucky7towingtransport.com,
-FMCSA SAFER snapshot (USDOT 1237637), public web search July 2026.*
+FMCSA SAFER snapshot (USDOT 1237637), public web search July 2026, Google Business
+Profile merchant panel, Google Search Console, Ahrefs (all accessed with owner
+authorization in the owner's browser session).*
