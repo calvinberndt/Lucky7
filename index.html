@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lucky 7 Towing | 24/7 Tow Truck Service Shawano WI | AAA Approved</title>
   <meta name="description" content="24/7 tow truck & roadside assistance serving Shawano, Bonduel, Pulaski & rural Northeastern Wisconsin. AAA approved. Call Lucky 7 Towing: (715) 853-8513.">
+  <meta name="keywords" content="towing Shawano, Bonduel towing, 24 hour roadside assistance, Gillett towing, Lucky 7 Towing, AAA towing Wisconsin, Wittenberg towing, Navarino towing, Gresham towing, Pulaski towing, Cecil towing, Keshena towing, emergency towing Wisconsin, rural towing service, northeastern Wisconsin towing, tow truck service, vehicle recovery, jump start service, flat tire repair, lockout service, fuel delivery, Matthew Torphy, Matt Torphy, Calvin Berndt, website design">
   <meta name="author" content="Lucky 7 Towing">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://lucky7towingtransport.com/">
@@ -21,382 +22,502 @@
   <meta name="twitter:title" content="Lucky 7 Towing - 24/7 Emergency Towing & Roadside Assistance">
   <meta name="twitter:description" content="AAA approved towing serving Shawano, Bonduel, Pulaski, Gillett and rural Northeastern Wisconsin. Call (715) 853-8513.">
   <meta name="twitter:image" content="https://lucky7towingtransport.com/images/og-image.jpg">
+  <meta name="theme-color" content="#15271b">
   <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
-  <link rel="apple-touch-icon" href="images/favicon-192.png">
+  <link rel="apple-touch-icon" href="images/favicon-180.png">
 
-  <!-- Preload critical resources -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="images/hero_redtowtruck.jpg" as="image" fetchpriority="high">
-  
-  <!-- Fallback for browsers that don't support preload -->
-  <noscript>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-  </noscript>
-  
-  <!-- Custom CSS -->
+  <link rel="preload" href="images/about-morgan-1000.jpg" as="image" fetchpriority="high" media="(min-width: 900px)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-    <div class="container-fluid">
-      <!-- Desktop Version: Logo on Left with Text -->
-      <a class="navbar-brand fw-bold d-none d-md-flex align-items-center" href="#home">
-        <img src="images/logo-nav.jpg" alt="Lucky 7 Towing shamrock logo" class="logo-img me-2" width="293" height="160">
-        Lucky 7 Towing
-      </a>
-      
-      <!-- Mobile Version: Centered Logo Only -->
-      <div class="w-100 d-flex justify-content-center d-block d-md-none position-relative">
-        <a class="navbar-brand" href="#home">
-          <img src="images/logo-nav.jpg" alt="Lucky 7 Towing shamrock logo" class="logo-img-large" width="293" height="160">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <!-- Four-leaf clover, built from one rotated leaf -->
+      <g id="clover-art">
+        <g fill="currentColor">
+          <path id="clover-leaf" d="M0 -3 C -13 -7, -17 -24, -7 -28 C -2 -30, -0.5 -26, 0 -23 C 0.5 -26, 2 -30, 7 -28 C 17 -24, 13 -7, 0 -3 Z"/>
+          <use href="#clover-leaf" transform="rotate(90)"/>
+          <use href="#clover-leaf" transform="rotate(180)"/>
+          <use href="#clover-leaf" transform="rotate(270)"/>
+        </g>
+        <path d="M2 2 C 4 12, 3 18, 10 26" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <symbol id="clover" viewBox="-34 -34 68 68"><use href="#clover-art"/></symbol>
+      <!-- side-view flatbed glyph, shared by the steps road and the dispatch map -->
+      <g id="truck-glyph">
+        <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="15" r="3.3" fill="currentColor"/>
+        <circle cx="33" cy="15" r="3.3" fill="currentColor"/>
+      </g>
+      <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.6l2.9 5.9 6.5 1-4.7 4.5 1.1 6.4L12 17.3l-5.8 3.1 1.1-6.4L2.6 9.5l6.5-1z"/></symbol>
+      <symbol id="phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.8 2.8c.6-.6 1.6-.5 2.1.2l2 2.9c.4.6.4 1.4-.1 2l-1.2 1.4c1 2 2.6 3.6 4.6 4.6l1.4-1.2c.6-.5 1.4-.5 2-.1l2.9 2c.7.5.8 1.5.2 2.1l-1.6 1.6c-.7.7-1.7 1-2.6.7C10.4 17.5 6.5 13.6 4.1 7.4c-.3-.9 0-1.9.7-2.6z"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header" id="top">
+    <div class="topbar">
+      <div class="shell topbar-row">
+        <p class="topbar-note">
+          <span><svg class="i" aria-hidden="true"><use href="#clover"/></svg>Open 24/7</span>
+          <span class="topbar-sep" aria-hidden="true"></span>
+          <span>AAA Approved Provider</span>
+          <span class="topbar-sep" aria-hidden="true"></span>
+          <span>Bonduel &amp; Shawano County, WI</span>
+        </p>
+        <a class="topbar-phone" href="tel:7158538513">
+          <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
+          (715) 853-8513
         </a>
-        <button class="navbar-toggler position-absolute d-block d-md-none" style="right: 0; top: 50%; transform: translateY(-50%);" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-      
-      <button class="navbar-toggler d-none d-md-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#services">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#gallery">Gallery</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#faq">FAQ</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
-          </li>
-        </ul>
       </div>
     </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <header id="home" class="hero-bg d-flex align-items-center text-white text-center">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8" style="margin-top: 40px;">
-          <div class="d-none d-md-block" style="height: 40px;"></div>
-          <h1 class="display-3 fw-bold mb-5">
-            Lucky 7 Towing
-            <span class="d-block fs-4 fw-normal mt-3">24/7 Emergency Towing &amp; Tow Truck Service in Northeastern Wisconsin</span>
-          </h1>
-          <div class="my-5"></div>
-          <p class="lead fs-4 mb-4">Fast. Reliable. Available around the clock.<br>
-          <span class="fs-5">Serving Shawano, Bonduel, Pulaski, Gillett &amp; surrounding rural communities</span><br>
-          <span class="fs-5 text-success"><strong>★ AAA Approved Provider ★</strong></span></p>
-                     <div class="phone-number text-success mb-4">
-             <i class="bi bi-telephone-fill me-2"></i>
-             (715) 853-8513
-           </div>
-          <div class="d-flex gap-3 justify-content-center flex-wrap">
-                         <a href="tel:7158538513" class="btn btn-success btn-lg">
-               <i class="bi bi-telephone-fill me-2"></i>Call Now
-             </a>
-            <a href="#services" class="btn btn-outline-light btn-lg">
-              <i class="bi bi-info-circle me-2"></i>Our Services
-            </a>
-          </div>
-        </div>
+    <div class="shell header-row">
+      <a class="brand" href="#home" aria-label="Lucky 7 Towing and Transport — back to top">
+        <img class="brand-badge" src="images/brand-112.jpg" width="46" height="46" alt="">
+        <span class="brand-text">
+          <span class="brand-name">Lucky <em>7</em></span>
+          <span class="brand-sub">Towing &amp; Transport</span>
+        </span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#fleet">Fleet</a>
+        <a href="#area">Service Area</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-call" href="tel:7158538513">
+          <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
+          Call (715) 853-8513
+        </a>
+      </nav>
+      <div class="header-actions">
+        <a class="call-btn" href="tel:7158538513" aria-label="Call Lucky 7 now: (715) 853-8513">
+          <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
+          <span class="call-btn-num">(715) 853-8513</span>
+        </a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span class="menu-bar"></span><span class="menu-bar"></span><span class="menu-bar"></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- About Section -->
-  <section id="about" class="py-5">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 about-content">
-          <h2 class="display-5 fw-bold mb-4">About Lucky 7 Towing</h2>
-                      <p class="lead">For over 20 years, Lucky 7 Towing has been the trusted name in professional towing and roadside assistance across rural Northeastern Wisconsin.</p>
-            <p>We proudly serve the communities of <strong>Shawano, Bonduel, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, and Gillett</strong>, along with the surrounding areas. Whether you're stranded on a country road or need vehicle recovery in town, our experienced team knows the local area and is ready to help — 24/7.</p>
-            <div class="alert alert-success mt-4" role="alert">
-              <h5><i class="bi bi-shield-check me-2"></i>AAA Approved Provider</h5>
-              <p class="mb-0">We are proud to be an authorized AAA service provider. Present your AAA membership card for coverage according to your membership benefits.</p>
-            </div>
-          <div class="row mt-4">
-            <div class="col-sm-6">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-clock service-icon me-3"></i>
-                <div>
-                  <h5>24/7 Service</h5>
-                  <p class="mb-0">Always available when you need us</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-geo-alt service-icon me-3"></i>
-                                 <div>
-                   <h5>Rural & Long Distance</h5>
-                   <p class="mb-0">Northeastern Wisconsin & cross-state</p>
-                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-                 <div class="col-lg-6">
-           <img src="images/yellowtowtruck_web.jpg" alt="Lucky 7 Towing yellow flatbed tow truck loading an AAA member's SUV" class="img-fluid rounded shadow about-image" loading="lazy" decoding="async" width="960" height="432">
-         </div>
-      </div>
-    </div>
-  </section>
+  <main id="main">
 
-  <!-- Services Section -->
-  <section id="services" class="py-5 bg-light">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Towing &amp; Roadside Assistance Services</h2>
-        <p class="lead">Professional help across rural Northeastern Wisconsin — day or night</p>
-      </div>
-      <div class="row g-4">
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-truck service-icon mb-3"></i>
-              <h5 class="card-title">Emergency Towing</h5>
-              <p class="card-text">Our flatbed tow trucks handle cars, trucks, SUVs, and more — 24/7 emergency response to get you back on the road.</p>
-            </div>
+    <!-- ============ HERO ============ -->
+    <section class="hero grain" id="home">
+      <svg class="hero-clover" aria-hidden="true"><use href="#clover"/></svg>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow reveal"><span class="eyebrow-rule"></span>Bonduel, WI &middot; 24/7 Tow Truck &amp; Roadside Service</p>
+          <h1 class="reveal" style="--d:.08s">When your luck runs out, <span class="accent">ours rolls in.</span></h1>
+          <p class="lede reveal" style="--d:.16s">24-hour towing &amp; roadside assistance across Shawano County and rural Northeastern
+          Wisconsin. AAA approved, owner-operated, and answered by a real person — day or night.</p>
+          <div class="hero-cta reveal" style="--d:.24s">
+            <a class="phone-plate" href="tel:7158538513">
+              <span class="phone-plate-label">Tap to call &middot; Open 24/7</span>
+              <span class="phone-plate-num"><svg class="i" aria-hidden="true"><use href="#phone"/></svg>(715) 853-8513</span>
+            </a>
+            <a class="ghost-btn" href="#services">See what we do</a>
           </div>
+          <ul class="chip-row reveal" style="--d:.32s" aria-label="Credentials">
+            <li class="chip">AAA Approved</li>
+            <li class="chip"><svg class="i star" aria-hidden="true"><use href="#star"/></svg>5.0 on Google</li>
+            <li class="chip">20+ Years</li>
+            <li class="chip">Licensed &amp; Insured</li>
+          </ul>
         </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-tools service-icon mb-3"></i>
-              <h5 class="card-title">Roadside Assistance</h5>
-              <p class="card-text">Locked out? Flat tire? Dead battery? Our roadside assistance team arrives swiftly to help with any situation.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-arrow-right-circle service-icon mb-3"></i>
-              <h5 class="card-title">Long-Distance Towing</h5>
-              <p class="card-text">Safe and secure long-distance towing across state lines. Your vehicle is in professional hands from pickup to destination.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-car-front service-icon mb-3"></i>
-              <h5 class="card-title">Accident Recovery</h5>
-              <p class="card-text">Professional accident recovery and vehicle extraction services. We handle damaged vehicles with care and expertise.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-fuel-pump service-icon mb-3"></i>
-              <h5 class="card-title">Fuel Delivery</h5>
-              <p class="card-text">Ran out of gas? We provide emergency fuel delivery service to get you moving again quickly and safely.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border-0 shadow-sm service-card">
-            <div class="card-body text-center p-4">
-              <i class="bi bi-lightning service-icon mb-3"></i>
-              <h5 class="card-title">Jump Start Service</h5>
-              <p class="card-text">Dead battery? Our technicians provide fast and safe jump start services to get your vehicle running again.</p>
-            </div>
-          </div>
+        <div class="hero-art reveal" style="--d:.1s" role="group" aria-label="Photos of Lucky 7 trucks at work">
+          <figure class="hero-card hero-card-back">
+            <img src="images/fleet-winter-900.jpg" width="900" height="420" alt="Lucky 7's yellow flatbed recovering a shuttle bus in a Wisconsin winter" loading="lazy">
+          </figure>
+          <figure class="hero-card hero-card-front">
+            <img src="images/about-morgan-1000.jpg" width="1000" height="450" alt="A classic Morgan roadster secured on Lucky 7's red flatbed on a sunny day" fetchpriority="high">
+            <figcaption>Precious cargo welcome &mdash; a classic Morgan riding home</figcaption>
+          </figure>
         </div>
       </div>
-    </div>
-  </section>
+      <div class="hazard-divider" aria-hidden="true"></div>
+    </section>
 
-  <!-- Gallery Section -->
-  <section id="gallery" class="py-5">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Our Towing Fleet</h2>
-        <p class="lead">Flatbed tow trucks ready to roll across Northeastern Wisconsin</p>
+    <!-- ============ HOW IT WORKS (scrollytelling journey) ============ -->
+    <section class="steps" aria-labelledby="steps-title">
+      <div class="shell">
+        <p class="scenario reveal">Flat tire on a county road. Deer strike at dusk. A gauge that lied about the gas.
+        <em>It happens to everyone out here &mdash; save the number before you need it.</em></p>
       </div>
-             <div class="row g-4">
-         <div class="col-lg-4 col-md-6">
-           <img src="images/yellowtowtruck_web.jpg" alt="Yellow Lucky 7 flatbed tow truck carrying an AAA member's SUV" class="img-fluid gallery-img w-100 shadow gallery-item" loading="lazy" decoding="async" width="960" height="432">
-         </div>
-         <div class="col-lg-4 col-md-6">
-           <img src="images/redtowtruck_web.jpg" alt="Red Lucky 7 flatbed tow truck hauling a classic car" class="img-fluid gallery-img w-100 shadow gallery-item" loading="lazy" decoding="async" width="960" height="432">
-         </div>
-         <div class="col-lg-4 col-md-6">
-           <img src="images/yellowtow_dirty_web.jpg" alt="Lucky 7 flatbed tow truck recovering a damaged shuttle bus" class="img-fluid gallery-img w-100 shadow gallery-item" loading="lazy" decoding="async" width="960" height="448">
-         </div>
-       </div>
-    </div>
-  </section>
+      <div class="steps-pin" data-pin>
+        <div class="steps-stage">
+          <div class="shell">
+            <p class="kicker reveal">When it does</p>
+            <h2 class="reveal" id="steps-title" style="--d:.06s">Here&rsquo;s how it goes</h2>
+            <div class="step-road" aria-hidden="true">
+              <svg class="road-truck" viewBox="0 0 44 20"><use href="#truck-glyph"/></svg>
+            </div>
+            <ol class="step-list">
+              <li class="step reveal" style="--d:.1s" data-step="0">
+                <span class="step-num" aria-hidden="true">1</span>
+                <h3>Call. A real person answers.</h3>
+                <p>Day or night you talk to the driver — not a call center, not a phone tree.</p>
+              </li>
+              <li class="step reveal" style="--d:.2s" data-step="1">
+                <span class="step-num" aria-hidden="true">2</span>
+                <h3>Tell us where you are.</h3>
+                <p>A county road, a fire number, the nearest tavern — landmarks work just fine out here.</p>
+              </li>
+              <li class="step reveal" style="--d:.3s" data-step="2">
+                <span class="step-num" aria-hidden="true">3</span>
+                <h3>We roll out.</h3>
+                <p>You get a straight answer on timing, then a flatbed is on its way to you.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- FAQ Section -->
-  <section id="faq" class="py-5 bg-light">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
-        <p class="lead">Quick answers about our towing and roadside service</p>
+    <!-- ============ SERVICES ============ -->
+    <section class="services" id="services" aria-labelledby="services-title">
+      <div class="shell">
+        <p class="kicker reveal">Our services</p>
+        <h2 class="reveal" id="services-title" style="--d:.06s">Whatever went wrong, we&rsquo;ve towed worse</h2>
+        <div class="service-grid">
+          <article class="service-card reveal" style="--d:.08s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2.2"/><path d="M12 6.7v6.1"/><path d="M12 12.8c0 3.4 2.5 4.6 4.4 4.2 1.6-.3 2.6-1.6 2.6-3.1"/><path d="M19 12.2v1.7"/></svg>
+            </span>
+            <h3>Emergency Towing</h3>
+            <p>24/7 response for cars, pickups, and SUVs. Flatbed towing that gets you and your vehicle home safe.</p>
+          </article>
+          <article class="service-card reveal" style="--d:.16s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="9" cy="15" r="6.2"/><circle cx="9" cy="15" r="2"/><path d="M9 8.8V6.4M9 21.2v1M2.8 15H1.6M15.2 15h1.2"/><path d="M14.6 9.4l6-6M19.2 1.9c-1.3.4-2 1.5-1.7 2.8.3 1.2 1.5 2 2.8 1.7"/></svg>
+            </span>
+            <h3>Roadside Assistance</h3>
+            <p>Lockouts, flat tires, dead batteries. Most of the time we can fix it right on the shoulder.</p>
+          </article>
+          <article class="service-card reveal" style="--d:.24s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20 C 8 14, 8 10, 6 4"/><path d="M20 20 C 16 14, 16 10, 18 4"/><path d="M12 19v-2.4M12 13.8v-2.4M12 8.6V6.2"/></svg>
+            </span>
+            <h3>Long-Distance Transport</h3>
+            <p>Cross-county or cross-state. Autos and equipment strapped down right and delivered on schedule.</p>
+          </article>
+          <article class="service-card reveal" style="--d:.08s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 17.5l2.2-1 2-4.2c.4-.8 1.2-1.3 2.1-1.3h4.9c.7 0 1.4.3 1.8.9l2.6 3.2 2.4.9"/><path d="M3 17.5h18"/><circle cx="8" cy="18.6" r="1.7"/><circle cx="16.5" cy="18.6" r="1.7"/><path d="M14.5 6.5l3-3.4M17.5 6.8l2.2-2"/></svg>
+            </span>
+            <h3>Accident Recovery</h3>
+            <p>Winch-outs, rollovers, and post-accident hauls handled carefully — we work with your insurance.</p>
+          </article>
+          <article class="service-card reveal" style="--d:.16s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 21V6.5C6 5.1 7.1 4 8.5 4h5C14.9 4 16 5.1 16 6.5V21z"/><path d="M6 21h10"/><path d="M16 8h2.2c.9 0 1.6.7 1.6 1.6v6.2a1.6 1.6 0 0 1-3.2 0"/><path d="M8.6 8.5h4.8"/></svg>
+            </span>
+            <h3>Fuel Delivery</h3>
+            <p>Gauge read wrong? It happens. We bring enough gas or diesel to get you to the next pump.</p>
+          </article>
+          <article class="service-card reveal" style="--d:.24s">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="11" rx="1.6"/><path d="M6.5 8V6h3v2M14.5 8V6h3v2"/><path d="M13.2 10.5l-2.8 3.4h3.2l-2.8 3.4"/></svg>
+            </span>
+            <h3>Jump Starts</h3>
+            <p>Wisconsin winters eat batteries. A safe boost and a quick check that you'll make it home.</p>
+          </article>
+        </div>
+        <p class="services-footnote reveal">Not sure what you need? <a href="tel:7158538513">Call and describe it</a> — we&rsquo;ll tell you straight.</p>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="faqHeading1">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer1" aria-expanded="false" aria-controls="faqAnswer1">
-                  What areas does Lucky 7 Towing serve?
-                </button>
-              </h3>
-              <div id="faqAnswer1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  We're based in Bonduel, WI and serve Shawano, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, Gillett, and the surrounding rural communities of Northeastern Wisconsin. Long-distance and cross-state towing is also available.
-                </div>
+    </section>
+
+    <!-- ============ TRUST BAND ============ -->
+    <section class="trust grain" aria-label="Credentials and experience">
+      <div class="shell trust-row">
+        <div class="stat"><span class="stat-num"><span class="count" data-count="20">20</span><span class="plus">+</span></span><span class="stat-label">Years on these roads</span></div>
+        <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Live dispatch</span></div>
+        <div class="stat"><span class="stat-num"><span class="count" data-count="5.0" data-decimals="1">5.0</span><svg class="i star" aria-hidden="true"><use href="#star"/></svg></span><span class="stat-label">Google rating</span></div>
+        <div class="stat"><span class="stat-num">AAA</span><span class="stat-label">Approved provider</span></div>
+        <div class="stat"><span class="stat-num">US DOT</span><span class="stat-label">1237637</span></div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="shell about-grid">
+        <div class="about-copy">
+          <p class="kicker reveal">The guy who shows up</p>
+          <h2 class="reveal" id="about-title" style="--d:.06s">Owner-operated out of Bonduel for 20+ years</h2>
+          <p class="reveal" style="--d:.12s">Behind Lucky 7 is <strong>Matt Torphy</strong>. He answers the phone, he drives the
+          flatbed, and he&rsquo;s spent more than twenty years pulling neighbors out of ditches,
+          snowbanks, and plain bad days — on every county road, fire lane, and back forty between
+          Shawano and the state line.</p>
+          <p class="reveal" style="--d:.18s">Some calls are a dead battery in a driveway. Some are a classic Morgan that has to
+          arrive exactly as it left. Either way, your vehicle rides like it&rsquo;s his own.</p>
+          <div class="aaa-panel reveal" style="--d:.24s">
+            <h3>AAA members — you&rsquo;re covered</h3>
+            <p>We&rsquo;re an authorized AAA service provider. Show your membership card and your
+            coverage applies according to your plan benefits.</p>
+          </div>
+        </div>
+        <figure class="photo-mat tilt-r reveal" style="--d:.2s">
+          <img src="images/fleet-aaa-900.jpg" width="900" height="405" alt="Matt's yellow Lucky 7 flatbed loaded with a AAA-dispatched vehicle" loading="lazy">
+          <figcaption>On the hook for a AAA call</figcaption>
+          <img class="badge-sticker" src="images/badge-320.jpg" width="128" height="70" alt="Lucky 7 Transport clover badge" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ FLEET (scrollytelling card deck) ============ -->
+    <section class="fleet" id="fleet" aria-labelledby="fleet-title">
+      <span id="gallery" class="anchor-alias" aria-hidden="true"></span>
+      <div class="fleet-pin" data-pin>
+        <div class="fleet-stage">
+          <div class="shell">
+            <div class="fleet-head">
+              <div>
+                <p class="kicker reveal">The fleet</p>
+                <h2 class="reveal" id="fleet-title" style="--d:.06s">Real trucks, real work</h2>
               </div>
+              <p class="deck-hint reveal" style="--d:.12s" aria-hidden="true">Keep scrolling &mdash; flip the stack</p>
             </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="faqHeading2">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer2" aria-expanded="false" aria-controls="faqAnswer2">
-                  Is Lucky 7 Towing available 24/7?
-                </button>
-              </h3>
-              <div id="faqAnswer2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Yes. We operate around the clock, every day of the year. Call <a href="tel:7158538513">(715) 853-8513</a> any time — day or night.
-                </div>
-              </div>
+            <div class="card-deck reveal" style="--d:.15s">
+              <figure class="photo-mat deck-card deck-card-3">
+                <img src="images/fleet-winter-900.jpg" width="900" height="420" alt="Yellow Lucky 7 flatbed recovering a damaged shuttle bus in winter" loading="lazy">
+                <figcaption>January doesn&rsquo;t cancel breakdowns. Neither do we.</figcaption>
+              </figure>
+              <figure class="photo-mat deck-card deck-card-2">
+                <img src="images/fleet-aaa-900.jpg" width="900" height="405" alt="Yellow Lucky 7 flatbed hauling a AAA-dispatched vehicle" loading="lazy">
+                <figcaption>On the hook for AAA dispatch</figcaption>
+              </figure>
+              <figure class="photo-mat deck-card deck-card-1">
+                <img src="images/fleet-red-900.jpg" width="900" height="405" alt="Red Lucky 7 flatbed truck carrying a classic Morgan roadster" loading="lazy">
+                <figcaption>The red Freightliner on a classic-car run</figcaption>
+              </figure>
             </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="faqHeading3">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer3" aria-expanded="false" aria-controls="faqAnswer3">
-                  Does Lucky 7 Towing accept AAA?
-                </button>
-              </h3>
-              <div id="faqAnswer3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Yes. We're an authorized AAA service provider. Present your AAA membership card and your service is covered according to your membership benefits.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="faqHeading4">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer4" aria-expanded="false" aria-controls="faqAnswer4">
-                  What roadside services do you offer besides towing?
-                </button>
-              </h3>
-              <div id="faqAnswer4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Jump starts for dead batteries, vehicle lockout service, flat tire changes, and emergency fuel delivery — wherever you're stranded in our service area.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h3 class="accordion-header" id="faqHeading5">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer5" aria-expanded="false" aria-controls="faqAnswer5">
-                  Do you offer flatbed and long-distance towing?
-                </button>
-              </h3>
-              <div id="faqAnswer5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">
-                  Yes. Our fleet is equipped with flatbed tow trucks for damage-free transport, and we handle safe, secure long-distance towing across state lines.
-                </div>
-              </div>
+            <div class="deck-dots" aria-hidden="true">
+              <span class="deck-dot" data-dot="0"></span>
+              <span class="deck-dot" data-dot="1"></span>
+              <span class="deck-dot" data-dot="2"></span>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-5 bg-dark text-white">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h2 class="display-5 fw-bold mb-4">Need Help? Call Now!</h2>
-          <div class="contact-card rounded p-5 mb-5">
-            <h3 class="mb-4">
-              <i class="bi bi-telephone-fill me-3"></i>
-              Emergency Hotline
-            </h3>
-                         <div class="phone-number mb-4">(715) 853-8513</div>
-            <p class="lead mb-4">Available 24/7 for all your towing needs</p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                             <a href="tel:7158538513" class="btn btn-light btn-lg">
-                 <i class="bi bi-telephone-fill me-2"></i>Call Now
-               </a>
-               <a href="mailto:mattsdvf@tds.net" class="btn btn-outline-light btn-lg">
-                 <i class="bi bi-envelope me-2"></i>Email Us
-               </a>
-            </div>
+    <!-- ============ SERVICE AREA ============ -->
+    <section class="area" id="area" aria-labelledby="area-title">
+      <div class="shell area-grid">
+        <div class="area-copy">
+          <p class="kicker reveal">Service area</p>
+          <h2 class="reveal" id="area-title" style="--d:.06s">If it&rsquo;s got a fire number, we&rsquo;ll find it</h2>
+          <p class="reveal" style="--d:.12s">Home base is Bonduel, with regular runs through
+          <strong>Shawano, Bonduel, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, and
+          Gillett</strong> — plus every township in between.</p>
+          <p class="reveal" style="--d:.18s">Need to go farther? Long-distance and cross-state transport is a scheduled call away.</p>
+          <a class="ghost-btn dark reveal" style="--d:.24s" href="tel:7158538513"><svg class="i" aria-hidden="true"><use href="#phone"/></svg>Check if we cover you</a>
+        </div>
+        <figure class="map-panel reveal" style="--d:.15s">
+          <svg viewBox="0 0 800 420" aria-labelledby="map-caption-text">
+            <!-- paper -->
+            <rect x="6" y="6" width="788" height="408" rx="10" class="map-paper"/>
+            <rect x="16" y="16" width="768" height="388" rx="6" class="map-frame"/>
+            <!-- Hwy 29 corridor: Wittenberg - Shawano - Bonduel - Pulaski -->
+            <path class="map-hwy" d="M70 137 L468 184 L585 229 L730 300"/>
+            <text class="map-hwy-label" x="248" y="146" transform="rotate(6 248 146)">HWY 29</text>
+            <!-- county road spokes -->
+            <g class="map-road">
+              <path d="M468 184 L342 108"/>
+              <path d="M468 184 L451 80"/>
+              <path d="M468 184 L581 155"/>
+              <path d="M581 155 L685 70"/>
+              <path d="M581 155 L585 229"/>
+              <path d="M585 229 L512 350"/>
+            </g>
+            <!-- towns (tap to dispatch the truck) -->
+            <g class="map-towns">
+              <g class="town" data-town="Wittenberg" tabindex="0" role="button" aria-label="Send the tow truck to Wittenberg">
+                <circle class="dot" cx="70" cy="137" r="7"/><text x="70" y="117">Wittenberg</text><circle class="hit" cx="70" cy="137" r="22"/>
+              </g>
+              <g class="town" data-town="Gresham" tabindex="0" role="button" aria-label="Send the tow truck to Gresham">
+                <circle class="dot" cx="342" cy="108" r="7"/><text x="342" y="88">Gresham</text><circle class="hit" cx="342" cy="108" r="22"/>
+              </g>
+              <g class="town" data-town="Keshena" tabindex="0" role="button" aria-label="Send the tow truck to Keshena">
+                <circle class="dot" cx="451" cy="80" r="7"/><text x="451" y="60">Keshena</text><circle class="hit" cx="451" cy="80" r="22"/>
+              </g>
+              <g class="town" data-town="Gillett" tabindex="0" role="button" aria-label="Send the tow truck to Gillett">
+                <circle class="dot" cx="685" cy="70" r="7"/><text x="685" y="50">Gillett</text><circle class="hit" cx="685" cy="70" r="22"/>
+              </g>
+              <g class="town" data-town="Cecil" tabindex="0" role="button" aria-label="Send the tow truck to Cecil">
+                <circle class="dot" cx="581" cy="155" r="7"/><text x="581" y="135">Cecil</text><circle class="hit" cx="581" cy="155" r="22"/>
+              </g>
+              <g class="town" data-town="Pulaski" tabindex="0" role="button" aria-label="Send the tow truck to Pulaski">
+                <circle class="dot" cx="730" cy="300" r="7"/><text x="730" y="332">Pulaski</text><circle class="hit" cx="730" cy="300" r="22"/>
+              </g>
+              <g class="town" data-town="Navarino" tabindex="0" role="button" aria-label="Send the tow truck to Navarino">
+                <circle class="dot" cx="512" cy="350" r="7"/><text x="512" y="382">Navarino</text><circle class="hit" cx="512" cy="350" r="22"/>
+              </g>
+            </g>
+            <!-- Shawano (bigger hub) -->
+            <g class="town town-hub" data-town="Shawano" tabindex="0" role="button" aria-label="Send the tow truck to Shawano">
+              <circle class="dot" cx="468" cy="184" r="10"/><text x="468" y="216">Shawano</text><circle class="hit" cx="468" cy="184" r="24"/>
+            </g>
+            <!-- Bonduel HQ with clover pin -->
+            <g class="town town-hq" data-town="Bonduel" tabindex="0" role="button" aria-label="Send the tow truck home to Bonduel headquarters">
+              <circle class="dot" cx="585" cy="229" r="16"/>
+              <svg x="563" y="207" width="44" height="44" viewBox="-40 -40 80 80"><use href="#clover-art"/></svg>
+              <text x="590" y="274">Bonduel &middot; HQ</text>
+              <circle class="hit" cx="585" cy="229" r="26"/>
+            </g>
+            <!-- the truck (driven by script.js) -->
+            <g class="map-truck" aria-hidden="true" transform="translate(585 229)">
+              <g class="truck-flip">
+                <use href="#truck-glyph" transform="translate(-21 -20)"/>
+              </g>
+            </g>
+            <!-- compass -->
+            <g class="map-compass" transform="translate(748 62)">
+              <path d="M0 16 L0 -16 M0 -16 L-6 -5 M0 -16 L6 -5"/>
+              <text x="0" y="34">N</text>
+            </g>
+            <text class="map-note" x="30" y="392">Service area &mdash; not to scale &middot; &amp; surrounding communities</text>
+          </svg>
+          <p class="map-status">Parked at HQ in Bonduel &mdash; tap a town to roll the truck.</p>
+          <p class="map-announcer visually-hidden" aria-live="polite"></p>
+          <figcaption class="visually-hidden" id="map-caption-text">Map showing Wittenberg, Gresham, Keshena, Gillett, Cecil, Shawano, Bonduel (headquarters), Pulaski, and Navarino. Each town can be selected to send an animated tow truck there.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="reviews grain" id="reviews" aria-labelledby="reviews-title">
+      <div class="shell">
+        <div class="reviews-head">
+          <div>
+            <p class="kicker light reveal">Google reviews</p>
+            <h2 class="reveal" id="reviews-title" style="--d:.06s">Neighbors we&rsquo;ve pulled out of trouble</h2>
           </div>
-          
-          <div class="row text-start">
-                         <div class="col-md-6 contact-info">
-               <h4><i class="bi bi-geo-alt me-2"></i>Service Area</h4>
-               <p><strong>Rural Northeastern Wisconsin:</strong><br>
-               Shawano • Bonduel • Wittenberg<br>
-               Navarino • Gresham • Pulaski<br>
-               Cecil • Keshena • Gillett<br>
-               <em>& surrounding communities</em></p>
-             </div>
-            <div class="col-md-6 contact-info">
-              <h4><i class="bi bi-envelope me-2"></i>Contact Info</h4>
-                             <p>
-                 <strong>Phone:</strong> (715) 853-8513<br>
-                 <strong>Email:</strong> mattsdvf@tds.net<br>
-                 <strong>Address:</strong> N3026 State Hwy 47,<br>
-                 Bonduel, WI 54107<br>
-                 <strong>Emergency:</strong> Available 24/7<br>
-                 <strong>AAA Members:</strong> We accept AAA coverage
-               </p>
-            </div>
-          </div>
+          <p class="rating-plate reveal" style="--d:.12s">
+            <span class="visually-hidden">Rated 5.0 out of 5 on Google</span>
+            <span class="rating-num" aria-hidden="true">5.0</span>
+            <span class="rating-stars" aria-hidden="true">
+              <svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg>
+            </span>
+            <span class="rating-sub" aria-hidden="true">on Google</span>
+          </p>
+        </div>
+        <div class="review-grid">
+          <blockquote class="review-card reveal" style="--d:.1s">
+            <p>&ldquo;&hellip;came to my rescue. Very respectful, awesome guy to work with — I would highly
+            recommend him for any towing.&rdquo;</p>
+            <footer><cite>Brett B.</cite> &middot; Google review</footer>
+          </blockquote>
+          <blockquote class="review-card reveal" style="--d:.2s">
+            <p>&ldquo;Good guy, friendly, great to be around when you are in a GARBAGE situation!!!&rdquo;</p>
+            <footer><cite>Ben B.</cite> &middot; Google review</footer>
+          </blockquote>
+          <blockquote class="review-card reveal" style="--d:.3s">
+            <p>&ldquo;Talked with him enough to know he&rsquo;s a 5-star guy&hellip; I would recommend this
+            business for sure.&rdquo;</p>
+            <footer><cite>Kimberly M.</cite> &middot; Google review</footer>
+          </blockquote>
+        </div>
+        <div class="review-links reveal">
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Lucky+7+Towing+N3026+State+Hwy+47+Bonduel+WI+54107" target="_blank" rel="noopener">Read all reviews on Google</a>
+          <span aria-hidden="true">&middot;</span>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Lucky+7+Towing+N3026+State+Hwy+47+Bonduel+WI+54107" target="_blank" rel="noopener">Been rescued? Leave one</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="navbar-custom text-white text-center py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 mx-auto">
-          <p class="mb-2">&copy; 2026 Lucky 7 Towing &middot; Lucky 7 Transport &middot; N3026 State Hwy 47, Bonduel, WI 54107. All rights reserved.</p>
-          <p class="mb-2">Professional towing services you can trust. Licensed and insured. USDOT 1237637.</p>
-          <p class="mb-0"><small>Local towing: <a href="/towing-shawano-wi/" class="text-white">Shawano</a> &middot; <a href="/towing-bonduel-wi/" class="text-white">Bonduel</a> &middot; <a href="/towing-pulaski-wi/" class="text-white">Pulaski</a></small></p>
+    <!-- ============ FAQ ============ -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="shell faq-shell">
+        <p class="kicker reveal">Good to know</p>
+        <h2 class="reveal" id="faq-title" style="--d:.06s">Questions we hear on the shoulder</h2>
+        <div class="faq-list reveal" style="--d:.12s">
+          <details class="faq-item">
+            <summary>What areas does Lucky 7 Towing serve?</summary>
+            <p>We&rsquo;re based in Bonduel, WI and serve Shawano, Wittenberg, Navarino, Gresham,
+            Pulaski, Cecil, Keshena, Gillett, and the surrounding rural communities of Northeastern
+            Wisconsin. Long-distance and cross-state towing is also available.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is Lucky 7 Towing available 24/7?</summary>
+            <p>Yes. We operate around the clock, every day of the year. Call
+            <a href="tel:7158538513">(715) 853-8513</a> any time &mdash; day or night.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Does Lucky 7 Towing accept AAA?</summary>
+            <p>Yes. We&rsquo;re an authorized AAA service provider. Present your AAA membership card
+            and your service is covered according to your membership benefits.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What roadside services do you offer besides towing?</summary>
+            <p>Jump starts for dead batteries, vehicle lockout service, flat tire changes, and
+            emergency fuel delivery &mdash; wherever you&rsquo;re stranded in our service area.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Do you offer flatbed and long-distance towing?</summary>
+            <p>Yes. Our fleet is equipped with flatbed tow trucks for damage-free transport, and we
+            handle safe, secure long-distance towing across state lines.</p>
+          </details>
         </div>
       </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact grain" id="contact" aria-labelledby="contact-title">
+      <div class="shell contact-inner">
+        <p class="kicker light reveal">Contact</p>
+        <h2 class="reveal" id="contact-title" style="--d:.06s">Need a tow <span class="accent">right now?</span></h2>
+        <a class="phone-plate xl reveal" style="--d:.12s" href="tel:7158538513">
+          <span class="phone-plate-label">Emergency hotline &middot; Open 24/7</span>
+          <span class="phone-plate-num"><svg class="i" aria-hidden="true"><use href="#phone"/></svg>(715) 853-8513</span>
+        </a>
+        <div class="contact-meta reveal" style="--d:.2s">
+          <p class="contact-address">N3026 State Hwy 47 &middot; Bonduel, WI 54107</p>
+          <a class="ghost-btn light" href="mailto:mattsdvf@tds.net">Email: mattsdvf@tds.net</a>
+          <ul class="contact-facts">
+            <li>Open 24 hours, 7 days</li>
+            <li>AAA coverage accepted</li>
+            <li>Licensed &amp; insured</li>
+            <li>US DOT 1237637</li>
+          </ul>
+        </div>
+        <p class="contact-towns reveal" style="--d:.26s">Shawano &middot; Bonduel &middot; Wittenberg &middot; Navarino &middot; Gresham &middot; Pulaski &middot; Cecil &middot; Keshena &middot; Gillett <em>&amp; surrounding communities</em></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-row">
+      <img src="images/badge-320.jpg" width="160" height="87" alt="Lucky 7 Transport clover badge logo" loading="lazy">
+      <p>&copy; 2026 Lucky 7 Towing &middot; N3026 State Hwy 47, Bonduel, WI 54107<br>
+      <span>Professional towing you can trust. Licensed &amp; insured.</span></p>
+      <p class="footer-cities">Local towing:
+        <a href="/towing-shawano-wi/">Shawano</a> &middot;
+        <a href="/towing-bonduel-wi/">Bonduel</a> &middot;
+        <a href="/towing-pulaski-wi/">Pulaski</a>
+      </p>
+      <p class="footer-credit">Site by Calvin Berndt</p>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Custom JavaScript -->
-  <script src="script.js"></script>
-  
-  <!-- Floating Call Button -->
-  <a href="tel:7158538513" class="floating-call-btn" aria-label="Call Lucky 7 Towing Emergency Hotline">
-    <i class="bi bi-telephone-fill"></i>
+  <a href="tel:7158538513" class="floating-call-btn" aria-label="Call Lucky 7 Towing 24/7 emergency hotline">
+    <svg class="i" aria-hidden="true"><use href="#phone"/></svg>
+    <span class="floating-247" aria-hidden="true">24/7</span>
   </a>
-  
-  <!-- Structured Data for SEO -->
+
+  <script src="script.js"></script>
+
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -578,7 +699,6 @@
 }
   </script>
 
-  <!-- FAQ Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
