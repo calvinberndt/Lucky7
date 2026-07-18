@@ -57,12 +57,12 @@
         <a class="navbar-brand" href="#home">
           <img src="images/logo-nav.jpg" alt="Lucky 7 Towing shamrock logo" class="logo-img-large" width="293" height="160">
         </a>
-        <button class="navbar-toggler position-absolute d-block d-md-none" style="right: 0; top: 50%; transform: translateY(-50%);" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler position-absolute d-block d-md-none" style="right: 0; top: 50%; transform: translateY(-50%);" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
       
-      <button class="navbar-toggler d-none d-md-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler d-none d-md-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -80,6 +80,9 @@
             <a class="nav-link" href="#gallery">Gallery</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="#faq">FAQ</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
           </li>
         </ul>
@@ -95,10 +98,11 @@
           <div class="d-none d-md-block" style="height: 40px;"></div>
           <h1 class="display-3 fw-bold mb-5">
             Lucky 7 Towing
+            <span class="d-block fs-4 fw-normal mt-3">24/7 Emergency Towing &amp; Roadside Assistance in Northeastern Wisconsin</span>
           </h1>
           <div class="my-5"></div>
-          <p class="lead fs-4 mb-4">Fast. Reliable. 24/7 Emergency Towing Service.<br>
-          <span class="fs-5">Serving Rural Northeastern Wisconsin Communities</span><br>
+          <p class="lead fs-4 mb-4">Fast. Reliable. Available around the clock.<br>
+          <span class="fs-5">Serving Shawano, Bonduel, Pulaski, Gillett &amp; surrounding rural communities</span><br>
           <span class="fs-5 text-success"><strong>★ AAA Approved Provider ★</strong></span></p>
                      <div class="phone-number text-success mb-4">
              <i class="bi bi-telephone-fill me-2"></i>
@@ -161,8 +165,8 @@
   <section id="services" class="py-5 bg-light">
     <div class="container">
       <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Our Services</h2>
-        <p class="lead">Professional towing and roadside assistance you can count on</p>
+        <h2 class="display-5 fw-bold">Towing &amp; Roadside Assistance Services</h2>
+        <p class="lead">Professional help across rural Northeastern Wisconsin — day or night</p>
       </div>
       <div class="row g-4">
         <div class="col-lg-4 col-md-6">
@@ -170,7 +174,7 @@
             <div class="card-body text-center p-4">
               <i class="bi bi-truck service-icon mb-3"></i>
               <h5 class="card-title">Emergency Towing</h5>
-              <p class="card-text">24/7 emergency towing services for all types of vehicles. We're always ready to respond quickly to get you back on the road.</p>
+              <p class="card-text">24/7 emergency flatbed towing for cars, trucks, SUVs, and more. We're always ready to respond quickly to get you back on the road.</p>
             </div>
           </div>
         </div>
@@ -227,8 +231,8 @@
   <section id="gallery" class="py-5">
     <div class="container">
       <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Our Fleet</h2>
-        <p class="lead">Professional equipment for every towing need</p>
+        <h2 class="display-5 fw-bold">Our Towing Fleet</h2>
+        <p class="lead">Flatbed tow trucks ready to roll across Northeastern Wisconsin</p>
       </div>
              <div class="row g-4">
          <div class="col-lg-4 col-md-6">
@@ -241,6 +245,82 @@
            <img src="images/yellowtow_dirty_web.jpg" alt="Lucky 7 flatbed tow truck recovering a damaged shuttle bus" class="img-fluid gallery-img w-100 shadow gallery-item" loading="lazy" decoding="async" width="960" height="448">
          </div>
        </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold">Frequently Asked Questions</h2>
+        <p class="lead">Quick answers about our towing and roadside service</p>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeading1">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer1" aria-expanded="false" aria-controls="faqAnswer1">
+                  What areas does Lucky 7 Towing serve?
+                </button>
+              </h3>
+              <div id="faqAnswer1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We're based in Bonduel, WI and serve Shawano, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, Gillett, and the surrounding rural communities of Northeastern Wisconsin. Long-distance and cross-state towing is also available.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeading2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer2" aria-expanded="false" aria-controls="faqAnswer2">
+                  Is Lucky 7 Towing available 24/7?
+                </button>
+              </h3>
+              <div id="faqAnswer2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes. We operate around the clock, every day of the year. Call <a href="tel:7158538513">(715) 853-8513</a> any time — day or night.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeading3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer3" aria-expanded="false" aria-controls="faqAnswer3">
+                  Does Lucky 7 Towing accept AAA?
+                </button>
+              </h3>
+              <div id="faqAnswer3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes. We're an authorized AAA service provider. Present your AAA membership card and your service is covered according to your membership benefits.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeading4">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer4" aria-expanded="false" aria-controls="faqAnswer4">
+                  What roadside services do you offer besides towing?
+                </button>
+              </h3>
+              <div id="faqAnswer4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Jump starts for dead batteries, vehicle lockout service, flat tire changes, and emergency fuel delivery — wherever you're stranded in our service area.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeading5">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqAnswer5" aria-expanded="false" aria-controls="faqAnswer5">
+                  Do you offer flatbed and long-distance towing?
+                </button>
+              </h3>
+              <div id="faqAnswer5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes. Our fleet is equipped with flatbed tow trucks for damage-free transport, and we handle safe, secure long-distance towing across state lines.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -273,7 +353,7 @@
                <p><strong>Rural Northeastern Wisconsin:</strong><br>
                Shawano • Bonduel • Wittenberg<br>
                Navarino • Gresham • Pulaski<br>
-               Cecil • Keshena • Gillet<br>
+               Cecil • Keshena • Gillett<br>
                <em>& surrounding communities</em></p>
              </div>
             <div class="col-md-6 contact-info">
@@ -281,6 +361,7 @@
                              <p>
                  <strong>Phone:</strong> (715) 853-8513<br>
                  <strong>Email:</strong> mattsdvf@tds.net<br>
+                 <strong>Home Base:</strong> Bonduel, WI 54107<br>
                  <strong>Emergency:</strong> Available 24/7<br>
                  <strong>AAA Members:</strong> We accept AAA coverage
                </p>
@@ -296,8 +377,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 mx-auto">
-          <p class="mb-2">&copy; 2025 Lucky 7 Towing. All rights reserved.</p>
-          <p class="mb-0">Professional towing services you can trust. Licensed and insured.</p>
+          <p class="mb-2">&copy; 2026 Lucky 7 Towing &middot; Lucky 7 Transport &middot; Bonduel, WI. All rights reserved.</p>
+          <p class="mb-0">Professional towing services you can trust. Licensed and insured. USDOT 1237637.</p>
         </div>
       </div>
     </div>
@@ -490,6 +571,56 @@
     "https://safer.fmcsa.dot.gov/query.asp?searchtype=ANY&query_type=queryCarrierSnapshot&query_param=USDOT&query_string=1237637"
   ]
 }
+  </script>
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What areas does Lucky 7 Towing serve?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We're based in Bonduel, WI and serve Shawano, Wittenberg, Navarino, Gresham, Pulaski, Cecil, Keshena, Gillett, and the surrounding rural communities of Northeastern Wisconsin. Long-distance and cross-state towing is also available."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Lucky 7 Towing available 24/7?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We operate around the clock, every day of the year. Call (715) 853-8513 any time — day or night."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Lucky 7 Towing accept AAA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. We're an authorized AAA service provider. Present your AAA membership card and your service is covered according to your membership benefits."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What roadside services do you offer besides towing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Jump starts for dead batteries, vehicle lockout service, flat tire changes, and emergency fuel delivery — wherever you're stranded in our service area."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer flatbed and long-distance towing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Our fleet is equipped with flatbed tow trucks for damage-free transport, and we handle safe, secure long-distance towing across state lines."
+        }
+      }
+    ]
+  }
   </script>
 </body>
 </html>
