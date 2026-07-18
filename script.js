@@ -106,6 +106,153 @@ document.addEventListener('DOMContentLoaded', function () {
 
   reveals.forEach(function (el) { observer.observe(el); });
 
+  // --- service-area dispatch map: the truck patrols, and towns are tappable ---
+  (function () {
+    var panel = document.querySelector('.map-panel');
+    if (!panel) return;
+    var truckEl = panel.querySelector('.map-truck');
+    var flipEl = panel.querySelector('.truck-flip');
+    var statusEl = panel.querySelector('.map-status');
+    if (!truckEl || !flipEl || !statusEl) return;
+
+    // Coordinates mirror the SVG; edges mirror the drawn roads (Hwy 29 + spokes).
+    var NODES = {
+      Wittenberg: [70, 137], Gresham: [342, 108], Keshena: [451, 80],
+      Gillett: [685, 70], Cecil: [581, 155], Shawano: [468, 184],
+      Bonduel: [585, 229], Pulaski: [730, 300], Navarino: [512, 350]
+    };
+    var EDGES = [
+      ['Wittenberg', 'Shawano'], ['Shawano', 'Bonduel'], ['Bonduel', 'Pulaski'],
+      ['Shawano', 'Gresham'], ['Shawano', 'Keshena'], ['Shawano', 'Cecil'],
+      ['Cecil', 'Gillett'], ['Cecil', 'Bonduel'], ['Bonduel', 'Navarino']
+    ];
+    var SPEED = 110; // svg units per second
+
+    function dist(a, b) { return Math.hypot(a[0] - b[0], a[1] - b[1]); }
+
+    var adj = {};
+    Object.keys(NODES).forEach(function (n) { adj[n] = []; });
+    EDGES.forEach(function (e) {
+      var d = dist(NODES[e[0]], NODES[e[1]]);
+      adj[e[0]].push({ to: e[1], d: d });
+      adj[e[1]].push({ to: e[0], d: d });
+    });
+
+    function route(from, to) { // Dijkstra over 9 nodes
+      var best = {}, prev = {}, left = Object.keys(NODES);
+      left.forEach(function (n) { best[n] = Infinity; });
+      best[from] = 0;
+      while (left.length) {
+        left.sort(function (a, b) { return best[a] - best[b]; });
+        var cur = left.shift();
+        if (cur === to) break;
+        adj[cur].forEach(function (e) {
+          if (best[cur] + e.d < best[e.to]) { best[e.to] = best[cur] + e.d; prev[e.to] = cur; }
+        });
+      }
+      var path = [to];
+      while (path[0] !== from) path.unshift(prev[path[0]]);
+      return path;
+    }
+
+    var at = 'Bonduel';
+    var driving = false;
+    var pending = null;
+    var idleTimer = null;
+    var mapVisible = false;
+
+    function setTruck(x, y) { truckEl.setAttribute('transform', 'translate(' + x + ' ' + y + ')'); }
+    function say(msg) { statusEl.textContent = msg; }
+    function pulse(name) {
+      var g = panel.querySelector('.town[data-town="' + name + '"]');
+      if (!g) return;
+      g.classList.remove('stop-pulse');
+      requestAnimationFrame(function () { g.classList.add('stop-pulse'); });
+      setTimeout(function () { g.classList.remove('stop-pulse'); }, 900);
+    }
+
+    function drive(to) {
+      if (driving) { if (to !== at) { pending = to; say('Rolling — next stop: ' + to); } return; }
+      if (to === at) { pulse(to); return; }
+      var nodes = route(at, to);
+      var segs = [], i;
+      for (i = 0; i < nodes.length - 1; i++) {
+        var a = NODES[nodes[i]], b = NODES[nodes[i + 1]];
+        segs.push({ a: a, b: b, d: dist(a, b) });
+      }
+      var total = segs.reduce(function (s, x) { return s + x.d; }, 0);
+      driving = true;
+      say('Rolling: ' + at + ' → ' + to);
+      var t0 = null;
+      function frame(ts) {
+        if (t0 === null) t0 = ts;
+        var gone = (ts - t0) / 1000 * SPEED;
+        if (gone >= total) {
+          var last = segs[segs.length - 1];
+          setTruck(last.b[0], last.b[1]);
+          at = to; driving = false;
+          pulse(to);
+          say(to === 'Bonduel' ? 'Back home at HQ — tap a town to roll again.'
+                               : 'Made it to ' + to + ' — tap another town.');
+          var next = pending; pending = null;
+          if (next) drive(next); else scheduleIdle();
+          return;
+        }
+        var acc = 0, seg = segs[0], local = 0;
+        for (var j = 0; j < segs.length; j++) {
+          if (gone < acc + segs[j].d) { seg = segs[j]; local = (gone - acc) / segs[j].d; break; }
+          acc += segs[j].d;
+        }
+        flipEl.setAttribute('transform', seg.b[0] < seg.a[0] ? 'scale(-1 1)' : 'scale(1 1)');
+        setTruck(seg.a[0] + (seg.b[0] - seg.a[0]) * local,
+                 seg.a[1] + (seg.b[1] - seg.a[1]) * local);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // gentle patrol loop while the map is on screen
+    var PATROL = ['Shawano', 'Keshena', 'Gresham', 'Wittenberg', 'Shawano', 'Cecil',
+                  'Gillett', 'Cecil', 'Bonduel', 'Navarino', 'Bonduel', 'Pulaski', 'Bonduel'];
+    var patrolIx = 0;
+    function scheduleIdle() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () {
+        if (!mapVisible || driving || document.hidden) { scheduleIdle(); return; }
+        var next = PATROL[patrolIx % PATROL.length];
+        patrolIx++;
+        if (next === at) { scheduleIdle(); return; }
+        drive(next);
+      }, 2800);
+    }
+
+    function onTown(e) {
+      var g = e.target.closest ? e.target.closest('.town') : null;
+      if (!g) return false;
+      var name = g.getAttribute('data-town');
+      if (!motionOK) {
+        at = name; pending = null;
+        setTruck(NODES[name][0], NODES[name][1]);
+        pulse(name);
+        say('Truck sent to ' + name + '.');
+      } else {
+        drive(name);
+      }
+      return true;
+    }
+    panel.addEventListener('click', onTown);
+    panel.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && onTown(e)) e.preventDefault();
+    });
+
+    if (motionOK && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        mapVisible = entries[0].isIntersecting;
+        if (mapVisible) scheduleIdle(); else clearTimeout(idleTimer);
+      }, { threshold: 0.35 }).observe(panel);
+    }
+  })();
+
   // --- stat count-up (static values stay in the HTML for no-JS/reduced motion) ---
   var counters = document.querySelectorAll('.count[data-count]');
   if (counters.length) {

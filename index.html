@@ -254,8 +254,6 @@
           Shawano and the state line.</p>
           <p class="reveal" style="--d:.18s">Some calls are a dead battery in a driveway. Some are a classic Morgan that has to
           arrive exactly as it left. Either way, your vehicle rides like it&rsquo;s his own.</p>
-          <p class="reveal about-names" style="--d:.22s">One outfit, two names: the truck doors say <strong>Lucky 7 Transport</strong>, most
-          folks around town say <strong>Lucky 7 Towing</strong>. Same clover, same Matt, same number.</p>
           <div class="aaa-panel reveal" style="--d:.24s">
             <h3>AAA members — you&rsquo;re covered</h3>
             <p>We&rsquo;re an authorized AAA service provider. Show your membership card and your
@@ -320,7 +318,7 @@
           <a class="ghost-btn dark reveal" style="--d:.24s" href="tel:7158538513"><svg class="i" aria-hidden="true"><use href="#phone"/></svg>Check if we cover you</a>
         </div>
         <figure class="map-panel reveal" style="--d:.15s">
-          <svg viewBox="0 0 800 420" role="img" aria-label="Schematic map of the Lucky 7 service area: nine towns around Shawano and Bonduel, connected by Highway 29 and county roads">
+          <svg viewBox="0 0 800 420" aria-labelledby="map-caption-text">
             <!-- paper -->
             <rect x="6" y="6" width="788" height="408" rx="10" class="map-paper"/>
             <rect x="16" y="16" width="768" height="388" rx="6" class="map-frame"/>
@@ -336,25 +334,50 @@
               <path d="M581 155 L585 229"/>
               <path d="M585 229 L512 350"/>
             </g>
-            <!-- towns -->
-            <g class="map-town">
-              <circle cx="70" cy="137" r="7"/><text x="70" y="117">Wittenberg</text>
-              <circle cx="342" cy="108" r="7"/><text x="342" y="88">Gresham</text>
-              <circle cx="451" cy="80" r="7"/><text x="451" y="60">Keshena</text>
-              <circle cx="685" cy="70" r="7"/><text x="685" y="50">Gillett</text>
-              <circle cx="581" cy="155" r="7"/><text x="581" y="135">Cecil</text>
-              <circle cx="730" cy="300" r="7"/><text x="730" y="332">Pulaski</text>
-              <circle cx="512" cy="350" r="7"/><text x="512" y="382">Navarino</text>
+            <!-- towns (tap to dispatch the truck) -->
+            <g class="map-towns">
+              <g class="town" data-town="Wittenberg" tabindex="0" role="button" aria-label="Send the tow truck to Wittenberg">
+                <circle class="dot" cx="70" cy="137" r="7"/><text x="70" y="117">Wittenberg</text><circle class="hit" cx="70" cy="137" r="22"/>
+              </g>
+              <g class="town" data-town="Gresham" tabindex="0" role="button" aria-label="Send the tow truck to Gresham">
+                <circle class="dot" cx="342" cy="108" r="7"/><text x="342" y="88">Gresham</text><circle class="hit" cx="342" cy="108" r="22"/>
+              </g>
+              <g class="town" data-town="Keshena" tabindex="0" role="button" aria-label="Send the tow truck to Keshena">
+                <circle class="dot" cx="451" cy="80" r="7"/><text x="451" y="60">Keshena</text><circle class="hit" cx="451" cy="80" r="22"/>
+              </g>
+              <g class="town" data-town="Gillett" tabindex="0" role="button" aria-label="Send the tow truck to Gillett">
+                <circle class="dot" cx="685" cy="70" r="7"/><text x="685" y="50">Gillett</text><circle class="hit" cx="685" cy="70" r="22"/>
+              </g>
+              <g class="town" data-town="Cecil" tabindex="0" role="button" aria-label="Send the tow truck to Cecil">
+                <circle class="dot" cx="581" cy="155" r="7"/><text x="581" y="135">Cecil</text><circle class="hit" cx="581" cy="155" r="22"/>
+              </g>
+              <g class="town" data-town="Pulaski" tabindex="0" role="button" aria-label="Send the tow truck to Pulaski">
+                <circle class="dot" cx="730" cy="300" r="7"/><text x="730" y="332">Pulaski</text><circle class="hit" cx="730" cy="300" r="22"/>
+              </g>
+              <g class="town" data-town="Navarino" tabindex="0" role="button" aria-label="Send the tow truck to Navarino">
+                <circle class="dot" cx="512" cy="350" r="7"/><text x="512" y="382">Navarino</text><circle class="hit" cx="512" cy="350" r="22"/>
+              </g>
             </g>
             <!-- Shawano (bigger hub) -->
-            <g class="map-hub">
-              <circle cx="468" cy="184" r="10"/><text x="468" y="216">Shawano</text>
+            <g class="town town-hub" data-town="Shawano" tabindex="0" role="button" aria-label="Send the tow truck to Shawano">
+              <circle class="dot" cx="468" cy="184" r="10"/><text x="468" y="216">Shawano</text><circle class="hit" cx="468" cy="184" r="24"/>
             </g>
             <!-- Bonduel HQ with clover pin -->
-            <g class="map-hq">
-              <circle cx="585" cy="229" r="16"/>
+            <g class="town town-hq" data-town="Bonduel" tabindex="0" role="button" aria-label="Send the tow truck home to Bonduel headquarters">
+              <circle class="dot" cx="585" cy="229" r="16"/>
               <svg x="563" y="207" width="44" height="44" viewBox="-40 -40 80 80"><use href="#clover-art"/></svg>
               <text x="590" y="274">Bonduel &middot; HQ</text>
+              <circle class="hit" cx="585" cy="229" r="26"/>
+            </g>
+            <!-- the truck (driven by script.js) -->
+            <g class="map-truck" aria-hidden="true" transform="translate(585 229)">
+              <g class="truck-flip">
+                <g transform="translate(-21 -20)">
+                  <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="15" r="3.4"/>
+                  <circle cx="33" cy="15" r="3.4"/>
+                </g>
+              </g>
             </g>
             <!-- compass -->
             <g class="map-compass" transform="translate(748 62)">
@@ -363,7 +386,8 @@
             </g>
             <text class="map-note" x="30" y="392">Service area &mdash; not to scale &middot; &amp; surrounding communities</text>
           </svg>
-          <figcaption class="visually-hidden">Map showing Wittenberg, Gresham, Keshena, Gillett, Cecil, Shawano, Bonduel (headquarters), Pulaski, and Navarino</figcaption>
+          <p class="map-status" aria-live="polite">Parked at HQ in Bonduel &mdash; tap a town to roll the truck.</p>
+          <figcaption class="visually-hidden" id="map-caption-text">Map showing Wittenberg, Gresham, Keshena, Gillett, Cecil, Shawano, Bonduel (headquarters), Pulaski, and Navarino. Each town can be selected to send an animated tow truck there.</figcaption>
         </figure>
       </div>
     </section>

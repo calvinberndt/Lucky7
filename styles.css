@@ -204,16 +204,16 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   margin-right: auto;
 }
 .brand-badge {
-  width: 46px; height: 46px; flex: none;
-  border-radius: 9px;
+  width: 56px; height: 56px; flex: none;
+  border-radius: 10px;
   border: 1px solid rgba(244, 237, 218, .28);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
   transition: width .28s ease, height .28s ease;
 }
-.site-header.scrolled .brand-badge { width: 38px; height: 38px; }
+.site-header.scrolled .brand-badge { width: 48px; height: 48px; }
 .brand-name {
   font-family: var(--font-display);
-  font-size: 1.32rem; line-height: 1; letter-spacing: .02em;
+  font-size: 1.5rem; line-height: 1; letter-spacing: .02em;
   display: block;
 }
 .brand-name em { font-style: normal; color: var(--red-600); text-shadow: 0 0 0 currentColor; }
@@ -234,6 +234,8 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .site-nav a:hover { color: var(--amber-400); border-bottom-color: var(--amber-400); }
 .site-nav .nav-call { display: none; }
 
+.header-actions { display: flex; align-items: center; gap: .8rem; }
+
 .call-btn {
   display: inline-flex; align-items: center; gap: .55rem;
   background: var(--red-600); color: var(--cream-text);
@@ -249,9 +251,9 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 
 .menu-btn {
   display: none;
-  width: 46px; height: 46px;
+  width: 48px; height: 48px;
   background: transparent; border: 2px solid rgba(244,237,218,.3);
-  border-radius: 8px; cursor: pointer;
+  border-radius: 10px; cursor: pointer;
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
 }
 .menu-bar { width: 20px; height: 2px; background: var(--cream-text); transition: transform .25s, opacity .2s; }
@@ -532,15 +534,6 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 }
 .about-copy p { max-width: 56ch; }
 
-.about-names {
-  border-left: 3px solid var(--green-500);
-  padding: .5rem 0 .5rem 1rem;
-  font-size: .98rem;
-  color: rgba(24, 31, 25, .82);
-  background: linear-gradient(90deg, rgba(63, 122, 78, .08), transparent 70%);
-  border-radius: 0 8px 8px 0;
-}
-
 .aaa-panel {
   border: 2px solid var(--green-700);
   border-radius: var(--radius);
@@ -649,16 +642,45 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .map-hwy { fill: none; stroke: var(--amber-400); stroke-width: 5; stroke-dasharray: 16 11; stroke-linecap: round; opacity: .9; }
 .map-hwy-label { font-family: var(--font-cond); font-weight: 700; font-size: 15px; letter-spacing: .2em; fill: #b07a24; }
 .map-road path { fill: none; stroke: var(--green-500); stroke-width: 2; stroke-dasharray: 6 8; opacity: .65; }
-.map-town circle { fill: var(--green-700); stroke: #fbf7ea; stroke-width: 2.5; }
-.map-town text, .map-hub text, .map-hq text {
+.town { cursor: pointer; outline: none; }
+.town .dot {
+  fill: var(--green-700); stroke: #fbf7ea; stroke-width: 2.5;
+  transform-box: fill-box; transform-origin: center;
+  transition: fill .2s;
+}
+.town .hit { fill: transparent; stroke: none; }
+.town text {
   font-family: var(--font-cond); font-weight: 600; font-size: 17px;
   fill: var(--ink-900); text-anchor: middle; letter-spacing: .04em;
 }
-.map-hub circle { fill: var(--red-600); stroke: #fbf7ea; stroke-width: 3; }
-.map-hub text { font-weight: 700; font-size: 20px; }
-.map-hq { color: var(--cream-text); }
-.map-hq circle { fill: var(--green-800); stroke: #fbf7ea; stroke-width: 3; }
-.map-hq text { font-weight: 700; font-size: 19px; fill: var(--green-800); }
+.town:hover .dot, .town:focus-visible .dot { fill: var(--red-600); }
+.town:focus-visible .dot { stroke: var(--amber-400); stroke-width: 4; }
+.town-hub .dot { fill: var(--red-600); stroke: #fbf7ea; stroke-width: 3; }
+.town-hub text { font-weight: 700; font-size: 20px; }
+.town-hq { color: var(--cream-text); }
+.town-hq .dot { fill: var(--green-800); stroke: #fbf7ea; stroke-width: 3; }
+.town-hq text { font-weight: 700; font-size: 19px; fill: var(--green-800); }
+.town.stop-pulse .dot { fill: var(--amber-400); }
+@keyframes town-ping {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.8); }
+  100% { transform: scale(1); }
+}
+
+.map-truck { color: var(--red-600); pointer-events: none; }
+.map-truck path { stroke: currentColor; stroke-width: 2.6; }
+.map-truck circle { fill: currentColor; }
+.truck-flip { transition: transform .18s ease; }
+
+.map-status {
+  margin: .65rem .3rem 0;
+  padding-top: .55rem;
+  border-top: 2px dashed rgba(45, 89, 55, .25);
+  font-family: var(--font-cond); font-weight: 600;
+  font-size: .92rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(24, 31, 25, .65);
+  text-align: center;
+}
 .map-compass path { stroke: var(--ink-900); stroke-width: 2; fill: none; opacity: .6; }
 .map-compass text { font-family: var(--font-cond); font-weight: 700; font-size: 14px; fill: var(--ink-900); text-anchor: middle; opacity: .6; }
 .map-note { font-family: var(--font-body); font-style: italic; font-size: 13px; fill: rgba(24,31,25,.55); }
@@ -832,57 +854,61 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   html.js .hero-card-front { animation: deal-front .85s cubic-bezier(.24, .9, .3, 1) .3s both; }
   html.js .hero-card-back  { animation: deal-back  .75s cubic-bezier(.24, .9, .3, 1) .12s both; }
 
-  /* ---- fleet deck: pin + scrub (driven by --p from script.js) ---- */
-  html.js .fleet-pin { height: 280vh; }
-  html.js .fleet-stage {
-    position: sticky; top: 60px;
-    height: calc(100vh - 60px);
-    display: flex; align-items: center;
-    overflow: hidden;
+  /* ---- fleet deck: pin + scrub (driven by --p from script.js) ----
+     Only pins when the viewport is tall enough to hold the whole scene;
+     short viewports keep the static grid fallback. */
+  @media (min-height: 560px) {
+    html.js .fleet-pin { height: 280vh; }
+    html.js .fleet-stage {
+      position: sticky; top: 60px;
+      height: calc(100vh - 60px);
+      display: flex; align-items: safe center;
+      overflow: hidden;
+    }
+    html.js .fleet-stage .shell { width: 100%; }
+    html.js .deck-hint { display: block; }
+    html.js .card-deck {
+      display: block;
+      position: relative;
+      max-width: 620px;
+      margin: 1.8rem auto 0;
+      aspect-ratio: 1000 / 610;
+      --c1: clamp(0, calc(var(--p, 0) / .45), 1);
+      --c2: clamp(0, calc((var(--p, 0) - .52) / .45), 1);
+    }
+    html.js .deck-card {
+      position: absolute; top: 0; left: 0; width: 100%;
+    }
+    html.js .deck-card-1 {
+      z-index: 3;
+      transform: translate(calc(var(--c1) * 168%), calc(var(--c1) * -16%))
+                 rotate(calc(-2.2deg + var(--c1) * 30deg));
+    }
+    html.js .deck-card-2 {
+      z-index: 2;
+      transform: translate(calc(3% * (1 - var(--c1)) + var(--c2) * 172%),
+                           calc(4.5% * (1 - var(--c1)) + var(--c2) * -14%))
+                 rotate(calc(2.4deg * (1 - var(--c1)) + var(--c2) * 32deg));
+    }
+    html.js .deck-card-3 {
+      z-index: 1;
+      transform: translate(calc(-2.5% * (1 - var(--c2))), calc(8% * (1 - var(--c2))))
+                 rotate(calc(-1.4deg * (1 - var(--c2))));
+    }
+    html.js .deck-dots {
+      display: flex; justify-content: center; gap: .55rem;
+      margin-top: 1.6rem;
+    }
+    html.js .deck-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      border: 2px solid var(--green-700);
+      transition: background .25s, transform .25s;
+    }
+    html.js .deck-dot.active { background: var(--red-600); border-color: var(--red-600); transform: scale(1.2); }
   }
-  html.js .fleet-stage .shell { width: 100%; }
-  html.js .deck-hint { display: block; }
-  html.js .card-deck {
-    display: block;
-    position: relative;
-    max-width: 620px;
-    margin: 1.8rem auto 0;
-    aspect-ratio: 1000 / 610;
-    --c1: clamp(0, calc(var(--p, 0) / .45), 1);
-    --c2: clamp(0, calc((var(--p, 0) - .52) / .45), 1);
-  }
-  html.js .deck-card {
-    position: absolute; top: 0; left: 0; width: 100%;
-  }
-  html.js .deck-card-1 {
-    z-index: 3;
-    transform: translate(calc(var(--c1) * 168%), calc(var(--c1) * -16%))
-               rotate(calc(-2.2deg + var(--c1) * 30deg));
-  }
-  html.js .deck-card-2 {
-    z-index: 2;
-    transform: translate(calc(3% * (1 - var(--c1)) + var(--c2) * 172%),
-                         calc(4.5% * (1 - var(--c1)) + var(--c2) * -14%))
-               rotate(calc(2.4deg * (1 - var(--c1)) + var(--c2) * 32deg));
-  }
-  html.js .deck-card-3 {
-    z-index: 1;
-    transform: translate(calc(-2.5% * (1 - var(--c2))), calc(8% * (1 - var(--c2))))
-               rotate(calc(-1.4deg * (1 - var(--c2))));
-  }
-  html.js .deck-dots {
-    display: flex; justify-content: center; gap: .55rem;
-    margin-top: 1.6rem;
-  }
-  html.js .deck-dot {
-    width: 11px; height: 11px; border-radius: 50%;
-    border: 2px solid var(--green-700);
-    transition: background .25s, transform .25s;
-  }
-  html.js .deck-dot.active { background: var(--red-600); border-color: var(--red-600); transform: scale(1.2); }
 
   /* ---- steps journey: pin + road (desktop) ---- */
-  @media (min-width: 900px) {
+  @media (min-width: 900px) and (min-height: 560px) {
     html.js .steps-pin { height: 230vh; }
     html.js .steps-stage {
       position: sticky; top: 60px;
@@ -938,30 +964,38 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   html.js .map-panel.in .map-road path:nth-child(5) { animation-delay: 1.65s; }
   html.js .map-panel.in .map-road path:nth-child(6) { animation-delay: 1.75s; }
 
-  html.js .map-panel .map-town circle,
-  html.js .map-panel .map-hub circle,
-  html.js .map-panel .map-town text,
-  html.js .map-panel .map-hub text {
+  html.js .map-panel .map-towns .dot,
+  html.js .map-panel .town-hub .dot,
+  html.js .map-panel .map-towns .town text,
+  html.js .map-panel .town-hub text {
     opacity: 0; transform-box: fill-box; transform-origin: center;
   }
-  html.js .map-panel.in .map-town circle,
-  html.js .map-panel.in .map-hub circle { animation: dot-pop .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
-  html.js .map-panel.in .map-town text,
-  html.js .map-panel.in .map-hub text { animation: road-fade .4s ease forwards; }
-  html.js .map-panel.in .map-town circle:nth-of-type(1), html.js .map-panel.in .map-town text:nth-of-type(1) { animation-delay: 1.6s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(2), html.js .map-panel.in .map-town text:nth-of-type(2) { animation-delay: 1.7s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(3), html.js .map-panel.in .map-town text:nth-of-type(3) { animation-delay: 1.8s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(4), html.js .map-panel.in .map-town text:nth-of-type(4) { animation-delay: 1.9s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(5), html.js .map-panel.in .map-town text:nth-of-type(5) { animation-delay: 2.0s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(6), html.js .map-panel.in .map-town text:nth-of-type(6) { animation-delay: 2.1s; }
-  html.js .map-panel.in .map-town circle:nth-of-type(7), html.js .map-panel.in .map-town text:nth-of-type(7) { animation-delay: 2.2s; }
-  html.js .map-panel.in .map-hub circle, html.js .map-panel.in .map-hub text { animation-delay: 1.5s; }
+  html.js .map-panel.in .map-towns .dot,
+  html.js .map-panel.in .town-hub .dot { animation: dot-pop .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
+  html.js .map-panel.in .map-towns .town text,
+  html.js .map-panel.in .town-hub text { animation: road-fade .4s ease forwards; }
+  html.js .map-panel.in .map-towns .town:nth-child(1) .dot, html.js .map-panel.in .map-towns .town:nth-child(1) text { animation-delay: 1.6s; }
+  html.js .map-panel.in .map-towns .town:nth-child(2) .dot, html.js .map-panel.in .map-towns .town:nth-child(2) text { animation-delay: 1.7s; }
+  html.js .map-panel.in .map-towns .town:nth-child(3) .dot, html.js .map-panel.in .map-towns .town:nth-child(3) text { animation-delay: 1.8s; }
+  html.js .map-panel.in .map-towns .town:nth-child(4) .dot, html.js .map-panel.in .map-towns .town:nth-child(4) text { animation-delay: 1.9s; }
+  html.js .map-panel.in .map-towns .town:nth-child(5) .dot, html.js .map-panel.in .map-towns .town:nth-child(5) text { animation-delay: 2.0s; }
+  html.js .map-panel.in .map-towns .town:nth-child(6) .dot, html.js .map-panel.in .map-towns .town:nth-child(6) text { animation-delay: 2.1s; }
+  html.js .map-panel.in .map-towns .town:nth-child(7) .dot, html.js .map-panel.in .map-towns .town:nth-child(7) text { animation-delay: 2.2s; }
+  html.js .map-panel.in .town-hub .dot, html.js .map-panel.in .town-hub text { animation-delay: 1.5s; }
 
-  html.js .map-panel .map-hq { opacity: 0; transform: translateY(-14px); transform-box: fill-box; transform-origin: center; }
-  html.js .map-panel.in .map-hq {
+  html.js .map-panel .town-hq { opacity: 0; transform: translateY(-14px); transform-box: fill-box; transform-origin: center; }
+  html.js .map-panel.in .town-hq {
     transition: opacity .4s ease 2.35s, transform .5s cubic-bezier(.34, 1.56, .64, 1) 2.35s;
     opacity: 1; transform: translateY(0);
   }
+
+  html.js .map-panel .map-truck { opacity: 0; }
+  html.js .map-panel.in .map-truck { transition: opacity .5s ease 2.7s; opacity: 1; }
+
+  html.js .map-panel .town.stop-pulse .dot { animation: town-ping .85s ease-out; opacity: 1; }
+
+  html.js .map-panel .map-status { opacity: 0; }
+  html.js .map-panel.in .map-status { transition: opacity .5s ease 2.9s; opacity: 1; }
 
   /* ambient life */
   .hazard-divider { animation: hazard-drift 70s linear infinite; }
@@ -1030,7 +1064,16 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   }
   .menu-btn { display: inline-flex; }
   .call-btn-num { display: none; }
-  .call-btn { width: 46px; height: 46px; padding: 0; justify-content: center; font-size: 1.15rem; }
+  .call-btn {
+    width: 48px; height: 48px; padding: 0;
+    justify-content: center; align-items: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    box-shadow: none;
+    border: 2px solid rgba(244, 237, 218, .3);
+  }
+  .call-btn .i { display: block; vertical-align: 0; }
+  .header-actions { gap: .6rem; }
 }
 
 @media (max-width: 899px) {
@@ -1051,7 +1094,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   .topbar { display: none; }
   .service-grid { grid-template-columns: 1fr; }
   .brand-sub { display: none; }
-  .brand-badge { width: 40px; height: 40px; }
+  .brand-badge { width: 46px; height: 46px; }
   .eyebrow { font-size: .78rem; letter-spacing: .16em; }
   .hero-cta { flex-direction: column; align-items: stretch; }
   .phone-plate { align-items: center; text-align: center; }
