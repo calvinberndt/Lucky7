@@ -1,110 +1,66 @@
-// Smooth scrolling for navigation links
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        const navbarHeight = document.querySelector('.navbar').offsetHeight;
-        const targetPosition = target.offsetTop - navbarHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
+// Lucky 7 Towing — progressive enhancement (menu, header state, scroll reveals)
+// Smooth anchor scrolling is handled in CSS (scroll-behavior + scroll-padding-top).
+
+document.documentElement.classList.add('js');
+
+document.addEventListener('DOMContentLoaded', function () {
+  var header = document.querySelector('.site-header');
+  var nav = document.getElementById('site-nav');
+  var menuBtn = document.querySelector('.menu-btn');
+
+  // --- mobile menu ---
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+
+  menuBtn.addEventListener('click', function () {
+    setMenu(!nav.classList.contains('open'));
+  });
+
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('a')) setMenu(false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      setMenu(false);
+      menuBtn.focus();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('open') &&
+        !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+      setMenu(false);
+    }
+  });
+
+  // --- header shadow once the page is scrolled ---
+  function onScroll() {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // --- scroll reveals (skipped for reduced motion; CSS keeps content visible) ---
+  var reveals = document.querySelectorAll('.reveal');
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
       }
     });
-  });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  reveals.forEach(function (el) { observer.observe(el); });
 });
-
-// Mobile scroll animations for all sections
-function animateOnScroll() {
-  // Only run on mobile devices
-  if (window.innerWidth > 767) return;
-  
-  const triggerBottom = window.innerHeight * 0.8; // Trigger when 80% of viewport height is reached
-  
-  // Service cards animation
-  const serviceCards = document.querySelectorAll('.service-card');
-  serviceCards.forEach(card => {
-    const cardTop = card.getBoundingClientRect().top;
-    if (cardTop < triggerBottom) {
-      card.classList.add('animate');
-    }
-  });
-  
-  // About section animation
-  const aboutContent = document.querySelector('.about-content');
-  const aboutImage = document.querySelector('.about-image');
-  if (aboutContent && aboutImage) {
-    const aboutTop = aboutContent.getBoundingClientRect().top;
-    if (aboutTop < triggerBottom) {
-      aboutContent.classList.add('animate');
-      aboutImage.classList.add('animate');
-    }
-  }
-  
-  // Gallery animation
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  galleryItems.forEach(item => {
-    const itemTop = item.getBoundingClientRect().top;
-    if (itemTop < triggerBottom) {
-      item.classList.add('animate');
-    }
-  });
-  
-  // Contact section animation
-  const contactCard = document.querySelector('.contact-card');
-  const contactInfo = document.querySelectorAll('.contact-info');
-  
-  if (contactCard) {
-    const contactTop = contactCard.getBoundingClientRect().top;
-    if (contactTop < triggerBottom) {
-      contactCard.classList.add('animate');
-    }
-  }
-  
-  contactInfo.forEach(info => {
-    const infoTop = info.getBoundingClientRect().top;
-    if (infoTop < triggerBottom) {
-      info.classList.add('animate');
-    }
-  });
-}
-
-// Optimized scroll event handling with throttling
-let ticking = false;
-
-function requestTick() {
-  if (!ticking) {
-    requestAnimationFrame(animateOnScroll);
-    ticking = true;
-  }
-}
-
-function handleScroll() {
-  ticking = false;
-}
-
-// Initialize animations when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Run on scroll and on page load
-  window.addEventListener('scroll', requestTick, { passive: true });
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('load', animateOnScroll);
-  window.addEventListener('resize', animateOnScroll, { passive: true });
-  
-  // Initial animation check
-  animateOnScroll();
-});
-
-// Floating call button analytics (optional)
-document.addEventListener('DOMContentLoaded', function() {
-  const floatingCallBtn = document.querySelector('.floating-call-btn');
-  if (floatingCallBtn) {
-    floatingCallBtn.addEventListener('click', function() {
-      // Track call button clicks (you can add analytics here)
-      console.log('Floating call button clicked');
-    });
-  }
-}); 

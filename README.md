@@ -1,113 +1,54 @@
-# Lucky 7 Towing Website
+# Lucky 7 Towing & Transport — Website
 
-A professional, responsive website for Lucky 7 Towing built with Bootstrap.
+Single-page marketing site for Lucky 7 Towing / Lucky 7 Transport (Bonduel, WI), live at
+[lucky7towingtransport.com](https://lucky7towingtransport.com) via GitHub Pages (see `CNAME`).
 
-## Features
+## Design
 
-- 📱 **Fully Responsive** - Works perfectly on all devices
-- 🎨 **Modern Design** - Clean, professional layout with Bootstrap 5
-- 📞 **Click-to-Call** - Direct phone links for mobile users
-- 🚛 **Photo Gallery** - Showcase of tow trucks and services
-- 💨 **Fast Loading** - Optimized for quick loading times
-- ♿ **Accessible** - Built with accessibility best practices
+Custom "vintage American roadside" design system derived from the company's clover badge
+logo and truck decals — no CSS framework. See the full design spec at
+[`docs/superpowers/specs/2026-07-18-lucky7-redesign-design.md`](docs/superpowers/specs/2026-07-18-lucky7-redesign-design.md).
 
-## Sections
+- **Palette:** deep greens `#15271b`/`#1e3d26`/`#2d5937`, cream `#faf5e8`, brick red `#b3272e`,
+  beacon amber `#e9a23b` — defined as CSS custom properties at the top of `styles.css`.
+- **Type:** Alfa Slab One (display) + Barlow / Barlow Condensed (body/UI), loaded from
+  Google Fonts.
+- **Artwork:** inline SVG throughout — clover mark, custom service icons, and the
+  schematic service-area map (town positions projected from real lat/lon).
 
-1. **Hero Section** - Eye-catching header with contact info
-2. **About Us** - Company information and experience
-3. **Services** - Detailed service offerings
-4. **Fleet Gallery** - Photos of tow trucks
-5. **Contact** - Multiple ways to get in touch
+## Files
 
-## Quick Start
+| File | Purpose |
+|---|---|
+| `index.html` | The whole site: markup, inline SVG artwork, JSON-LD structured data |
+| `styles.css` | Design tokens + all styling, responsive + reduced-motion aware |
+| `script.js` | Mobile menu, header shadow, IntersectionObserver scroll reveals |
+| `images/` | Originals (`lucky7_*.png/.jpg`) plus optimized derivatives used by the site |
 
-### Option 1: Deploy to GitHub Pages (FREE & RECOMMENDED)
+## Working on the site
 
-1. **Create a GitHub Repository**
-   - Go to [github.com](https://github.com) and sign in
-   - Click "New repository" 
-   - Name it `lucky7-towing-website` (or any name you prefer)
-   - Make sure it's **Public** (required for free GitHub Pages)
-   - Check "Add a README file"
-   - Click "Create repository"
+No build step. Serve statically and open the port the server prints:
 
-2. **Upload Your Files**
-   - Click "uploading an existing file"
-   - Drag and drop the `index.html` file
-   - Create a new folder called `images` and upload your photos:
-     - Rename your photos to match the website:
-       - `tow-truck-yellow.jpg` (your yellow truck photo)
-       - `tow-truck-red.jpg` (your red truck photo)  
-       - `tow-truck-classic.jpg` (truck with classic car photo)
-       - `hero-bg.jpg` (any truck photo for background)
+```bash
+python3 -m http.server 4173 --directory .
+```
 
-3. **Enable GitHub Pages**
-   - Go to your repository settings
-   - Scroll down to "Pages" section
-   - Under "Source", select "Deploy from a branch"
-   - Choose "main" branch and "/ (root)" folder
-   - Click "Save"
+### Images
 
-4. **Your Website is Live!**
-   - Your website will be available at: `https://yourusername.github.io/lucky7-towing-website`
-   - It may take a few minutes to go live
+Derivatives are generated from the originals with `sips` (macOS). If you replace a photo,
+re-derive a web-sized JPEG (~900–1250px wide, quality ~70) and keep `width`/`height`
+attributes in `index.html` in sync to avoid layout shift. Favicons come from the badge logo.
 
-### Option 2: Other Free Hosting Options
+### Updating facts
 
-- **Netlify**: Drag and drop your files at [netlify.com](https://netlify.com)
-- **Vercel**: Connect your GitHub repo at [vercel.com](https://vercel.com)
-- **Surge.sh**: Command line deployment at [surge.sh](https://surge.sh)
+- **Phone number** appears in `tel:` links and visible text — search for `853-8513`.
+- **Reviews** in the Reviews section are real quotes from the Google Business listing;
+  refresh them from the listing rather than inventing copy.
+- **Towns / service area:** update both the text lists and the SVG map labels in
+  `index.html`, and the `areaServed` array in the JSON-LD block.
 
-## Customization
+## SEO
 
-### Update Contact Information
-Edit these lines in `index.html`:
-- Phone number: Search for `(555) 123-4567` and replace
-- Email: Search for `support@lucky7towing.com` and replace
-- Service area: Update the service area description
-
-### Add Your Photos
-1. Take high-quality photos of your tow trucks
-2. Resize them to reasonable web sizes (1200px wide max)
-3. Name them as specified in the images directory
-4. Upload to the `images` folder
-
-### Change Colors
-The website uses green and red colors to match your Lucky 7 branding. To change:
-- Green: Search for `#28a745` and `bg-success`
-- Red: Search for `#dc3545`
-
-## Technical Details
-
-- **Framework**: Bootstrap 5.3.3
-- **Icons**: Bootstrap Icons
-- **Features**: Responsive design, smooth scrolling, mobile-optimized
-- **Browser Support**: All modern browsers
-- **Performance**: Optimized for fast loading
-
-## Cost Breakdown
-
-### FREE Options:
-- **GitHub Pages**: $0/month (recommended)
-- **Netlify**: $0/month (100GB bandwidth)
-- **Vercel**: $0/month (100GB bandwidth)
-
-### Custom Domain (Optional):
-- Domain name: ~$12/year (e.g., lucky7towing.com)
-- Connect to GitHub Pages for free
-
-## Need Help?
-
-1. **GitHub Pages Tutorial**: [docs.github.com/pages](https://docs.github.com/pages)
-2. **Bootstrap Documentation**: [getbootstrap.com](https://getbootstrap.com)
-3. **Web Development Help**: Contact a local web developer
-
-## Next Steps
-
-1. 📸 **Add your actual photos** to the images folder
-2. 📞 **Update contact information** with your real details
-3. 🌐 **Deploy to GitHub Pages** following the instructions above
-4. 📱 **Test on mobile devices** to ensure everything works
-5. 🔍 **Add to Google My Business** for local SEO
-
-Your professional towing website will be live and helping customers find you in minutes! 
+Title/description/canonical/OG tags plus `AutomotiveBusiness` JSON-LD live in `index.html`.
+The Google Business Profile ("Lucky 7 Towing", Bonduel WI) links here — keep name, phone,
+and hours consistent between the two.
