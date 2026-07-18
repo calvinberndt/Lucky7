@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
   <link rel="apple-touch-icon" href="images/favicon-180.png">
 
-  <link rel="preload" href="images/hero-morgan-1076.webp" as="image" type="image/webp">
+  <link rel="preload" href="images/about-morgan-1000.jpg" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -125,38 +125,56 @@
             <li class="chip">Licensed &amp; Insured</li>
           </ul>
         </div>
-        <figure class="hero-art reveal" style="--d:.1s">
-          <img class="hero-truck" src="images/hero-morgan-1076.webp" width="1076" height="452" alt="Lucky 7's red Freightliner flatbed rolling in with a classic Morgan roadster secured on the bed" fetchpriority="high">
-          <figcaption>Precious cargo welcome &mdash; a classic Morgan riding home</figcaption>
-        </figure>
+        <div class="hero-art reveal" style="--d:.1s" role="group" aria-label="Photos of Lucky 7 trucks at work">
+          <figure class="hero-card hero-card-back">
+            <img src="images/fleet-winter-900.jpg" width="900" height="420" alt="Lucky 7's yellow flatbed recovering a shuttle bus in a Wisconsin winter" loading="lazy">
+          </figure>
+          <figure class="hero-card hero-card-front">
+            <img src="images/about-morgan-1000.jpg" width="1000" height="450" alt="A classic Morgan roadster secured on Lucky 7's red flatbed on a sunny day" fetchpriority="high">
+            <figcaption>Precious cargo welcome &mdash; a classic Morgan riding home</figcaption>
+          </figure>
+        </div>
       </div>
       <div class="hazard-divider" aria-hidden="true"></div>
     </section>
 
-    <!-- ============ HOW IT WORKS ============ -->
+    <!-- ============ HOW IT WORKS (scrollytelling journey) ============ -->
     <section class="steps" aria-labelledby="steps-title">
       <div class="shell">
         <p class="scenario reveal">Flat tire on a county road. Deer strike at dusk. A gauge that lied about the gas.
         <em>It happens to everyone out here &mdash; save the number before you need it.</em></p>
-        <p class="kicker reveal">When it does</p>
-        <h2 class="reveal" id="steps-title" style="--d:.06s">Here&rsquo;s how it goes</h2>
-        <ol class="step-list">
-          <li class="step reveal" style="--d:.1s">
-            <span class="step-num" aria-hidden="true">1</span>
-            <h3>Call. A real person answers.</h3>
-            <p>Day or night you talk to the driver — not a call center, not a phone tree.</p>
-          </li>
-          <li class="step reveal" style="--d:.2s">
-            <span class="step-num" aria-hidden="true">2</span>
-            <h3>Tell us where you are.</h3>
-            <p>A county road, a fire number, the nearest tavern — landmarks work just fine out here.</p>
-          </li>
-          <li class="step reveal" style="--d:.3s">
-            <span class="step-num" aria-hidden="true">3</span>
-            <h3>We roll out.</h3>
-            <p>You get a straight answer on timing, then a flatbed is on its way to you.</p>
-          </li>
-        </ol>
+      </div>
+      <div class="steps-pin" data-pin>
+        <div class="steps-stage">
+          <div class="shell">
+            <p class="kicker reveal">When it does</p>
+            <h2 class="reveal" id="steps-title" style="--d:.06s">Here&rsquo;s how it goes</h2>
+            <div class="step-road" aria-hidden="true">
+              <svg class="road-truck" viewBox="0 0 44 20">
+                <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="15" r="3.2" fill="currentColor"/>
+                <circle cx="33" cy="15" r="3.2" fill="currentColor"/>
+              </svg>
+            </div>
+            <ol class="step-list">
+              <li class="step reveal" style="--d:.1s" data-step="0">
+                <span class="step-num" aria-hidden="true">1</span>
+                <h3>Call. A real person answers.</h3>
+                <p>Day or night you talk to the driver — not a call center, not a phone tree.</p>
+              </li>
+              <li class="step reveal" style="--d:.2s" data-step="1">
+                <span class="step-num" aria-hidden="true">2</span>
+                <h3>Tell us where you are.</h3>
+                <p>A county road, a fire number, the nearest tavern — landmarks work just fine out here.</p>
+              </li>
+              <li class="step reveal" style="--d:.3s" data-step="2">
+                <span class="step-num" aria-hidden="true">3</span>
+                <h3>We roll out.</h3>
+                <p>You get a straight answer on timing, then a flatbed is on its way to you.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -245,32 +263,46 @@
           </div>
         </div>
         <figure class="photo-mat tilt-r reveal" style="--d:.2s">
-          <img src="images/hero-truck-1244.jpg" width="1244" height="720" alt="Lucky 7's red Chevy C5500 flatbed with flame decals, nicknamed Pete, on a black background" loading="lazy">
-          <figcaption>&ldquo;Pete,&rdquo; the C5500 flatbed &mdash; flames and all</figcaption>
+          <img src="images/fleet-aaa-900.jpg" width="900" height="405" alt="Matt's yellow Lucky 7 flatbed loaded with a AAA-dispatched vehicle" loading="lazy">
+          <figcaption>On the hook for a AAA call</figcaption>
           <img class="badge-sticker" src="images/badge-320.jpg" width="128" height="70" alt="Lucky 7 Transport clover badge" loading="lazy">
         </figure>
       </div>
     </section>
 
-    <!-- ============ FLEET ============ -->
+    <!-- ============ FLEET (scrollytelling card deck) ============ -->
     <section class="fleet" id="fleet" aria-labelledby="fleet-title">
       <span id="gallery" class="anchor-alias" aria-hidden="true"></span>
-      <div class="shell">
-        <p class="kicker reveal">The fleet</p>
-        <h2 class="reveal" id="fleet-title" style="--d:.06s">Real trucks, real work</h2>
-        <div class="fleet-grid">
-          <figure class="photo-mat tilt-l reveal" style="--d:.1s">
-            <img src="images/fleet-red-900.jpg" width="900" height="405" alt="Red Lucky 7 flatbed truck carrying a classic Morgan roadster" loading="lazy">
-            <figcaption>The red Freightliner on a classic-car run</figcaption>
-          </figure>
-          <figure class="photo-mat tilt-r reveal" style="--d:.2s">
-            <img src="images/fleet-aaa-900.jpg" width="900" height="405" alt="Yellow Lucky 7 flatbed hauling a AAA-dispatched vehicle" loading="lazy">
-            <figcaption>On the hook for AAA dispatch</figcaption>
-          </figure>
-          <figure class="photo-mat tilt-l reveal" style="--d:.3s">
-            <img src="images/fleet-winter-900.jpg" width="900" height="420" alt="Yellow Lucky 7 flatbed recovering a damaged shuttle bus in winter" loading="lazy">
-            <figcaption>January doesn&rsquo;t cancel breakdowns. Neither do we.</figcaption>
-          </figure>
+      <div class="fleet-pin" data-pin>
+        <div class="fleet-stage">
+          <div class="shell">
+            <div class="fleet-head">
+              <div>
+                <p class="kicker reveal">The fleet</p>
+                <h2 class="reveal" id="fleet-title" style="--d:.06s">Real trucks, real work</h2>
+              </div>
+              <p class="deck-hint reveal" style="--d:.12s" aria-hidden="true">Keep scrolling &mdash; flip the stack</p>
+            </div>
+            <div class="card-deck reveal" style="--d:.15s">
+              <figure class="photo-mat deck-card deck-card-3">
+                <img src="images/fleet-winter-900.jpg" width="900" height="420" alt="Yellow Lucky 7 flatbed recovering a damaged shuttle bus in winter" loading="lazy">
+                <figcaption>January doesn&rsquo;t cancel breakdowns. Neither do we.</figcaption>
+              </figure>
+              <figure class="photo-mat deck-card deck-card-2">
+                <img src="images/fleet-aaa-900.jpg" width="900" height="405" alt="Yellow Lucky 7 flatbed hauling a AAA-dispatched vehicle" loading="lazy">
+                <figcaption>On the hook for AAA dispatch</figcaption>
+              </figure>
+              <figure class="photo-mat deck-card deck-card-1">
+                <img src="images/fleet-red-900.jpg" width="900" height="405" alt="Red Lucky 7 flatbed truck carrying a classic Morgan roadster" loading="lazy">
+                <figcaption>The red Freightliner on a classic-car run</figcaption>
+              </figure>
+            </div>
+            <div class="deck-dots" aria-hidden="true">
+              <span class="deck-dot" data-dot="0"></span>
+              <span class="deck-dot" data-dot="1"></span>
+              <span class="deck-dot" data-dot="2"></span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

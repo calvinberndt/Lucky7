@@ -44,6 +44,48 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // --- scrollytelling: pinned scenes driven by scroll progress (--p in [0,1]) ---
+  // Sections with [data-pin] pin their stage (position: sticky in CSS) while the
+  // user scrolls through the section's extra height; --p scrubs the scene.
+  var pins = Array.prototype.slice.call(document.querySelectorAll('[data-pin]'));
+  var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var STEP_THRESHOLDS = [0.04, 0.45, 0.86];
+
+  function updatePins() {
+    pins.forEach(function (pin) {
+      var stage = pin.firstElementChild;
+      if (!stage) return;
+      var range = pin.offsetHeight - stage.offsetHeight;
+      if (range <= 0) return; // stage not pinned at this viewport (fallback layout)
+      var p = Math.min(Math.max(-pin.getBoundingClientRect().top / range, 0), 1);
+      pin.style.setProperty('--p', p.toFixed(4));
+
+      var steps = pin.querySelectorAll('[data-step]');
+      steps.forEach(function (s) {
+        var i = parseInt(s.getAttribute('data-step'), 10);
+        s.classList.toggle('active', p >= STEP_THRESHOLDS[i]);
+      });
+
+      var dots = pin.querySelectorAll('.deck-dot');
+      if (dots.length) {
+        var idx = p < 0.24 ? 0 : p < 0.76 ? 1 : 2;
+        dots.forEach(function (d, j) { d.classList.toggle('active', j === idx); });
+      }
+    });
+  }
+
+  if (pins.length && motionOK) {
+    var pinTick = false;
+    function requestPinUpdate() {
+      if (pinTick) return;
+      pinTick = true;
+      requestAnimationFrame(function () { updatePins(); pinTick = false; });
+    }
+    window.addEventListener('scroll', requestPinUpdate, { passive: true });
+    window.addEventListener('resize', requestPinUpdate, { passive: true });
+    updatePins();
+  }
+
   // --- scroll reveals (skipped for reduced motion; CSS keeps content visible) ---
   var reveals = document.querySelectorAll('.reveal');
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
