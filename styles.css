@@ -139,12 +139,18 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 
 .hazard-divider {
   height: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.35);
+}
+.hazard-divider::before {
+  content: "";
+  position: absolute; top: 0; bottom: 0; left: -509px; right: 0;
   background: repeating-linear-gradient(
     -45deg,
     var(--amber-400) 0 18px,
     var(--green-950) 18px 36px
   );
-  box-shadow: inset 0 2px 5px rgba(0,0,0,.35);
 }
 
 /* ---------- header ---------- */
@@ -315,7 +321,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .phone-plate-label {
   font-family: var(--font-cond); font-weight: 600;
   font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(244, 237, 218, .85);
+  color: var(--cream-text);
 }
 .phone-plate-num {
   font-family: var(--font-display);
@@ -600,7 +606,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   display: none;
   font-family: var(--font-cond); font-weight: 600;
   font-size: .88rem; letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(24, 31, 25, .45);
+  color: rgba(24, 31, 25, .62);
   margin: 0 0 .4rem;
 }
 
@@ -667,9 +673,9 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   100% { transform: scale(1); }
 }
 
+/* glyph strokes/fills use currentColor presentation attrs (set in the <defs>
+   #truck-glyph) so they inherit through the <use> shadow tree */
 .map-truck { color: var(--red-600); pointer-events: none; }
-.map-truck path { stroke: currentColor; stroke-width: 2.6; }
-.map-truck circle { fill: currentColor; }
 .truck-flip { transition: transform .18s ease; }
 
 .map-status {
@@ -683,7 +689,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 }
 .map-compass path { stroke: var(--ink-900); stroke-width: 2; fill: none; opacity: .6; }
 .map-compass text { font-family: var(--font-cond); font-weight: 700; font-size: 14px; fill: var(--ink-900); text-anchor: middle; opacity: .6; }
-.map-note { font-family: var(--font-body); font-style: italic; font-size: 13px; fill: rgba(24,31,25,.55); }
+.map-note { font-family: var(--font-body); font-style: italic; font-size: 14px; fill: rgba(24,31,25,.72); }
 
 /* ---------- reviews ---------- */
 
@@ -820,7 +826,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   letter-spacing: .1em; text-transform: uppercase; font-size: .88rem;
   color: rgba(244, 237, 218, .75);
 }
-.contact-facts li::before { content: "\2663\00a0"; color: var(--green-500); }
+.contact-facts li::before { content: "\2663\00a0"; content: "\2663\00a0" / ""; color: var(--green-500); }
 
 .contact-towns {
   margin: 2.4rem 0 0;
@@ -901,7 +907,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 }
 .footer-cities a { color: rgba(244, 237, 218, .8); text-underline-offset: 3px; }
 .footer-cities a:hover { color: var(--amber-400); }
-.footer-credit { font-size: .78rem; color: rgba(244, 237, 218, .38); }
+.footer-credit { font-size: .78rem; color: rgba(244, 237, 218, .56); }
 
 /* ---------- floating call button (mobile) ---------- */
 
@@ -956,12 +962,15 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   /* ---- fleet deck: pin + scrub (driven by --p from script.js) ----
      Only pins when the viewport is tall enough to hold the whole scene;
      short viewports keep the static grid fallback. */
-  @media (min-height: 560px) {
+  @media (min-height: 640px) {
     html.js .fleet-pin { height: 280vh; }
     html.js .fleet-stage {
       position: sticky; top: 60px;
       height: calc(100vh - 60px);
-      display: flex; align-items: safe center;
+      height: calc(100dvh - 60px);
+      display: flex;
+      align-items: center;
+      align-items: safe center;
       overflow: hidden;
     }
     html.js .fleet-stage .shell { width: 100%; }
@@ -1007,11 +1016,12 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   }
 
   /* ---- steps journey: pin + road (desktop) ---- */
-  @media (min-width: 900px) and (min-height: 560px) {
+  @media (min-width: 900px) and (min-height: 640px) {
     html.js .steps-pin { height: 230vh; }
     html.js .steps-stage {
       position: sticky; top: 60px;
       min-height: calc(100vh - 60px);
+      min-height: calc(100dvh - 60px);
       display: flex; align-items: center;
     }
     html.js .steps-stage .shell { width: 100%; }
@@ -1063,41 +1073,43 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   html.js .map-panel.in .map-road path:nth-child(5) { animation-delay: 1.65s; }
   html.js .map-panel.in .map-road path:nth-child(6) { animation-delay: 1.75s; }
 
-  html.js .map-panel .map-towns .dot,
-  html.js .map-panel .town-hub .dot,
-  html.js .map-panel .map-towns .town text,
-  html.js .map-panel .town-hub text {
+  /* entrance choreography is scoped to :not(.map-ready) — script.js stamps
+     .map-ready after it plays so arrival pulses can't restart entrances */
+  html.js .map-panel:not(.map-ready) .map-towns .dot,
+  html.js .map-panel:not(.map-ready) .town-hub .dot,
+  html.js .map-panel:not(.map-ready) .map-towns .town text,
+  html.js .map-panel:not(.map-ready) .town-hub text {
     opacity: 0; transform-box: fill-box; transform-origin: center;
   }
-  html.js .map-panel.in .map-towns .dot,
-  html.js .map-panel.in .town-hub .dot { animation: dot-pop .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
-  html.js .map-panel.in .map-towns .town text,
-  html.js .map-panel.in .town-hub text { animation: road-fade .4s ease forwards; }
-  html.js .map-panel.in .map-towns .town:nth-child(1) .dot, html.js .map-panel.in .map-towns .town:nth-child(1) text { animation-delay: 1.6s; }
-  html.js .map-panel.in .map-towns .town:nth-child(2) .dot, html.js .map-panel.in .map-towns .town:nth-child(2) text { animation-delay: 1.7s; }
-  html.js .map-panel.in .map-towns .town:nth-child(3) .dot, html.js .map-panel.in .map-towns .town:nth-child(3) text { animation-delay: 1.8s; }
-  html.js .map-panel.in .map-towns .town:nth-child(4) .dot, html.js .map-panel.in .map-towns .town:nth-child(4) text { animation-delay: 1.9s; }
-  html.js .map-panel.in .map-towns .town:nth-child(5) .dot, html.js .map-panel.in .map-towns .town:nth-child(5) text { animation-delay: 2.0s; }
-  html.js .map-panel.in .map-towns .town:nth-child(6) .dot, html.js .map-panel.in .map-towns .town:nth-child(6) text { animation-delay: 2.1s; }
-  html.js .map-panel.in .map-towns .town:nth-child(7) .dot, html.js .map-panel.in .map-towns .town:nth-child(7) text { animation-delay: 2.2s; }
-  html.js .map-panel.in .town-hub .dot, html.js .map-panel.in .town-hub text { animation-delay: 1.5s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .dot,
+  html.js .map-panel.in:not(.map-ready) .town-hub .dot { animation: dot-pop .45s cubic-bezier(.34, 1.56, .64, 1) forwards; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town text,
+  html.js .map-panel.in:not(.map-ready) .town-hub text { animation: road-fade .4s ease forwards; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(1) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(1) text { animation-delay: 1.6s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(2) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(2) text { animation-delay: 1.7s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(3) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(3) text { animation-delay: 1.8s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(4) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(4) text { animation-delay: 1.9s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(5) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(5) text { animation-delay: 2.0s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(6) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(6) text { animation-delay: 2.1s; }
+  html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(7) .dot, html.js .map-panel.in:not(.map-ready) .map-towns .town:nth-child(7) text { animation-delay: 2.2s; }
+  html.js .map-panel.in:not(.map-ready) .town-hub .dot, html.js .map-panel.in:not(.map-ready) .town-hub text { animation-delay: 1.5s; }
 
-  html.js .map-panel .town-hq { opacity: 0; transform: translateY(-14px); transform-box: fill-box; transform-origin: center; }
-  html.js .map-panel.in .town-hq {
+  html.js .map-panel:not(.map-ready) .town-hq { opacity: 0; transform: translateY(-14px); transform-box: fill-box; transform-origin: center; }
+  html.js .map-panel.in:not(.map-ready) .town-hq {
     transition: opacity .4s ease 2.35s, transform .5s cubic-bezier(.34, 1.56, .64, 1) 2.35s;
     opacity: 1; transform: translateY(0);
   }
 
-  html.js .map-panel .map-truck { opacity: 0; }
-  html.js .map-panel.in .map-truck { transition: opacity .5s ease 2.7s; opacity: 1; }
+  html.js .map-panel:not(.map-ready) .map-truck { opacity: 0; }
+  html.js .map-panel.in:not(.map-ready) .map-truck { transition: opacity .5s ease 2.7s; opacity: 1; }
 
   html.js .map-panel .town.stop-pulse .dot { animation: town-ping .85s ease-out; opacity: 1; }
 
-  html.js .map-panel .map-status { opacity: 0; }
-  html.js .map-panel.in .map-status { transition: opacity .5s ease 2.9s; opacity: 1; }
+  html.js .map-panel:not(.map-ready) .map-status { opacity: 0; }
+  html.js .map-panel.in:not(.map-ready) .map-status { transition: opacity .5s ease 2.9s; opacity: 1; }
 
   /* ambient life */
-  .hazard-divider { animation: hazard-drift 70s linear infinite; }
+  .hazard-divider::before { animation: hazard-drift 70s linear infinite; }
   .hero-clover { animation: clover-spin 240s linear infinite; }
 }
 
@@ -1119,7 +1131,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   100%{ opacity: 1; transform: scale(1); }
 }
 @keyframes hazard-drift {
-  to { background-position-x: 509px; }
+  to { transform: translateX(509px); }
 }
 @keyframes clover-spin {
   to { transform: rotate(346deg); }
@@ -1190,6 +1202,12 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 
 @media (max-width: 639px) {
   :root { --topbar-h: 0px; }
+  .town .hit { r: 40px; }
+  .town text { font-size: 26px; }
+  .town-hub text { font-size: 30px; }
+  .town-hq text { font-size: 28px; }
+  .map-hwy-label { font-size: 22px; }
+  .map-note { font-size: 19px; }
   .topbar { display: none; }
   .service-grid { grid-template-columns: 1fr; }
   .brand-sub { display: none; }

@@ -28,7 +28,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
   <link rel="apple-touch-icon" href="images/favicon-180.png">
 
-  <link rel="preload" href="images/about-morgan-1000.jpg" as="image">
+  <link rel="preload" href="images/about-morgan-1000.jpg" as="image" fetchpriority="high" media="(min-width: 900px)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
 </head>
 <body>
 
-  <a class="skip-link" href="#services">Skip to services</a>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
   <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
@@ -51,6 +51,12 @@
         <path d="M2 2 C 4 12, 3 18, 10 26" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
       </g>
       <symbol id="clover" viewBox="-34 -34 68 68"><use href="#clover-art"/></symbol>
+      <!-- side-view flatbed glyph, shared by the steps road and the dispatch map -->
+      <g id="truck-glyph">
+        <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="15" r="3.3" fill="currentColor"/>
+        <circle cx="33" cy="15" r="3.3" fill="currentColor"/>
+      </g>
       <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.6l2.9 5.9 6.5 1-4.7 4.5 1.1 6.4L12 17.3l-5.8 3.1 1.1-6.4L2.6 9.5l6.5-1z"/></symbol>
       <symbol id="phone" viewBox="0 0 24 24"><path fill="currentColor" d="M6.8 2.8c.6-.6 1.6-.5 2.1.2l2 2.9c.4.6.4 1.4-.1 2l-1.2 1.4c1 2 2.6 3.6 4.6 4.6l1.4-1.2c.6-.5 1.4-.5 2-.1l2.9 2c.7.5.8 1.5.2 2.1l-1.6 1.6c-.7.7-1.7 1-2.6.7C10.4 17.5 6.5 13.6 4.1 7.4c-.3-.9 0-1.9.7-2.6z"/></symbol>
     </defs>
@@ -74,7 +80,7 @@
     </div>
     <div class="shell header-row">
       <a class="brand" href="#home" aria-label="Lucky 7 Towing and Transport — back to top">
-        <img class="brand-badge" src="images/favicon-192.png" width="46" height="46" alt="">
+        <img class="brand-badge" src="images/brand-112.jpg" width="46" height="46" alt="">
         <span class="brand-text">
           <span class="brand-name">Lucky <em>7</em></span>
           <span class="brand-sub">Towing &amp; Transport</span>
@@ -105,7 +111,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- ============ HERO ============ -->
     <section class="hero grain" id="home">
@@ -155,11 +161,7 @@
             <p class="kicker reveal">When it does</p>
             <h2 class="reveal" id="steps-title" style="--d:.06s">Here&rsquo;s how it goes</h2>
             <div class="step-road" aria-hidden="true">
-              <svg class="road-truck" viewBox="0 0 44 20">
-                <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="15" r="3.2" fill="currentColor"/>
-                <circle cx="33" cy="15" r="3.2" fill="currentColor"/>
-              </svg>
+              <svg class="road-truck" viewBox="0 0 44 20"><use href="#truck-glyph"/></svg>
             </div>
             <ol class="step-list">
               <li class="step reveal" style="--d:.1s" data-step="0">
@@ -377,11 +379,7 @@
             <!-- the truck (driven by script.js) -->
             <g class="map-truck" aria-hidden="true" transform="translate(585 229)">
               <g class="truck-flip">
-                <g transform="translate(-21 -20)">
-                  <path d="M2 15h40M2 15v-4h14l3-6h9c1.6 0 3 .8 3.8 2.2L34 11h6a2 2 0 0 1 2 2v2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="12" cy="15" r="3.4"/>
-                  <circle cx="33" cy="15" r="3.4"/>
-                </g>
+                <use href="#truck-glyph" transform="translate(-21 -20)"/>
               </g>
             </g>
             <!-- compass -->
@@ -391,7 +389,8 @@
             </g>
             <text class="map-note" x="30" y="392">Service area &mdash; not to scale &middot; &amp; surrounding communities</text>
           </svg>
-          <p class="map-status" aria-live="polite">Parked at HQ in Bonduel &mdash; tap a town to roll the truck.</p>
+          <p class="map-status">Parked at HQ in Bonduel &mdash; tap a town to roll the truck.</p>
+          <p class="map-announcer visually-hidden" aria-live="polite"></p>
           <figcaption class="visually-hidden" id="map-caption-text">Map showing Wittenberg, Gresham, Keshena, Gillett, Cecil, Shawano, Bonduel (headquarters), Pulaski, and Navarino. Each town can be selected to send an animated tow truck there.</figcaption>
         </figure>
       </div>
@@ -405,12 +404,13 @@
             <p class="kicker light reveal">Google reviews</p>
             <h2 class="reveal" id="reviews-title" style="--d:.06s">Neighbors we&rsquo;ve pulled out of trouble</h2>
           </div>
-          <p class="rating-plate reveal" style="--d:.12s" aria-label="Rated 5.0 out of 5 on Google">
-            <span class="rating-num">5.0</span>
+          <p class="rating-plate reveal" style="--d:.12s">
+            <span class="visually-hidden">Rated 5.0 out of 5 on Google</span>
+            <span class="rating-num" aria-hidden="true">5.0</span>
             <span class="rating-stars" aria-hidden="true">
               <svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg><svg class="i star"><use href="#star"/></svg>
             </span>
-            <span class="rating-sub">on Google</span>
+            <span class="rating-sub" aria-hidden="true">on Google</span>
           </p>
         </div>
         <div class="review-grid">

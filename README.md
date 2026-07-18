@@ -22,7 +22,7 @@ logo and truck decals — no CSS framework. See the full design spec at
 |---|---|
 | `index.html` | The whole site: markup, inline SVG artwork, JSON-LD structured data |
 | `styles.css` | Design tokens + all styling, responsive + reduced-motion aware |
-| `script.js` | Mobile menu, header shadow, IntersectionObserver scroll reveals |
+| `script.js` | Mobile menu, header shadow, scroll reveals, pinned-scene scrubbing (fleet deck + steps road), the dispatch map (road graph, Dijkstra routing, patrol), stat count-ups |
 | `images/` | Originals (`lucky7_*.png/.jpg`) plus optimized derivatives used by the site |
 
 ## Working on the site
@@ -44,8 +44,11 @@ attributes in `index.html` in sync to avoid layout shift. Favicons come from the
 - **Phone number** appears in `tel:` links and visible text — search for `853-8513`.
 - **Reviews** in the Reviews section are real quotes from the Google Business listing;
   refresh them from the listing rather than inventing copy.
-- **Towns / service area:** update both the text lists and the SVG map labels in
-  `index.html`, and the `areaServed` array in the JSON-LD block.
+- **Towns / service area:** update the text lists, the SVG map town groups in
+  `index.html`, the `areaServed` array in the JSON-LD block, **and** the `NODES`
+  coordinates + `EDGES` road connections in `script.js` — every clickable town in
+  the SVG must have a matching `NODES` entry and at least one `EDGES` entry, or
+  the dispatch truck can't route there (it will fall back to teleporting).
 
 ## SEO
 

@@ -8,73 +8,87 @@ document.addEventListener('DOMContentLoaded', function () {
   var nav = document.getElementById('site-nav');
   var menuBtn = document.querySelector('.menu-btn');
 
-  // --- mobile menu ---
-  function setMenu(open) {
-    nav.classList.toggle('open', open);
-    menuBtn.setAttribute('aria-expanded', String(open));
-    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  }
+  // --- mobile menu (guarded: a page without this chrome must not kill the rest) ---
+  if (nav && menuBtn) {
+    var setMenu = function (open) {
+      nav.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
 
-  menuBtn.addEventListener('click', function () {
-    setMenu(!nav.classList.contains('open'));
-  });
+    menuBtn.addEventListener('click', function () {
+      setMenu(!nav.classList.contains('open'));
+    });
 
-  nav.addEventListener('click', function (e) {
-    if (e.target.closest('a')) setMenu(false);
-  });
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && nav.classList.contains('open')) {
-      setMenu(false);
-      menuBtn.focus();
-    }
-  });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        setMenu(false);
+        menuBtn.focus();
+      }
+    });
 
-  document.addEventListener('click', function (e) {
-    if (nav.classList.contains('open') &&
-        !nav.contains(e.target) && !menuBtn.contains(e.target)) {
-      setMenu(false);
-    }
-  });
-
-  // --- header shadow once the page is scrolled ---
-  function onScroll() {
-    header.classList.toggle('scrolled', window.scrollY > 8);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // --- scrollytelling: pinned scenes driven by scroll progress (--p in [0,1]) ---
-  // Sections with [data-pin] pin their stage (position: sticky in CSS) while the
-  // user scrolls through the section's extra height; --p scrubs the scene.
-  var pins = Array.prototype.slice.call(document.querySelectorAll('[data-pin]'));
-  var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var STEP_THRESHOLDS = [0.04, 0.45, 0.86];
-
-  function updatePins() {
-    pins.forEach(function (pin) {
-      var stage = pin.firstElementChild;
-      if (!stage) return;
-      var range = pin.offsetHeight - stage.offsetHeight;
-      if (range <= 0) return; // stage not pinned at this viewport (fallback layout)
-      var p = Math.min(Math.max(-pin.getBoundingClientRect().top / range, 0), 1);
-      pin.style.setProperty('--p', p.toFixed(4));
-
-      var steps = pin.querySelectorAll('[data-step]');
-      steps.forEach(function (s) {
-        var i = parseInt(s.getAttribute('data-step'), 10);
-        s.classList.toggle('active', p >= STEP_THRESHOLDS[i]);
-      });
-
-      var dots = pin.querySelectorAll('.deck-dot');
-      if (dots.length) {
-        var idx = p < 0.24 ? 0 : p < 0.76 ? 1 : 2;
-        dots.forEach(function (d, j) { d.classList.toggle('active', j === idx); });
+    document.addEventListener('click', function (e) {
+      if (nav.classList.contains('open') &&
+          !nav.contains(e.target) && !menuBtn.contains(e.target)) {
+        setMenu(false);
       }
     });
   }
 
-  if (pins.length && motionOK) {
+  // --- header shadow once the page is scrolled ---
+  if (header) {
+    var onScroll = function () {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // --- scrollytelling: pinned scenes driven by scroll progress (--p in [0,1]) ---
+  // Sections with [data-pin] pin their stage (position: sticky in CSS) while the
+  // user scrolls through the section's extra height; --p scrubs the scene.
+  var STICKY_TOP = 60; // matches .fleet-stage / .steps-stage `top` in styles.css
+  var pinScenes = Array.prototype.slice.call(document.querySelectorAll('[data-pin]'))
+    .map(function (pin) {
+      return {
+        pin: pin,
+        stage: pin.firstElementChild,
+        steps: Array.prototype.slice.call(pin.querySelectorAll('[data-step]')),
+        dots: Array.prototype.slice.call(pin.querySelectorAll('.deck-dot'))
+      };
+    })
+    .filter(function (s) { return !!s.stage; });
+  var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var STEP_THRESHOLDS = [0.04, 0.45, 0.86];
+
+  function updatePins() {
+    // phase 1: all layout reads, no writes (avoids per-pin layout thrash)
+    pinScenes.forEach(function (s) {
+      var range = s.pin.offsetHeight - s.stage.offsetHeight - STICKY_TOP;
+      s.p = range > 0
+        ? Math.min(Math.max(-s.pin.getBoundingClientRect().top / range, 0), 1)
+        : null; // stage not pinned at this viewport (fallback layout)
+    });
+    // phase 2: all writes
+    pinScenes.forEach(function (s) {
+      if (s.p === null) return;
+      s.pin.style.setProperty('--p', s.p.toFixed(4));
+      s.steps.forEach(function (el) {
+        var i = parseInt(el.getAttribute('data-step'), 10);
+        el.classList.toggle('active', s.p >= STEP_THRESHOLDS[i]);
+      });
+      if (s.dots.length) {
+        var idx = s.p < 0.24 ? 0 : s.p < 0.76 ? 1 : 2;
+        s.dots.forEach(function (d, j) { d.classList.toggle('active', j === idx); });
+      }
+    });
+  }
+
+  if (pinScenes.length && motionOK) {
     var pinTick = false;
     function requestPinUpdate() {
       if (pinTick) return;
@@ -86,25 +100,24 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePins();
   }
 
-  // --- scroll reveals (skipped for reduced motion; CSS keeps content visible) ---
+  // --- scroll reveals (reduced motion / no IO: show everything, keep going —
+  //     the dispatch map and counters below must still initialize) ---
   var reveals = document.querySelectorAll('.reveal');
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (prefersReduced || !('IntersectionObserver' in window)) {
+  if (!motionOK || !('IntersectionObserver' in window)) {
     reveals.forEach(function (el) { el.classList.add('in'); });
-    return;
+  } else {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    reveals.forEach(function (el) { observer.observe(el); });
   }
-
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-
-  reveals.forEach(function (el) { observer.observe(el); });
 
   // --- service-area dispatch map: the truck patrols, and towns are tappable ---
   (function () {
@@ -139,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function route(from, to) { // Dijkstra over 9 nodes
+      if (!NODES[from] || !NODES[to]) return null;
       var best = {}, prev = {}, left = Object.keys(NODES);
       left.forEach(function (n) { best[n] = Infinity; });
       best[from] = 0;
@@ -150,8 +164,12 @@ document.addEventListener('DOMContentLoaded', function () {
           if (best[cur] + e.d < best[e.to]) { best[e.to] = best[cur] + e.d; prev[e.to] = cur; }
         });
       }
-      var path = [to];
-      while (path[0] !== from) path.unshift(prev[path[0]]);
+      // bounded reconstruction: a disconnected graph degrades to null, never a hang
+      var path = [to], guard = 0;
+      while (path[0] !== from) {
+        if (prev[path[0]] === undefined || guard++ > 32) return null;
+        path.unshift(prev[path[0]]);
+      }
       return path;
     }
 
@@ -160,9 +178,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var pending = null;
     var idleTimer = null;
     var mapVisible = false;
+    var announceNext = false; // only user-initiated dispatches speak to screen readers
+    var announcerEl = panel.querySelector('.map-announcer');
 
     function setTruck(x, y) { truckEl.setAttribute('transform', 'translate(' + x + ' ' + y + ')'); }
     function say(msg) { statusEl.textContent = msg; }
+    function announce(msg) { if (announcerEl) announcerEl.textContent = msg; }
     function pulse(name) {
       var g = panel.querySelector('.town[data-town="' + name + '"]');
       if (!g) return;
@@ -172,9 +193,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drive(to) {
-      if (driving) { if (to !== at) { pending = to; say('Rolling — next stop: ' + to); } return; }
-      if (to === at) { pulse(to); return; }
+      if (!NODES[to]) return;
+      if (driving) { pending = to; say('Rolling — next stop: ' + to); return; }
+      if (to === at) { pulse(to); scheduleIdle(); return; }
       var nodes = route(at, to);
+      if (!nodes || nodes.length < 2) { // data mistake: degrade to a teleport, never a hang
+        at = to;
+        setTruck(NODES[to][0], NODES[to][1]);
+        pulse(to);
+        say('Truck sent to ' + to + '.');
+        scheduleIdle();
+        return;
+      }
       var segs = [], i;
       for (i = 0; i < nodes.length - 1; i++) {
         var a = NODES[nodes[i]], b = NODES[nodes[i + 1]];
@@ -183,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var total = segs.reduce(function (s, x) { return s + x.d; }, 0);
       driving = true;
       say('Rolling: ' + at + ' → ' + to);
+      if (announceNext) announce('Truck rolling to ' + to + '.');
       var t0 = null;
       function frame(ts) {
         if (t0 === null) t0 = ts;
@@ -195,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
           say(to === 'Bonduel' ? 'Back home at HQ — tap a town to roll again.'
                                : 'Made it to ' + to + ' — tap another town.');
           var next = pending; pending = null;
+          if (announceNext && !next) { announce('Truck arrived in ' + to + '.'); announceNext = false; }
           if (next) drive(next); else scheduleIdle();
           return;
         }
@@ -218,23 +250,32 @@ document.addEventListener('DOMContentLoaded', function () {
     function scheduleIdle() {
       clearTimeout(idleTimer);
       idleTimer = setTimeout(function () {
-        if (!mapVisible || driving || document.hidden) { scheduleIdle(); return; }
+        if (driving) return;                       // arrival re-arms
+        if (!mapVisible || document.hidden) return; // visibility handlers re-arm
         var next = PATROL[patrolIx % PATROL.length];
         patrolIx++;
         if (next === at) { scheduleIdle(); return; }
+        announceNext = false; // patrol legs stay silent for screen readers
         drive(next);
       }, 2800);
     }
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && mapVisible && motionOK) scheduleIdle();
+    });
 
     function onTown(e) {
       var g = e.target.closest ? e.target.closest('.town') : null;
       if (!g) return false;
       var name = g.getAttribute('data-town');
+      if (!name || !NODES[name]) return false;
+      announceNext = true;
       if (!motionOK) {
         at = name; pending = null;
         setTruck(NODES[name][0], NODES[name][1]);
         pulse(name);
         say('Truck sent to ' + name + '.');
+        announce('Truck sent to ' + name + '.');
+        announceNext = false;
       } else {
         drive(name);
       }
@@ -251,11 +292,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (mapVisible) scheduleIdle(); else clearTimeout(idleTimer);
       }, { threshold: 0.35 }).observe(panel);
     }
+
+    // once the entrance choreography has played, freeze it so later class
+    // changes (arrival pulses) can't restart entrance animations
+    if ('IntersectionObserver' in window && motionOK) {
+      var readyIO = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        readyIO.disconnect();
+        setTimeout(function () { panel.classList.add('map-ready'); }, 3200);
+      }, { threshold: 0.2 });
+      readyIO.observe(panel);
+    } else {
+      panel.classList.add('map-ready');
+    }
   })();
 
   // --- stat count-up (static values stay in the HTML for no-JS/reduced motion) ---
   var counters = document.querySelectorAll('.count[data-count]');
-  if (counters.length) {
+  if (counters.length && motionOK && 'IntersectionObserver' in window) {
     var countObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
