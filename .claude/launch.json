@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lucky7-static",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "python3 -m http.server \"${PORT:-4173}\" --directory ."],
+      "port": 4173,
+      "autoPort": true
+    }
+  ]
+}
