@@ -60,17 +60,29 @@ def fetch(path):
     for attempt in range(1, RETRIES + 1):
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
-                return resp.status, dict(resp.headers), resp.read().decode("utf-8", "replace")
+                return resp.status, lower_keys(resp.headers), strip_comments(
+                    resp.read().decode("utf-8", "replace")
+                )
         except urllib.error.HTTPError as exc:
             body = exc.read().decode("utf-8", "replace")
-            if exc.code < 500:
-                return exc.code, dict(exc.headers or {}), body
+            if exc.code < 500 and exc.code != 429:
+                return exc.code, lower_keys(exc.headers), body
             last_error = f"HTTP {exc.code}"
         except Exception as exc:  # timeout, DNS, TLS, reset - all retryable
             last_error = f"{exc.__class__.__name__}: {exc}"
         if attempt < RETRIES:
             time.sleep(RETRY_BACKOFF_SECONDS * attempt)
     return 0, {}, f"unreachable after {RETRIES} attempts ({last_error})"
+
+
+def lower_keys(headers):
+    """HTTP header names are case-insensitive; normalise so lookups are too."""
+    return {str(k).lower(): v for k, v in dict(headers or {}).items()}
+
+
+def strip_comments(html):
+    """Drop HTML comments so commented-out markup can't satisfy a check."""
+    return re.sub(r"<!--.*?-->", "", html, flags=re.S)
 
 
 def check(name, ok, detail=""):
@@ -135,7 +147,11 @@ def ld_nodes(html):
 
 def types_of(node):
     value = node.get("@type") or []
-    return [value] if isinstance(value, str) else value
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        return [v for v in value if isinstance(v, str)]
+    return []  # malformed @type: report as a missing schema, never crash
 
 
 def node_of_type(nodes, wanted):
@@ -145,17 +161,17 @@ def node_of_type(nodes, wanted):
     return None
 
 
-def check_reachable(label, status):
+def check_reachable(label, status, detail=""):
     """Separate 'we could not look' from 'the site is wrong'."""
     if status == 0:
-        check(f"{label}: reachable", False, "no response after retries")
+        check(f"{label}: reachable", False, detail or "no response after retries")
         return False
     check(f"{label}: returns 200", status == 200, f"got {status}")
     return status == 200
 
 
 def check_indexable(label, headers, html):
-    header_directive = headers.get("X-Robots-Tag", "")
+    header_directive = headers.get("x-robots-tag", "")
     check(
         f"{label}: no noindex in X-Robots-Tag",
         "noindex" not in header_directive.lower(),
@@ -189,28 +205,27 @@ def check_common(label, html, expected_canonical, expect_street=False):
     return title
 
 
-def check_json_ld(label, html, expected_blocks):
+def check_json_ld(label, html):
     block_count, nodes, parse_error = ld_nodes(html)
-    check(
-        f"{label}: has {expected_blocks}+ JSON-LD blocks",
-        block_count >= expected_blocks,
-        f"found {block_count}",
-    )
+    check(f"{label}: JSON-LD present", block_count >= 1, "no ld+json blocks")
     check(f"{label}: JSON-LD parses", parse_error is None, parse_error or "")
+    # Required node types are asserted by the callers. Block count is
+    # deliberately not asserted: one @graph block carrying every node is as
+    # valid as several separate blocks.
     return nodes
 
 
 def check_homepage():
     label = "homepage"
     status, headers, html = fetch("/")
-    if not check_reachable(label, status):
+    if not check_reachable(label, status, html):
         return
 
     check_indexable(label, headers, html)
     title = check_common(label, html, f"{SITE}/", expect_street=True)
     check(f"{label}: title carries brand", "Lucky 7" in title, title or "no <title>")
 
-    business = node_of_type(check_json_ld(label, html, expected_blocks=2), "AutomotiveBusiness")
+    business = node_of_type(check_json_ld(label, html), "AutomotiveBusiness")
     if business is None:
         check(f"{label}: business schema block found", False)
         return
@@ -240,14 +255,14 @@ def check_city_page(path, city):
     label = f"{city} page"
     url = SITE + path
     status, headers, html = fetch(path)
-    if not check_reachable(label, status):
+    if not check_reachable(label, status, html):
         return
 
     check_indexable(label, headers, html)
     title = check_common(label, html, url)
     check(f"{label}: title names the city", city in title, title or "no <title>")
 
-    nodes = check_json_ld(label, html, expected_blocks=2)
+    nodes = check_json_ld(label, html)
     service = node_of_type(nodes, "Service")
     breadcrumb = node_of_type(nodes, "BreadcrumbList")
 
@@ -277,11 +292,11 @@ def check_city_page(path, city):
 
 def check_robots_and_sitemap():
     status, _, robots = fetch("/robots.txt")
-    if check_reachable("robots.txt", status):
+    if check_reachable("robots.txt", status, robots):
         check("robots.txt references sitemap", "sitemap.xml" in robots.lower())
 
     status, _, sitemap = fetch("/sitemap.xml")
-    if not check_reachable("sitemap", status):
+    if not check_reachable("sitemap", status, sitemap):
         return
     check("sitemap looks valid", "<urlset" in sitemap and "<loc>" in sitemap)
     for path, name in [("/", "homepage")] + CITY_PAGES:
