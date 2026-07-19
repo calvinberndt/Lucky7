@@ -17,6 +17,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run SEO health checks against the live site
+        # `shell: bash` is load-bearing: it runs with -o pipefail so the script's
+        # non-zero exit survives the pipe to tee. Under the default shell the
+        # step's status came from tee (always 0) and `if: failure()` never fired,
+        # so a failing check could never open an issue.
+        shell: bash
         run: python3 scripts/seo_health_check.py | tee /tmp/seo-health.txt
 
       - name: Open issue on failure
