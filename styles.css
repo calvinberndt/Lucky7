@@ -909,6 +909,8 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .footer-cities a { color: rgba(244, 237, 218, .8); text-underline-offset: 3px; }
 .footer-cities a:hover { color: var(--amber-400); }
 .footer-credit { font-size: .78rem; color: rgba(244, 237, 218, .56); }
+.footer-credit a { color: inherit; text-underline-offset: 3px; }
+.footer-credit a:hover { color: var(--amber-400); }
 
 /* ---------- floating call button (mobile) ---------- */
 
