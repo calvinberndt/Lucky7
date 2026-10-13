@@ -21,6 +21,12 @@ for width in 320 375 900 1440; do
     return r.width > 0 && r.height > 0 && r.top >= 0 && r.bottom <= innerHeight &&
       r.left >= 0 && r.right <= innerWidth && style.visibility !== 'hidden' && style.opacity !== '0';
   };
+  assert(!/\baaa\b|american automobile association/i.test(document.documentElement.outerHTML), 'Retired affiliation in page content');
+  for (const el of document.querySelectorAll('*')) {
+    for (const pseudo of ['::before', '::after']) {
+      assert(!/\baaa\b/i.test(getComputedStyle(el, pseudo).content), 'Retired affiliation in generated content');
+    }
+  }
   const calls = [...document.querySelectorAll('a[href^="tel:"]')];
   assert(calls.length > 0 && calls.every(a => a.getAttribute('href').replace(/\D/g, '').endsWith('7158538513')), 'Incorrect call link');
   const hero = document.querySelector('.hero, .page-hero');

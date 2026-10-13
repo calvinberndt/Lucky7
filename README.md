@@ -94,6 +94,13 @@ matching structured-data field together:
 - Business name, hours, USDOT number, or services: visible copy and matching
   JSON-LD values.
 
+Lucky 7 is no longer affiliated with AAA, as confirmed on October 12, 2026. Do
+not restore provider badges, membership/coverage claims, or photos showing that
+branding. The SEO checker rejects retired-affiliation references in every public
+page, including metadata and structured data. Regression tests also protect the
+shared CSS/JavaScript and retired photo paths. Historical specifications under
+`docs/` are not current business facts or Google post templates.
+
 The SEO monitor expects the current phone digits, address, USDOT identifier, and
 business structured-data `@id`. Update `scripts/seo_health_check.py` in the same
 change if one of those canonical facts legitimately changes.
