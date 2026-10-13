@@ -176,6 +176,8 @@ NODE_PATH=/tmp/lucky7-browser-tools/node_modules node scripts/browser_compatibil
 Linux hosts may need Playwright's `install --with-deps`; CI installs those system
 dependencies. The runner checks all four routes at 320, 375, and 1440px in each
 engine, plus no-JavaScript and reduced-motion cases at 375px: 60 cases total.
+City introduction text must also retain at least 4.5:1 contrast against its
+cream section background.
 Use the public site URL instead of localhost for release verification. Failures
 exit nonzero and save screenshots and a JSON report. WebKit tests Safari's engine;
 they do not certify every Safari release or native iPhone app. On macOS WebKit,

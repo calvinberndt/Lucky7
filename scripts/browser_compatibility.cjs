@@ -108,6 +108,25 @@ async function checkPage(browser, engine, route, width, mode) {
     await page.waitForFunction(() => document.fonts.status === 'loaded', null, {polling: 100});
     assert.equal(await page.locator('h1').count(), 1, 'Expected one main heading');
     assert(await page.locator('h1').isVisible(), 'Main heading is hidden');
+    if (route !== '/') {
+      assert.equal(await page.locator('.city-intro .lede').count(), 1, 'Expected a city introduction');
+      const contrast = await page.locator('.city-intro .lede').evaluate(paragraph => {
+        // City introductions use a solid, opaque section background. Composite
+        // text alpha before applying the WCAG relative-luminance formula.
+        const channels = color => color.match(/[\d.]+/g).map(Number);
+        const background = channels(getComputedStyle(paragraph.closest('.city-intro')).backgroundColor);
+        const foreground = channels(getComputedStyle(paragraph).color);
+        const alpha = foreground[3] ?? 1;
+        const painted = foreground.slice(0, 3).map((value, i) => value * alpha + background[i] * (1 - alpha));
+        const luminance = rgb => rgb.slice(0, 3).map(value => value / 255)
+          .map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4)
+          .reduce((sum, value, i) => sum + value * [0.2126, 0.7152, 0.0722][i], 0);
+        const light = Math.max(luminance(background), luminance(painted));
+        const dark = Math.min(luminance(background), luminance(painted));
+        return (light + 0.05) / (dark + 0.05);
+      });
+      assert(contrast >= 4.5, `City introduction contrast ${contrast.toFixed(2)}:1 is below 4.5:1`);
+    }
     await page.keyboard.press('Tab');
     // macOS WebKit follows the system keyboard preference. With the default
     // preference, Option-Tab includes links; plain Tab only includes controls.
