@@ -392,14 +392,6 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   color: rgba(24, 31, 25, .7);
   padding: .5rem .15rem .3rem;
 }
-@keyframes deal-front {
-  from { transform: translate(60%, 10%) rotate(13deg); opacity: 0; }
-  to   { transform: rotate(1.6deg); opacity: 1; }
-}
-@keyframes deal-back {
-  from { transform: translate(-30%, -18%) rotate(-14deg); opacity: 0; }
-  to   { transform: rotate(-5deg); opacity: .92; }
-}
 
 /* ---------- steps ---------- */
 
@@ -958,10 +950,6 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   html.js .photo-mat.reveal.in { transform: translateY(0) rotate(var(--tilt, 0deg)); }
   html.js .photo-mat.reveal.in:hover { transform: rotate(0deg) translateY(-4px); }
 
-  /* hero photo cards deal onto the table */
-  html.js .hero-card-front { animation: deal-front .85s cubic-bezier(.24, .9, .3, 1) .3s both; }
-  html.js .hero-card-back  { animation: deal-back  .75s cubic-bezier(.24, .9, .3, 1) .12s both; }
-
   /* ---- fleet deck: pin + scrub (driven by --p from script.js) ----
      Only pins when the viewport is tall enough to hold the whole scene;
      short viewports keep the static grid fallback. */
@@ -1221,6 +1209,9 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
   .eyebrow { font-size: .78rem; letter-spacing: .16em; }
   .hero-cta { flex-direction: column; align-items: stretch; }
   .phone-plate { align-items: center; text-align: center; }
+  .phone-plate.xl { max-width: 100%; padding-inline: 1rem; }
+  .phone-plate.xl .phone-plate-num { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+  .photo-mat img.badge-sticker { right: 0; }
   .ghost-btn { justify-content: center; }
   .floating-call-btn { display: flex; }
   .chip-row { gap: .45rem; }

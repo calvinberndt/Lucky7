@@ -1,0 +1,10 @@
+# GitHub Pages builds the repository root with Jekyll. Publish the business
+# website, not repository runbooks, historical audit reports, or check scripts.
+exclude:
+  - README.md
+  - CLAUDE.md
+  - AGENTS.md
+  - DESIGN.md
+  - docs
+  - scripts
+  - tests

@@ -13,8 +13,9 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 
 | Path | What it controls |
 | --- | --- |
-| `index.html` | Homepage markup, inline SVG artwork, business contact details, page metadata, and two JSON-LD structured-data blocks. |
+| `index.html` | Homepage markup, inline SVG artwork, business contact details, page metadata, and business/WebSite JSON-LD. |
 | `styles.css` | Shared visual system and responsive styles for the homepage and city pages. |
+| `fonts.css` and `fonts/` | Self-hosted versions of the existing typefaces, their source references, and licenses. |
 | `script.js` | Mobile navigation, scroll/reveal behavior, animated fleet and service-area sections, routeable town map, and stat counters. |
 | `towing-shawano-wi/index.html` | Shawano search landing page with Service and breadcrumb structured data. |
 | `towing-bonduel-wi/index.html` | Bonduel search landing page with Service and breadcrumb structured data. |
@@ -22,7 +23,11 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 | `images/` | Approved brand, truck, fleet, owner, social-share, and favicon assets used by the static pages. |
 | `robots.txt` and `sitemap.xml` | Crawler instructions and the homepage/city-page URL list. |
 | `CNAME` | The GitHub Pages custom domain: `lucky7towingtransport.com`. |
-| `scripts/seo_health_check.py` | Live-site check for page availability, indexability, metadata, structured data, and sitemap coverage. |
+| `scripts/seo_health_check.py` | Live SEO check, plus `--local` validation of source or built pages without network requests. |
+| `tests/test_seo_health_check.py` | Deterministic regression tests for the SEO checker. |
+| `scripts/browser_smoke.sh` | Browser checks for call access, narrow-screen overflow, menus, FAQs, images, and page errors. |
+| `.github/workflows/seo-source.yml` | Checks every PR, builds with GitHub Pages/Jekyll, and validates the resulting artifact before release. |
+| `_config.yml` | Excludes repository documentation, tests, and scripts from the public Pages artifact. |
 | `.github/workflows/seo-health.yml` | Runs the live SEO check every Monday at 13:00 UTC and on manual dispatch; opens or updates a GitHub issue if it fails. |
 | `docs/seo/` | SEO audit and execution notes. |
 | `docs/superpowers/specs/` | Historical redesign and SEO design specifications, including before/after screenshots. |
@@ -115,11 +120,40 @@ retain useful alt text, and keep image `width` and `height` attributes synchroni
 with the asset to avoid layout shift. The favicon files and social-share image are
 also in `images/`.
 
+Public photos use WebP derivatives in `<picture>` with the approved JPEG as a
+fallback. Keep `srcset`, `sizes`, and the homepage image preload synchronized when
+changing a hero image. Font files preserve Alfa Slab One, Barlow, and Barlow
+Condensed; see [font sources and licenses](fonts/README.md) before replacing them.
+
 `styles.css` is shared by the homepage and city pages. A class rename or token
 change can therefore affect every public route. Review the homepage and all three
 city pages after shared style changes.
 
 ## SEO and live-site checks
+
+Before deployment, run the dependency-free checks from the repository root:
+
+```bash
+uv run --no-project python -m unittest discover -s tests -v
+uv run --no-project python scripts/seo_health_check.py --local
+node --check script.js
+```
+
+The PR workflow runs these checks and a GitHub Pages/Jekyll build. It checks the
+built `_site` directory as well, including that internal documentation and scripts
+were excluded. There is no local application compilation or package installation.
+
+With the local preview running, use an installed `agent-browser` for runtime checks:
+
+```bash
+bash scripts/browser_smoke.sh
+# The same checks can target production after deployment:
+bash scripts/browser_smoke.sh https://lucky7towingtransport.com
+```
+
+This checks all four pages at 320, 375, 900, and 1440 pixels wide. Also visually
+inspect desktop/mobile screenshots and check reduced-motion and no-JavaScript
+behavior when changing shared styles or interactions.
 
 The production monitor requests the real public site. It checks the homepage,
 all city pages, `robots.txt`, and `sitemap.xml`, including indexability, canonical
@@ -155,3 +189,4 @@ verification, not a replacement for the local preview.
 - [Redesign specification](docs/superpowers/specs/2026-07-18-lucky7-redesign-design.md)
 - [SEO enhancement specification](docs/superpowers/specs/2026-07-18-lucky7-seo-enhancement-design.md)
 - [SEO audit and plan](docs/seo/2026-07-lucky7-seo-audit-and-plan.md)
+- [October 2026 SEO audit and release evidence](docs/seo/2026-10-12-seo-improvements.md)

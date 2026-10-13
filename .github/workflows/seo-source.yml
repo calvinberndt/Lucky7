@@ -1,0 +1,42 @@
+name: SEO source checks
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test SEO checker regressions
+        run: python -m unittest discover -s tests -v
+      - name: Check local pages, crawler files, links, and assets
+        run: python scripts/seo_health_check.py --local
+      - name: Validate JavaScript syntax
+        run: node --check script.js
+      - name: Build the GitHub Pages artifact
+        uses: actions/jekyll-build-pages@v1
+        with:
+          destination: ./_site
+      - name: Check the built site and publishing exclusions
+        run: |
+          python scripts/seo_health_check.py --local _site
+          for internal in docs scripts tests README.md README.html CLAUDE.md AGENTS.md DESIGN.md; do
+            if [ -e "_site/$internal" ]; then
+              echo "Internal file published: $internal" >&2
+              exit 1
+            fi
+          done
