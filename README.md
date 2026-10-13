@@ -26,6 +26,9 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 | `scripts/seo_health_check.py` | Live SEO check, plus `--local` validation of source or built pages without network requests. |
 | `tests/test_seo_health_check.py` | Deterministic regression tests for the SEO checker. |
 | `scripts/browser_smoke.sh` | Browser checks for call access, narrow-screen overflow, menus, FAQs, images, and page errors. |
+| `scripts/browser_compatibility.cjs` | Actual Chromium, Firefox, and WebKit checks, including keyboard access and no-JavaScript/reduced-motion fallbacks. |
+| `.github/workflows/browser-compatibility.yml` | Runs the three-engine browser matrix using isolated, pinned development tooling. |
+| `scripts/submit_indexnow.py` and `indexnow-key.txt` | Offline notification preview and deployment-verified IndexNow submission; the text file is intentionally public ownership proof. |
 | `.github/workflows/seo-source.yml` | Checks every PR, builds with GitHub Pages/Jekyll, and validates the resulting artifact before release. |
 | `_config.yml` | Excludes repository documentation, tests, and scripts from the public Pages artifact. |
 | `.github/workflows/seo-health.yml` | Runs the live SEO check every Monday at 13:00 UTC and on manual dispatch; opens or updates a GitHub issue if it fails. |
@@ -162,9 +165,28 @@ This checks all four pages at 320, 375, 900, and 1440 pixels wide. Also visually
 inspect desktop/mobile screenshots and check reduced-motion and no-JavaScript
 behavior when changing shared styles or interactions.
 
+For the full browser matrix, install development tooling outside the static site:
+
+```bash
+npm install --prefix /tmp/lucky7-browser-tools --no-save --package-lock=false playwright@1.64.0
+PLAYWRIGHT_SKIP_BROWSER_GC=1 /tmp/lucky7-browser-tools/node_modules/.bin/playwright install chromium firefox webkit
+NODE_PATH=/tmp/lucky7-browser-tools/node_modules node scripts/browser_compatibility.cjs http://127.0.0.1:4173 /tmp/lucky7-browser-results
+```
+
+Linux hosts may need Playwright's `install --with-deps`; CI installs those system
+dependencies. The runner checks all four routes at 320, 375, and 1440px in each
+engine, plus no-JavaScript and reduced-motion cases at 375px: 60 cases total.
+Use the public site URL instead of localhost for release verification. Failures
+exit nonzero and save screenshots and a JSON report. WebKit tests Safari's engine;
+they do not certify every Safari release or native iPhone app. On macOS WebKit,
+the keyboard check accounts for the platform's Option-Tab link navigation.
+
 The production monitor requests the real public site. It checks the homepage,
 all city pages, `robots.txt`, and `sitemap.xml`, including indexability, canonical
 URLs, metadata, required JSON-LD, business identity, and city-page schema.
+Crawler checks cover Googlebot, Bingbot, DuckDuckBot, and Applebot. Documented
+Google, Bing, and Apple indexing directives are checked independently; an
+engine-specific block must not hide behind another engine's passing result.
 
 Run it manually after a deployment or a material SEO/content change:
 
@@ -176,6 +198,37 @@ The scheduled GitHub Action runs the same check every Monday at 13:00 UTC. A
 failure creates a new GitHub issue or adds a report to the existing open SEO
 health issue. Because this test checks the live domain, it is a post-deployment
 verification, not a replacement for the local preview.
+
+## Discovery beyond Google
+
+Safari and Firefox can use different search engines. Browser compatibility,
+search indexing, and map-listing ownership are separate concerns. The site's
+standard HTML, canonical URLs, sitemap, and universal robots rules support
+multiple engines without duplicate browser-specific pages.
+
+After a meaningful content release is deployed, preview and then send a single
+IndexNow notification for the changed canonical pages:
+
+```bash
+uv run --no-project python scripts/submit_indexnow.py
+uv run --no-project python scripts/submit_indexnow.py --submit --url https://lucky7towingtransport.com/
+```
+
+Repeat `--url` for each changed page. Submission requires explicit URLs from the
+canonical sitemap; do not resubmit untouched pages. The preview makes no network
+requests. Submission requires the live proof file,
+sitemap, and all submitted HTML pages to match this checkout, then sends one POST
+to the IndexNow endpoint. HTTP 200 means received; HTTP 202 means received with
+provider key validation pending. Neither means indexed or ranked. Do not run it
+on a daily schedule for unchanged content. The public `indexnow-key.txt` proves
+website control; it is not a private account credential. Do not replace it with
+any account password, OAuth token, or private API key.
+
+Apple Maps and Bing Maps already have Lucky7 listings. Claim the existing
+listings rather than creating duplicates. Exact claim links, current evidence,
+and a copyable business brief are in the
+[browser and search coverage guide](docs/seo/2026-10-12-browser-search-coverage.md).
+Account sign-in and ownership verification remain owner actions.
 
 ## Release checklist
 
@@ -190,6 +243,8 @@ verification, not a replacement for the local preview.
    changed public behavior.
 7. Run the live SEO health check when the change affects business facts, metadata,
    city pages, crawler files, or structured data.
+8. After meaningful public content changes, send the verified IndexNow notification
+   and record the provider response accurately in the release PR.
 
 ## Design and SEO references
 
