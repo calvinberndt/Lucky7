@@ -83,6 +83,35 @@ class SEOTests(unittest.TestCase):
                                     '<meta name="otherbot" content="noindex">')
                 self.assertEqual(seo.failures, [])
 
+    def test_indexability_reports_documented_crawler_meta_and_header_scopes(self):
+        for agent in ['Googlebot', 'Bingbot', 'Applebot']:
+            for rule in ['noindex', 'none']:
+                for headers, html in [
+                    ({}, f'<meta name="{agent}" content="{rule}">'),
+                    ({'x-robots-tag': f'{agent}: {rule}'}, ''),
+                ]:
+                    with self.subTest(agent=agent, rule=rule, headers=headers):
+                        seo.failures.clear()
+                        seo.check_indexable('fixture', headers, html)
+                        self.assertEqual(seo.failures, [
+                            f'fixture: robots directives allow {agent} indexing'])
+
+    def test_indexability_global_rule_blocks_every_documented_indexing_agent(self):
+        seo.check_indexable('fixture', {}, '<meta name="robots" content="noindex">')
+        self.assertEqual(seo.failures, [
+            f'fixture: robots directives allow {agent} indexing'
+            for agent in ['Googlebot', 'Bingbot', 'Applebot']])
+
+    def test_header_scopes_do_not_leak_between_crawlers_or_fields(self):
+        header = 'bingbot: noindex, applebot: index\nnoindex'
+        for agent in ['googlebot', 'bingbot', 'applebot']:
+            with self.subTest(agent=agent):
+                self.assertTrue(seo.blocks_indexing(header, header=True, agent=agent))
+        self.assertFalse(seo.blocks_indexing('bingbot: noindex', header=True, agent='applebot'))
+        self.assertFalse(seo.blocks_indexing('applebot: noindex', header=True, agent='bingbot'))
+        self.assertTrue(seo.blocks_indexing(
+            'otherbot: noindex, bingbot: noindex nofollow', header=True, agent='bingbot'))
+
     def test_common_accepts_current_contact_markup(self):
         seo.check_common('fixture', page_html(), seo.SITE + '/')
         self.assertEqual(seo.failures, [])
@@ -140,6 +169,22 @@ class SEOTests(unittest.TestCase):
         self.assertTrue(seo.robots_allows(robots, '/'))
         self.assertFalse(seo.robots_allows(robots, '/blocked/'))
 
+    def test_robots_applebot_follows_googlebot_only_without_its_own_group(self):
+        robots = 'User-agent: *\nAllow: /\nUser-agent: Googlebot\nDisallow: /'
+        self.assertFalse(seo.robots_allows(robots, '/', agent='applebot'))
+        self.assertTrue(seo.robots_allows(
+            robots + '\nUser-agent: Applebot\nAllow: /', '/', agent='applebot'))
+        self.assertTrue(seo.robots_allows(
+            robots + '\nUser-agent: Applebot', '/', agent='applebot'))
+        self.assertFalse(seo.robots_allows(
+            robots + '\nUser-agent: Applebot-Extended\nAllow: /', '/', agent='applebot'))
+
+    def test_robots_crawler_names_are_case_insensitive(self):
+        for agent in ['GOOGLEBOT', 'BINGBOT', 'DUCKDUCKBOT', 'APPLEBOT']:
+            with self.subTest(agent=agent):
+                robots = f'User-agent: *\nAllow: /\nUser-agent: {agent.lower()}\nDisallow: /'
+                self.assertFalse(seo.robots_allows(robots, '/', agent=agent))
+
     def check_crawlers(self, robots, sitemap):
         with patch.object(seo, 'fetch', side_effect=[(200, {}, robots), (200, {}, sitemap)]):
             seo.check_robots_and_sitemap()
@@ -151,6 +196,17 @@ class SEOTests(unittest.TestCase):
     def test_robots_disallow_all_is_reported(self):
         self.check_crawlers(f'User-agent: *\nDisallow: /\nSitemap: {seo.SITE}/sitemap.xml', sitemap_xml())
         self.assertIn('robots.txt allows Googlebot: homepage', seo.failures)
+
+    def test_robots_monitor_checks_every_crawler_and_public_page(self):
+        for agent in ['Googlebot', 'Bingbot', 'DuckDuckBot', 'Applebot']:
+            for path, label in [('/', 'homepage')] + seo.CITY_PAGES:
+                with self.subTest(agent=agent, path=path):
+                    seo.failures.clear()
+                    robots = (f'User-agent: *\nAllow: /\nUser-agent: {agent}\n'
+                              f'Disallow: {path}\nSitemap: {seo.SITE}/sitemap.xml')
+                    self.check_crawlers(robots, sitemap_xml())
+                    self.assertIn(f'robots.txt allows {agent}: {label}', seo.failures)
+                    self.assertNotIn('sitemap is valid XML', seo.failures)
 
     def test_malformed_sitemap_cannot_pass_by_containing_expected_strings(self):
         self.check_crawlers(f'Sitemap: {seo.SITE}/sitemap.xml', sitemap_xml()[:-9])

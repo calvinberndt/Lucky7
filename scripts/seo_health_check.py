@@ -5,6 +5,8 @@ Verifies the live site still carries its SEO-critical elements: indexability,
 title keywords, NAP data, structured data with the USDOT identifier, the city
 landing pages and their Service/BreadcrumbList schema, robots.txt, and sitemap
 coverage. Exits non-zero if anything regressed so the GitHub Action can alert.
+Checks crawl access for Googlebot, Bingbot, DuckDuckBot, and Applebot, and the
+documented Google, Bing, and Apple meta/header indexing directives.
 Use --local [directory] to validate source files without making network requests;
 this also checks local links, assets, fragment targets, and duplicate page titles.
 
@@ -49,6 +51,15 @@ CITY_PAGES = [
     ("/towing-bonduel-wi/", "Bonduel"),
     ("/towing-pulaski-wi/", "Pulaski"),
 ]
+
+# Crawl access and indexing directives are separate checks. DuckDuckGo documents
+# DuckDuckBot's robots.txt support and sources most ordinary links from Bing;
+# it does not document a DuckDuckBot-specific meta/X-Robots-Tag scope.
+# https://duckduckgo.com/duckduckgo-help-pages/results/duckduckbot
+# Brave's crawler follows Googlebot access rather than a separate Bravebot group.
+# https://search.brave.com/help/brave-search-crawler
+CRAWLERS = ("Googlebot", "Bingbot", "DuckDuckBot", "Applebot")
+INDEXING_CRAWLERS = ("Googlebot", "Bingbot", "Applebot")
 
 failures = []
 LOCAL_ROOT = None
@@ -98,9 +109,10 @@ def canonical_urls(html):
 
 
 def robots_allows(robots, path, agent="googlebot"):
-    """Apply Google's group selection and longest matching allow/disallow rule."""
+    """Apply named groups and longest path rules, including Apple's fallback."""
+    agent = agent.lower()
     groups, agents, rules = [], [], []
-    for line in robots.splitlines() + ["User-agent: end-of-input"]:
+    for line in robots.splitlines():
         key, separator, value = line.split("#", 1)[0].partition(":")
         if not separator:
             continue
@@ -112,7 +124,14 @@ def robots_allows(robots, path, agent="googlebot"):
             agents.append(value.lower())
         elif key in ("allow", "disallow") and agents:
             rules.append((key, value))
+    if agents:
+        groups.append((agents, rules))
     specific = [rules for agents, rules in groups if agent in agents]
+    # Applebot follows Googlebot's robots.txt group only when no Applebot group
+    # exists. An explicit empty final group still counts as an allow-all group.
+    # https://support.apple.com/en-us/119829
+    if agent == "applebot" and not specific:
+        specific = [rules for agents, rules in groups if "googlebot" in agents]
     selected = specific or [rules for agents, rules in groups if "*" in agents]
     matches = []
     for rules in selected:
@@ -262,17 +281,18 @@ def check_reachable(label, status, detail=""):
     return status == 200
 
 
-def blocks_indexing(value, header=False):
+def blocks_indexing(value, header=False, agent="googlebot"):
     """Distinguish standalone robots rules from parameter values and bot scopes."""
+    agent = agent.lower()
     parameter_rules = {"max-snippet", "max-image-preview", "max-video-preview", "unavailable_after"}
     for field in value.splitlines() if header else [value]:
-        agent = "*"
+        scope = "*"
         for group in re.split(r"[,;]", field.lower()):
             prefix = re.match(r"\s*([\w*-]+)\s*:\s*", group)
             if header and prefix and prefix.group(1) not in parameter_rules:
-                agent = prefix.group(1)
+                scope = prefix.group(1)
                 group = group[prefix.end():]
-            if agent not in ("*", "googlebot"):
+            if scope not in ("*", agent):
                 continue
             for rule in re.finditer(r"([\w-]+)(?:\s*:\s*([^\s,;]+))?", group):
                 if rule.group(2) is None and rule.group(1) in ("noindex", "none"):
@@ -282,18 +302,20 @@ def blocks_indexing(value, header=False):
 
 def check_indexable(label, headers, html):
     header_directive = headers.get("x-robots-tag", "")
-    directives = [attrs.get("content", "") for tag, attrs in Page(html).tags
-                      if tag == "meta" and attrs.get("name", "").lower()
-                      in ("robots", "googlebot")]
-    # `none` is equivalent to `noindex, nofollow`. Check every applicable meta
-    # tag: Google combines multiple directives using the more restrictive value.
-    blocked = blocks_indexing(header_directive, header=True) or any(
-        blocks_indexing(value) for value in directives)
-    check(
-        f"{label}: robots directives allow indexing",
-        not blocked,
-        "; ".join(value for value in [header_directive] + directives if value),
-    )
+    meta_tags = [(attrs.get("name", "").lower(), attrs.get("content", ""))
+                 for tag, attrs in Page(html).tags if tag == "meta"]
+    for crawler in INDEXING_CRAWLERS:
+        agent = crawler.lower()
+        directives = [value for name, value in meta_tags if name in ("robots", agent)]
+        # A generic or applicable named noindex/none blocks this crawler; an
+        # unrelated crawler's rules must not leak into its result.
+        blocked = blocks_indexing(header_directive, header=True, agent=agent) or any(
+            blocks_indexing(value, agent=agent) for value in directives)
+        check(
+            f"{label}: robots directives allow {crawler} indexing",
+            not blocked,
+            "; ".join(value for value in [header_directive] + directives if value),
+        )
 
 
 def check_common(label, html, expected_canonical, expect_street=False):
@@ -416,8 +438,10 @@ def check_robots_and_sitemap():
                     for line in robots.splitlines()
                     if line.partition(":")[0].strip().lower() == "sitemap"]
         check("robots.txt references canonical sitemap", f"{SITE}/sitemap.xml" in declared)
-        for path, name in [("/", "homepage")] + CITY_PAGES:
-            check(f"robots.txt allows Googlebot: {name}", robots_allows(robots, path))
+        for crawler in CRAWLERS:
+            for path, name in [("/", "homepage")] + CITY_PAGES:
+                check(f"robots.txt allows {crawler}: {name}",
+                      robots_allows(robots, path, agent=crawler))
 
     status, _, sitemap = fetch("/sitemap.xml")
     if not check_reachable("sitemap", status, sitemap):
