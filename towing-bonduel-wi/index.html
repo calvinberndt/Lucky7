@@ -25,9 +25,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png">
   <link rel="apple-touch-icon" href="/images/favicon-180.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/alfa-slab-one-v21-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -68,7 +67,7 @@
     </div>
     <div class="shell header-row">
       <a class="brand" href="/" aria-label="Lucky 7 Towing and Transport — home">
-        <img class="brand-badge" src="/images/brand-112.jpg" width="46" height="46" alt="">
+        <img class="brand-badge" src="/images/brand-112.webp" width="46" height="46" alt="">
         <span class="brand-text">
           <span class="brand-name">Lucky <em>7</em></span>
           <span class="brand-sub">Towing &amp; Transport</span>
@@ -135,7 +134,10 @@
           registered carrier (USDOT 1237637) &mdash; the same number painted on our truck doors.</p>
         </div>
         <figure class="photo-mat tilt-r reveal" style="--d:.2s">
-          <img src="/images/fleet-winter-900.jpg" width="900" height="420" alt="Lucky 7 yellow flatbed recovering a shuttle bus in winter" loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="/images/fleet-winter-640.webp 640w, /images/fleet-winter-900.webp 900w" sizes="(max-width: 899px) 90vw, 520px">
+            <img src="/images/fleet-winter-900.jpg" width="900" height="420" alt="Lucky 7 yellow flatbed recovering a shuttle bus in winter" loading="lazy">
+          </picture>
           <figcaption>Medium-duty work &mdash; the shuttle bus haul</figcaption>
         </figure>
       </div>
@@ -252,7 +254,7 @@
 
   <footer class="site-footer">
     <div class="shell footer-row">
-      <img src="/images/badge-320.jpg" width="160" height="87" alt="Lucky 7 Transport clover badge logo" loading="lazy">
+      <img src="/images/badge-320.webp" width="160" height="87" alt="Lucky 7 Transport clover badge logo" loading="lazy">
       <p>&copy; 2026 Lucky 7 Towing &middot; N3026 State Hwy 47, Bonduel, WI 54107<br>
       <span>Professional towing you can trust. Licensed &amp; insured. USDOT 1237637.</span></p>
     </div>
