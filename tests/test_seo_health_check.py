@@ -87,6 +87,37 @@ class SEOTests(unittest.TestCase):
         seo.check_common('fixture', page_html(), seo.SITE + '/')
         self.assertEqual(seo.failures, [])
 
+    def test_common_rejects_retired_affiliation_in_copy_and_metadata(self):
+        cases = [
+            '<p>AAA approved</p>',
+            '<meta property="og:description" content="aaa provider">',
+            '<script type="application/ld+json">{"description":"AAA approved"}</script>',
+            '<img src="images/fleet-aaa-900.jpg" alt="Truck">',
+            '<p>&#65;&#65;&#65; coverage accepted</p>',
+            '<p>American Automobile Association provider</p>',
+        ]
+        for html in cases:
+            with self.subTest(html=html):
+                seo.failures.clear()
+                seo.check_common('fixture', page_html(html), seo.SITE + '/')
+                self.assertIn('fixture: no retired affiliation references', seo.failures)
+
+    def test_public_source_has_no_retired_affiliation(self):
+        root = Path(__file__).resolve().parents[1]
+        paths = [root / 'index.html', root / 'styles.css', root / 'script.js']
+        paths.extend(root.glob('towing-*/index.html'))
+        for path in paths:
+            with self.subTest(path=path.relative_to(root)):
+                self.assertNotRegex(path.read_text(), r'(?i)\baaa\b|american automobile association')
+
+    def test_retired_branded_photos_are_not_published(self):
+        root = Path(__file__).resolve().parents[1]
+        retired = ['fleet-aaa-640.webp', 'fleet-aaa-900.webp', 'fleet-aaa-900.jpg',
+                   'yellowtowtruck_web.jpg', 'lucky7_yellowtowtruck.png']
+        for filename in retired:
+            with self.subTest(filename=filename):
+                self.assertFalse((root / 'images' / filename).exists())
+
     def test_duplicate_canonical_is_rejected_even_when_first_is_correct(self):
         seo.check_common('fixture', page_html('<link rel="canonical" href="https://wrong.example/">'), seo.SITE + '/')
         self.assertIn('fixture: one canonical', seo.failures)

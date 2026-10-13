@@ -1,5 +1,10 @@
 # Lucky 7 Towing & Transport — Website Redesign Spec
 
+> Historical specification. As of October 12, 2026, all AAA affiliation,
+> membership, dispatch, and approved-provider guidance below is superseded.
+> Lucky 7 is no longer affiliated with AAA. Do not reuse those claims or branded
+> photos in website content, Google Business drafts, or automation.
+
 **Date:** 2026-07-18 · **Author:** Claude (with Calvin Berndt) · **Status:** Implemented on branch `claude/lucky-7-transport-redesign-efeee5` for review
 
 ## 1. Purpose & audience

@@ -18,6 +18,7 @@ Two properties this script tries hard to keep:
 """
 
 import argparse
+from html import unescape
 from html.parser import HTMLParser
 import http.client
 import json
@@ -298,6 +299,8 @@ def check_indexable(label, headers, html):
 
 def check_common(label, html, expected_canonical, expect_street=False):
     page = Page(html)
+    check(f"{label}: no retired affiliation references",
+          not re.search(r"\baaa\b|american automobile association", unescape(html), re.I))
     title = title_of(html)
     check(f"{label}: one non-empty title", len(page.titles) == 1 and bool(title))
     check(f"{label}: one non-empty H1", len(page.headings) == 1 and bool(page.headings[0].strip()))

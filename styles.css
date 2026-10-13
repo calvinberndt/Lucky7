@@ -532,27 +532,6 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 }
 .about-copy p { max-width: 56ch; }
 
-.aaa-panel {
-  border: 2px solid var(--green-700);
-  border-radius: var(--radius);
-  background: #ecf1dd;
-  padding: 1.15rem 1.3rem .9rem;
-  margin-top: 1.4rem;
-  position: relative;
-}
-.aaa-panel::before {
-  content: "AAA";
-  position: absolute; top: -0.85rem; left: 1rem;
-  background: var(--red-600); color: var(--cream-text);
-  font-family: var(--font-cond); font-weight: 700; letter-spacing: .12em;
-  font-size: .8rem; padding: .18rem .6rem; border-radius: 5px;
-}
-.aaa-panel h3 {
-  font-family: var(--font-cond); font-weight: 700; font-size: 1.15rem;
-  text-transform: uppercase; letter-spacing: .06em; color: var(--green-800);
-}
-.aaa-panel p { margin: 0; font-size: .95rem; color: rgba(24,31,25,.8); }
-
 /* photo mats (about + fleet) */
 .photo-mat {
   margin: 0;
@@ -612,6 +591,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .deck-card-1 { --tilt: -1.3deg; order: 1; }
 .deck-card-2 { --tilt: 1.2deg;  order: 2; }
 .deck-card-3 { --tilt: -1.3deg; order: 3; }
+.fleet-truck-photo { aspect-ratio: 20 / 9; object-fit: contain; background: #000; }
 
 .deck-dots { display: none; }
 

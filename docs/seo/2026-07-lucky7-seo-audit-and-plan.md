@@ -1,5 +1,10 @@
 # Lucky 7 Towing — SEO Audit & 90-Day Action Plan
 
+> Current correction (October 12, 2026): Lucky 7 is no longer affiliated with
+> AAA. Retired-affiliation advice has been removed from the action plan. The
+> July execution log is historical evidence only; its old description must not
+> be reused for website content, Google Business drafts, or automation.
+
 **Date:** July 18, 2026 · **Site:** lucky7towingtransport.com · **Branch:** [PR #3](https://github.com/calvinberndt/Lucky7/pull/3)
 
 Adapted from the 20-prompt Google-presence audit framework. Everything below is grounded
@@ -97,9 +102,6 @@ Use the *identical* name/phone/city everywhere (whatever you decide in Decision 
 - Facebook business page (this also unlocks community-group word of mouth — rural
   Wisconsin runs on Facebook)
 - Yelp, BBB, Nextdoor, Yellow Pages
-- AAA's provider locator: you're an approved provider — ask your AAA territory manager
-  what public listings exist and that your info is correct. An AAA-affiliated citation
-  is a trust signal competitors can't fake.
 
 ### Weeks 2–8 — Review engine
 
@@ -123,7 +125,7 @@ Use the *identical* name/phone/city everywhere (whatever you decide in Decision 
 
 - 1–2 GBP posts/week: job-of-the-week photo with town mentioned ("Flatbed recovery
   outside Gresham this morning"), seasonal safety notes (winter dead-battery season is
-  your Super Bowl), AAA reminders.
+  your Super Bowl), and practical roadside preparation tips.
 - 3–5 photos/week from real jobs. Consistency beats volume — steady uploads signal an
   active business.
 
@@ -156,7 +158,8 @@ window from a local IP). Three wins, one problem, one action for next month.
    names across listings is the classic NAP trap. My recommendation: use **Lucky 7
    Transport** everywhere official (it's what's on the trucks and the federal record),
    keep "towing" in the website title/tagline for search — that's compliant and
-   consistent. If AAA dispatch paperwork says "Lucky 7 Towing", tell me and we'll flip it.
+   consistent. The later execution log confirms the established Google Business name
+   is "Lucky 7 Towing"; use that current public name.
 2. **Publish the street address?** I kept it city-level (Bonduel, WI 54107) since the
    registered address may be your home. GBP as a service-area business doesn't need it
    public either. Say the word if you want it shown.
@@ -230,8 +233,7 @@ carry "tow truck" phrasing; `knowsAbout` extended.
 2. **Social profiles** on GBP — create the Facebook business page first (rural
    Wisconsin runs on Facebook), then link it.
 3. Citations: Bing Places, Apple Business Connect, Yelp, BBB, Nextdoor — need owner
-   account creation (can't be done for you); AAA provider-directory check via your
-   territory manager.
+   account creation (can't be done for you).
 4. Per-service descriptions inside GBP services list (nice-to-have).
 5. GBP posts cadence + weekly photo uploads (job photos exist and are good).
 6. Watch GSC position for "tow truck near me"-class queries in ~2–4 weeks to measure

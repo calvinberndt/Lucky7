@@ -1,5 +1,10 @@
 # Lucky 7 Towing — SEO Enhancement Design
 
+> Historical specification. As of October 12, 2026, all AAA affiliation,
+> membership, dispatch, and approved-provider guidance below is superseded.
+> Lucky 7 is no longer affiliated with AAA. Do not reuse those claims or branded
+> photos in website content, Google Business drafts, or automation.
+
 **Date:** 2026-07-18
 **Branch:** `claude/google-seo-audit-prompts-14e06a`
 **Status:** Implemented on this branch; draft PR is the approval gate.
