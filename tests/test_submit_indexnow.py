@@ -17,7 +17,8 @@ class IndexNowTests(unittest.TestCase):
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
         (self.root / indexnow.KEY_FILE).write_text("example-proof-1234\n")
-        (self.root / "index.html").write_text("<h1>Lucky 7 Towing</h1>")
+        (self.root / "index.html").write_text(
+            f'<link rel="canonical" href="{indexnow.SITE}/"><h1>Lucky 7 Towing</h1>')
         self.write_sitemap([indexnow.SITE + "/"])
 
     def write_sitemap(self, urls):
@@ -53,6 +54,9 @@ class IndexNowTests(unittest.TestCase):
 
     def test_selection_only_accepts_distinct_sitemap_members(self):
         home = indexnow.SITE + "/"
+        (self.root / "city").mkdir()
+        (self.root / "city/index.html").write_text("A second page")
+        self.write_sitemap([home, indexnow.SITE + "/city/"])
         self.assertEqual(indexnow.build_payload(self.root, [home])["urlList"], [home])
         for selected in [[], [home, home], [indexnow.SITE + "/unknown/"], ["https://example.com/"]]:
             with self.subTest(selected=selected), self.assertRaises(ValueError):
@@ -81,6 +85,18 @@ class IndexNowTests(unittest.TestCase):
         with patch.object(indexnow.urllib.request, "urlopen", side_effect=self.live_response) as fetch:
             indexnow.verify_live(self.root, payload)
         self.assertEqual(fetch.call_count, 3)
+
+    def test_missing_duplicate_or_different_canonical_prevents_network(self):
+        canonical = f'<link rel="canonical" href="{indexnow.SITE}/">'
+        for html in ["<h1>No canonical</h1>", canonical + canonical,
+                     '<link rel="canonical" href="https://example.com/">',
+                     f'<link rel="canonical" href="{indexnow.SITE}/city/">']:
+            with self.subTest(html=html):
+                (self.root / "index.html").write_text(html)
+                with patch.object(indexnow.urllib.request, "urlopen") as fetch:
+                    with self.assertRaisesRegex(ValueError, "matching canonical"):
+                        indexnow.submit_urls(self.root, indexnow.build_payload(self.root))
+                fetch.assert_not_called()
 
     def test_live_redirect_or_non_200_prevents_post(self):
         for status, redirect in [(200, True), (202, False)]:

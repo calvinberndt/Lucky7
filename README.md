@@ -26,6 +26,8 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 | `scripts/seo_health_check.py` | Live SEO check, plus `--local` validation of source or built pages without network requests. |
 | `tests/test_seo_health_check.py` | Deterministic regression tests for the SEO checker. |
 | `scripts/browser_smoke.sh` | Browser checks for call access, narrow-screen overflow, menus, FAQs, images, and page errors. |
+| `scripts/browser_compatibility.cjs` | Actual Chromium, Firefox, and WebKit checks, including keyboard access and no-JavaScript/reduced-motion fallbacks. |
+| `.github/workflows/browser-compatibility.yml` | Runs the three-engine browser matrix using isolated, pinned development tooling. |
 | `scripts/submit_indexnow.py` and `indexnow-key.txt` | Offline notification preview and deployment-verified IndexNow submission; the text file is intentionally public ownership proof. |
 | `.github/workflows/seo-source.yml` | Checks every PR, builds with GitHub Pages/Jekyll, and validates the resulting artifact before release. |
 | `_config.yml` | Excludes repository documentation, tests, and scripts from the public Pages artifact. |
@@ -155,6 +157,22 @@ bash scripts/browser_smoke.sh https://lucky7towingtransport.com
 This checks all four pages at 320, 375, 900, and 1440 pixels wide. Also visually
 inspect desktop/mobile screenshots and check reduced-motion and no-JavaScript
 behavior when changing shared styles or interactions.
+
+For the full browser matrix, install development tooling outside the static site:
+
+```bash
+npm install --prefix /tmp/lucky7-browser-tools --no-save --package-lock=false playwright@1.64.0
+PLAYWRIGHT_SKIP_BROWSER_GC=1 /tmp/lucky7-browser-tools/node_modules/.bin/playwright install chromium firefox webkit
+NODE_PATH=/tmp/lucky7-browser-tools/node_modules node scripts/browser_compatibility.cjs http://127.0.0.1:4173 /tmp/lucky7-browser-results
+```
+
+Linux hosts may need Playwright's `install --with-deps`; CI installs those system
+dependencies. The runner checks all four routes at 320, 375, and 1440px in each
+engine, plus no-JavaScript and reduced-motion cases at 375px: 60 cases total.
+Use the public site URL instead of localhost for release verification. Failures
+exit nonzero and save screenshots and a JSON report. WebKit tests Safari's engine;
+they do not certify every Safari release or native iPhone app. On macOS WebKit,
+the keyboard check accounts for the platform's Option-Tab link navigation.
 
 The production monitor requests the real public site. It checks the homepage,
 all city pages, `robots.txt`, and `sitemap.xml`, including indexability, canonical

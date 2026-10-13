@@ -18,6 +18,11 @@ import urllib.request
 from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
+if __package__:
+    from .seo_health_check import canonical_urls
+else:
+    from seo_health_check import canonical_urls
+
 SITE = "https://lucky7towingtransport.com"
 ENDPOINT = "https://api.indexnow.org/indexnow"
 KEY_FILE = "indexnow-key.txt"
@@ -57,8 +62,11 @@ def verify_live(root, payload):
     """Refuse to notify engines about an undeployed or stale checkout."""
     resources = [(payload["keyLocation"], root / KEY_FILE),
                  (f"{SITE}/sitemap.xml", root / "sitemap.xml")]
-    resources.extend((url, root / unquote(urlsplit(url).path).lstrip("/") / "index.html")
-                     for url in payload["urlList"])
+    for url in payload["urlList"]:
+        source = root / unquote(urlsplit(url).path).lstrip("/") / "index.html"
+        if canonical_urls(source.read_text(encoding="utf-8")) != [url]:
+            raise ValueError(f"Page must have exactly one matching canonical: {urlsplit(url).path}")
+        resources.append((url, source))
     for url, source in resources:
         request = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
         with urllib.request.urlopen(request, timeout=30) as response:
