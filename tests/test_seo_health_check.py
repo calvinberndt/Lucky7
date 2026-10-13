@@ -186,6 +186,51 @@ class SEOTests(unittest.TestCase):
             links.assert_called_once_with(Path(directory).resolve())
             self.assertEqual(seo.failures, [])
 
+    def test_every_responsive_image_candidate_is_checked(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'fallback.jpg').write_bytes(b'fallback')
+            (root / 'small.webp').write_bytes(b'small')
+            (root / 'index.html').write_text(page_html(
+                '<picture><source srcset="small.webp 640w, missing.webp 1000w">'
+                '<img src="fallback.jpg" srcset="small.webp 1x, retina.webp 2x"></picture>'
+                '<link rel="preload" as="image" href="fallback.jpg" '
+                'imagesrcset="small.webp 640w, preload.webp 1000w">'))
+            seo.check_local_links(root)
+            for reference in ['missing.webp', 'retina.webp', 'preload.webp']:
+                self.assertIn(f'homepage: local target exists: {reference}', seo.failures)
+            for reference in ['missing.webp', 'retina.webp', 'preload.webp']:
+                (root / reference).write_bytes(b'responsive image fixture')
+            seo.failures.clear()
+            seo.check_local_links(root)
+            self.assertEqual(seo.failures, [])
+
+    def test_linked_css_assets_resolve_relative_to_stylesheet(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'css/fonts').mkdir(parents=True)
+            (root / 'images').mkdir()
+            (root / 'images/truck.webp').write_bytes(b'photo')
+            (root / 'css/site.css').write_text(
+                '@font-face { src: url("fonts/local.woff2") format("woff2"); }'
+                '.truck { background: url(../images/truck.webp); }'
+                '.remote { background: url(https://cdn.example/remote.webp); }'
+                '.data { background: url("data:image/svg+xml,%3Csvg%3E"); }'
+                '.filter { filter: url(#svg-filter); }'
+                '/* url(missing-but-commented.webp) */')
+            (root / 'index.html').write_text(page_html('<link rel="stylesheet" href="css/site.css">'))
+            seo.check_local_links(root)
+            self.assertEqual(seo.failures, ['css/site.css: local CSS asset exists: fonts/local.woff2'])
+            (root / 'css/fonts/local.woff2').write_bytes(b'font fixture')
+            seo.failures.clear()
+            seo.check_local_links(root)
+            self.assertEqual(seo.failures, [])
+
+    def test_srcset_preserves_data_urls_and_descriptorless_candidates(self):
+        self.assertEqual(list(seo.srcset_urls(
+            'one.webp, two.webp 2x, data:image/png;base64,AA== 3x, /four.webp 4x')),
+            ['one.webp', 'two.webp', 'data:image/png;base64,AA==', '/four.webp'])
+
 
 if __name__ == '__main__':
     unittest.main()

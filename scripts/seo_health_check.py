@@ -413,9 +413,47 @@ def check_robots_and_sitemap():
           set(urls) == expected and len(urls) == len(expected), str(urls))
 
 
+def srcset_urls(value):
+    """Read candidate URLs without splitting embedded data-URL commas.
+
+    Descriptors (width/density) are skipped, not validated. This checks asset
+    existence for the site's static srcsets, not full browser srcset grammar.
+    """
+    remaining = value.strip()
+    while remaining:
+        remaining = remaining.lstrip(" \t\r\n\f,")
+        match = re.match(r"(\S+)\s*", remaining)
+        if not match:
+            break
+        url = match.group(1)
+        yield url.rstrip(",")
+        remaining = remaining[match.end():]
+        if not url.endswith(","):
+            remaining = remaining.partition(",")[2]
+
+
+def check_stylesheet_assets(root, stylesheet):
+    """Check literal CSS url() assets; no CSS escapes, variables, or imports graph.
+
+    The site uses ordinary quoted/unquoted URL literals. Embedded data, remote
+    resources, and document-local SVG fragments do not represent local files.
+    """
+    relative = stylesheet.relative_to(root).as_posix()
+    css = re.sub(r"/\*.*?\*/", "", stylesheet.read_text(encoding="utf-8"), flags=re.S)
+    for match in re.finditer(r'''url\(\s*(?:"([^"]*)"|'([^']*)'|([^)]*))\s*\)''', css, re.I):
+        reference = next(part for part in match.groups() if part is not None).strip()
+        if not reference or reference.startswith("#"):
+            continue
+        url = urlsplit(urljoin(f"{SITE}/{relative}", reference))
+        if url.scheme not in ("http", "https") or url.netloc != urlsplit(SITE).netloc:
+            continue
+        target = root / unquote(url.path).lstrip("/")
+        check(f"{relative}: local CSS asset exists: {reference}", target.is_file())
+
+
 def check_local_links(root):
     """Check the four public routes, including source-only asset/fragment errors."""
-    titles = []
+    titles, stylesheets = [], set()
     for path, label in [("/", "homepage")] + CITY_PAGES:
         source = root / path.lstrip("/") / "index.html"
         if not source.is_file():
@@ -424,20 +462,31 @@ def check_local_links(root):
         titles.extend(page.titles)
         check(f"{label}: unique element IDs", len(page.ids) == len(set(page.ids)))
         for tag, attrs in page.tags:
+            if tag not in ("a", "link", "img", "script", "source", "use"):
+                continue
             attribute = "src" if tag in ("img", "script") else "href"
-            reference = attrs.get(attribute)
-            if not reference or tag not in ("a", "link", "img", "script", "use"):
-                continue
-            url = urlsplit(urljoin(SITE + path, reference))
-            if url.scheme not in ("http", "https") or url.netloc != urlsplit(SITE).netloc:
-                continue
-            target = root / unquote(url.path).lstrip("/")
-            if target.is_dir():
-                target /= "index.html"
-            check(f"{label}: local target exists: {reference}", target.is_file())
-            if url.fragment and target.is_file() and target.suffix == ".html":
-                target_page = page if target == source else Page(target.read_text(encoding="utf-8"))
-                check(f"{label}: fragment exists: {reference}", unquote(url.fragment) in target_page.ids)
+            references = [attrs.get(attribute, "")]
+            if tag in ("img", "source"):
+                references.extend(srcset_urls(attrs.get("srcset", "")))
+            if tag == "link":
+                references.extend(srcset_urls(attrs.get("imagesrcset", "")))
+            for reference in references:
+                if not reference:
+                    continue
+                url = urlsplit(urljoin(SITE + path, reference))
+                if url.scheme not in ("http", "https") or url.netloc != urlsplit(SITE).netloc:
+                    continue
+                target = root / unquote(url.path).lstrip("/")
+                if target.is_dir():
+                    target /= "index.html"
+                check(f"{label}: local target exists: {reference}", target.is_file())
+                if tag == "link" and "stylesheet" in attrs.get("rel", "").lower().split() and target.is_file():
+                    stylesheets.add(target)
+                if url.fragment and target.is_file() and target.suffix == ".html":
+                    target_page = page if target == source else Page(target.read_text(encoding="utf-8"))
+                    check(f"{label}: fragment exists: {reference}", unquote(url.fragment) in target_page.ids)
+    for stylesheet in sorted(stylesheets):
+        check_stylesheet_assets(root, stylesheet)
     check("public page titles are distinct", len(titles) == len(set(titles)))
 
 
