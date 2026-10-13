@@ -170,16 +170,21 @@ For the full browser matrix, install development tooling outside the static site
 ```bash
 npm install --prefix /tmp/lucky7-browser-tools --no-save --package-lock=false playwright@1.64.0
 PLAYWRIGHT_SKIP_BROWSER_GC=1 /tmp/lucky7-browser-tools/node_modules/.bin/playwright install chromium firefox webkit
+node --test tests/browser_wait.test.cjs
 NODE_PATH=/tmp/lucky7-browser-tools/node_modules node scripts/browser_compatibility.cjs http://127.0.0.1:4173 /tmp/lucky7-browser-results
 ```
 
 Linux hosts may need Playwright's `install --with-deps`; CI installs those system
 dependencies. The runner checks all four routes at 320, 375, and 1440px in each
 engine, plus no-JavaScript and reduced-motion cases at 375px: 60 cases total.
+City introduction text must also retain at least 4.5:1 contrast against its
+cream section background.
 Use the public site URL instead of localhost for release verification. Failures
 exit nonzero and save screenshots and a JSON report. WebKit tests Safari's engine;
 they do not certify every Safari release or native iPhone app. On macOS WebKit,
 the keyboard check accounts for the platform's Option-Tab link navigation.
+Browser conditions are polled from Node so checks still progress when page
+JavaScript is disabled; every wait has a deadline and preserves browser errors.
 
 The production monitor requests the real public site. It checks the homepage,
 all city pages, `robots.txt`, and `sitemap.xml`, including indexability, canonical

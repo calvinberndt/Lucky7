@@ -844,6 +844,7 @@ section { padding-block: clamp(3.4rem, 7vw, 5.6rem); }
 .crumbs a:hover { color: var(--amber-400); }
 
 .city-intro { background: var(--cream-50); }
+.city-intro .lede { color: var(--ink-900); }
 .city-services { background: var(--cream-100); border-top: 2px dashed rgba(45, 89, 55, .25); }
 .city-faq { background: var(--cream-50); }
 

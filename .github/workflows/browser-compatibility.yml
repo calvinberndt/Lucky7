@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Test browser wait helper
+        run: node --test tests/browser_wait.test.cjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
