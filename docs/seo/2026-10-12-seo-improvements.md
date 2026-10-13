@@ -27,7 +27,8 @@ Baseline mobile Lighthouse 12.8.2 on production, default simulated mobile settin
 performance **83**, accessibility **100**, best practices **100**, SEO **100**;
 FCP **3.3s**, LCP **3.6s**, TBT **0ms**, CLS **0**.
 These are a single lab run, not field Core Web Vitals or Google ranking evidence.
-Production results and release evidence are recorded in the pull request.
+Production results and release evidence are recorded in
+[PR #11](https://github.com/calvinberndt/Lucky7/pull/11).
 
 Local checks cover source and structured data, unit regression tests, JavaScript
 syntax, responsive browser behavior, and linked assets. PR CI additionally builds
@@ -46,7 +47,8 @@ npx --yes lighthouse@12.8.2 https://lucky7towingtransport.com/ \
 No ranking, traffic, call-volume, review-count, or backlink gains are inferred from
 these code changes. The historical July audit contains old measurements and a
 retracted claim that the Google Business Profile did not exist; those are not a
-current baseline. This release does not publish Google Business posts or change
+current baseline. The available browser profile redirected Search Console to its
+public sign-in page, so current property metrics could not be read. This release does not publish Google Business posts or change
 business-profile facts, approvals, or the operational database.
 
 After Google recrawls the site, compare Search Console clicks, impressions, CTR,
