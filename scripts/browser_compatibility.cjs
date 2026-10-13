@@ -114,6 +114,9 @@ async function checkPage(browser, engine, route, width, mode) {
     // Do not change the user's global preference to run this check.
     if (engine === 'webkit' && process.platform === 'darwin' &&
         !await page.locator('.skip-link').evaluate(el => document.activeElement === el)) {
+      // The first Tab can scroll to a control and trigger lazy image requests.
+      // Finish them before this deliberate reload rather than hiding failures.
+      await checkAssets(page);
       await page.goto(new URL(route, baseURL).href, {waitUntil: 'load'});
       await page.keyboard.press('Alt+Tab');
     }
