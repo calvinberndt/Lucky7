@@ -25,6 +25,8 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Check local pages, crawler files, links, and assets
         run: python scripts/seo_health_check.py --local
+      - name: Validate the offline IndexNow notification preview
+        run: python scripts/submit_indexnow.py
       - name: Validate JavaScript syntax
         run: node --check script.js
       - name: Build the GitHub Pages artifact
@@ -34,6 +36,7 @@ jobs:
       - name: Check the built site and publishing exclusions
         run: |
           python scripts/seo_health_check.py --local _site
+          cmp indexnow-key.txt _site/indexnow-key.txt
           for internal in docs scripts tests README.md README.html CLAUDE.md AGENTS.md DESIGN.md; do
             if [ -e "_site/$internal" ]; then
               echo "Internal file published: $internal" >&2
