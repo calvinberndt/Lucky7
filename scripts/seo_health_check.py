@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Weekly SEO health check for lucky7towingtransport.com.
+"""SEO health check for lucky7towingtransport.com.
 
 Verifies the live site still carries its SEO-critical elements: indexability,
 title keywords, NAP data, structured data with the USDOT identifier, the city
 landing pages and their Service/BreadcrumbList schema, robots.txt, and sitemap
 coverage. Exits non-zero if anything regressed so the GitHub Action can alert.
+Use --local [directory] to validate source files without making network requests;
+this also checks local links, assets, fragment targets, and duplicate page titles.
 
 Two properties this script tries hard to keep:
 
@@ -15,12 +17,17 @@ Two properties this script tries hard to keep:
   hiccup is a monitor you will start ignoring.
 """
 
+import argparse
+from html.parser import HTMLParser
 import json
+from pathlib import Path
 import re
 import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import unquote, urljoin, urlsplit
+import xml.etree.ElementTree as ET
 
 SITE = "https://lucky7towingtransport.com"
 PHONE_DIGITS = "853-8513"
@@ -43,6 +50,80 @@ CITY_PAGES = [
 ]
 
 failures = []
+LOCAL_ROOT = None
+
+
+class Page(HTMLParser):
+    """Collect source markup without treating comments or JSON-LD as visible copy."""
+
+    def __init__(self, html):
+        super().__init__(convert_charrefs=True)
+        self.tags = []
+        self.ids = []
+        self.text = []
+        self.titles = []
+        self.headings = []
+        self.capture = None
+        self.hidden = 0
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = {name: value or "" for name, value in attrs}
+        self.tags.append((tag, attrs))
+        if attrs.get("id"):
+            self.ids.append(attrs["id"])
+        if tag in ("script", "style", "title", "template"):
+            self.hidden += 1
+        if tag in ("title", "h1"):
+            self.capture = self.titles if tag == "title" else self.headings
+            self.capture.append("")
+
+    def handle_endtag(self, tag):
+        if tag in ("script", "style", "title", "template"):
+            self.hidden = max(0, self.hidden - 1)
+        if tag in ("title", "h1"):
+            self.capture = None
+
+    def handle_data(self, data):
+        if self.capture is not None:
+            self.capture[-1] += data
+        if not self.hidden:
+            self.text.append(data)
+
+
+def canonical_urls(html):
+    return [attrs.get("href", "") for tag, attrs in Page(html).tags
+            if tag == "link" and "canonical" in attrs.get("rel", "").lower().split()]
+
+
+def robots_allows(robots, path, agent="googlebot"):
+    """Apply Google's group selection and longest matching allow/disallow rule."""
+    groups, agents, rules = [], [], []
+    for line in robots.splitlines() + ["User-agent: end-of-input"]:
+        key, separator, value = line.split("#", 1)[0].partition(":")
+        if not separator:
+            continue
+        key, value = key.strip().lower(), value.strip()
+        if key == "user-agent":
+            if rules:
+                groups.append((agents, rules))
+                agents, rules = [], []
+            agents.append(value.lower())
+        elif key in ("allow", "disallow") and agents:
+            rules.append((key, value))
+    specific = [rules for agents, rules in groups if agent in agents]
+    selected = specific or [rules for agents, rules in groups if "*" in agents]
+    matches = []
+    for rules in selected:
+        for kind, pattern in rules:
+            if not pattern:
+                continue
+            expression = re.escape(pattern).replace(r"\*", ".*")
+            if pattern.endswith("$"):
+                expression = expression[:-2] + "$"
+            if re.match(expression, path):
+                matches.append((len(pattern.rstrip("$").replace("*", "")), kind == "allow"))
+    return max(matches)[1] if matches else True
 
 
 def fetch(path):
@@ -55,6 +136,14 @@ def fetch(path):
     result, not a blip. Status 0 means "could not observe the site", which is
     reported distinctly from "the site is wrong".
     """
+    if LOCAL_ROOT is not None:
+        filename = LOCAL_ROOT / path.lstrip("/")
+        if path.endswith("/"):
+            filename /= "index.html"
+        try:
+            return 200, {}, strip_comments(filename.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            return 404, {}, f"missing local file: {filename}"
     req = urllib.request.Request(SITE + path, headers={"User-Agent": USER_AGENT})
     last_error = "unknown"
     for attempt in range(1, RETRIES + 1):
@@ -68,7 +157,7 @@ def fetch(path):
             if exc.code < 500 and exc.code != 429:
                 return exc.code, lower_keys(exc.headers), body
             last_error = f"HTTP {exc.code}"
-        except Exception as exc:  # timeout, DNS, TLS, reset - all retryable
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last_error = f"{exc.__class__.__name__}: {exc}"
         if attempt < RETRIES:
             time.sleep(RETRY_BACKOFF_SECONDS * attempt)
@@ -77,7 +166,11 @@ def fetch(path):
 
 def lower_keys(headers):
     """HTTP header names are case-insensitive; normalise so lookups are too."""
-    return {str(k).lower(): v for k, v in dict(headers or {}).items()}
+    result = {}
+    for key, value in (headers or {}).items():
+        key = str(key).lower()
+        result[key] = f"{result[key]}, {value}" if key in result else value
+    return result
 
 
 def strip_comments(html):
@@ -92,27 +185,20 @@ def check(name, ok, detail=""):
 
 
 def title_of(html):
-    match = re.search(r"<title>(.*?)</title>", html, re.S)
-    return match.group(1).strip() if match else ""
-
-
-def attr_of(tag, attr):
-    match = re.search(rf'{attr}\s*=\s*["\']([^"\']*)["\']', tag, re.I)
-    return match.group(1) if match else ""
+    titles = Page(html).titles
+    return titles[0].strip() if titles else ""
 
 
 def meta_content(html, name):
-    for tag in re.findall(r"<meta\b[^>]*>", html, re.I):
-        if re.search(rf'name\s*=\s*["\']{name}["\']', tag, re.I):
-            return attr_of(tag, "content").strip()
+    for tag, attrs in Page(html).tags:
+        if tag == "meta" and attrs.get("name", "").lower() == name.lower():
+            return attrs.get("content", "").strip()
     return ""
 
 
 def canonical_of(html):
-    for tag in re.findall(r"<link\b[^>]*>", html, re.I):
-        if re.search(r'rel\s*=\s*["\']canonical["\']', tag, re.I):
-            return attr_of(tag, "href")
-    return ""
+    urls = canonical_urls(html)
+    return urls[0] if urls else ""
 
 
 def ld_nodes(html):
@@ -172,21 +258,28 @@ def check_reachable(label, status, detail=""):
 
 def check_indexable(label, headers, html):
     header_directive = headers.get("x-robots-tag", "")
+    directives = [header_directive]
+    directives.extend(attrs.get("content", "") for tag, attrs in Page(html).tags
+                      if tag == "meta" and attrs.get("name", "").lower()
+                      in ("robots", "googlebot"))
+    # `none` is equivalent to `noindex, nofollow`. Check every applicable meta
+    # tag: Google combines multiple directives using the more restrictive value.
+    blocked = any(re.search(r"(?:^|[,;])\s*(?:(?:googlebot|\*)\s*:\s*)?"
+                            r"(?:noindex|none)\s*(?=$|[,;])", value.lower())
+                  for value in directives)
     check(
-        f"{label}: no noindex in X-Robots-Tag",
-        "noindex" not in header_directive.lower(),
-        header_directive,
-    )
-    meta_robots = meta_content(html, "robots")
-    check(
-        f"{label}: meta robots allows indexing",
-        "noindex" not in meta_robots.lower(),
-        meta_robots or "(none)",
+        f"{label}: robots directives allow indexing",
+        not blocked,
+        "; ".join(value for value in directives if value),
     )
 
 
 def check_common(label, html, expected_canonical, expect_street=False):
+    page = Page(html)
     title = title_of(html)
+    check(f"{label}: one non-empty title", len(page.titles) == 1 and bool(title))
+    check(f"{label}: one non-empty H1", len(page.headings) == 1 and bool(page.headings[0].strip()))
+    check(f"{label}: one canonical", len(canonical_urls(html)) == 1)
     check(
         f"{label}: title carries towing keyword",
         ("Tow Truck" in title) or ("Towing" in title),
@@ -197,7 +290,11 @@ def check_common(label, html, expected_canonical, expect_street=False):
         canonical_of(html) == expected_canonical,
         canonical_of(html) or "no canonical",
     )
-    check(f"{label}: phone number on page", PHONE_DIGITS in html)
+    check(f"{label}: phone number in visible copy", PHONE_DIGITS in " ".join(page.text))
+    call_links = [attrs.get("href", "") for tag, attrs in page.tags
+                  if tag == "a" and attrs.get("href", "").startswith("tel:")]
+    check(f"{label}: working phone links", bool(call_links) and all(
+        re.sub(r"\D", "", href).removeprefix("1") == TELEPHONE[2:] for href in call_links))
     description = meta_content(html, "description")
     check(f"{label}: meta description non-empty", bool(description), "empty or missing")
     if expect_street:
@@ -293,21 +390,71 @@ def check_city_page(path, city):
 def check_robots_and_sitemap():
     status, _, robots = fetch("/robots.txt")
     if check_reachable("robots.txt", status, robots):
-        check("robots.txt references sitemap", "sitemap.xml" in robots.lower())
+        declared = [line.split("#", 1)[0].partition(":")[2].strip()
+                    for line in robots.splitlines()
+                    if line.partition(":")[0].strip().lower() == "sitemap"]
+        check("robots.txt references canonical sitemap", f"{SITE}/sitemap.xml" in declared)
+        for path, name in [("/", "homepage")] + CITY_PAGES:
+            check(f"robots.txt allows Googlebot: {name}", robots_allows(robots, path))
 
     status, _, sitemap = fetch("/sitemap.xml")
     if not check_reachable("sitemap", status, sitemap):
         return
-    check("sitemap looks valid", "<urlset" in sitemap and "<loc>" in sitemap)
-    for path, name in [("/", "homepage")] + CITY_PAGES:
-        check(f"sitemap lists the {name} URL", f"<loc>{SITE}{path}</loc>" in sitemap)
+    namespace = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    try:
+        root = ET.fromstring(sitemap)
+    except ET.ParseError as exc:
+        check("sitemap is valid XML", False, str(exc))
+        return
+    check("sitemap uses URL-set namespace", root.tag == namespace + "urlset")
+    urls = [node.text for node in root.findall(f"{namespace}url/{namespace}loc")]
+    expected = {SITE + path for path, _ in [("/", "homepage")] + CITY_PAGES}
+    check("sitemap contains each public canonical URL exactly once",
+          set(urls) == expected and len(urls) == len(expected), str(urls))
 
 
-def main():
+def check_local_links(root):
+    """Check the four public routes, including source-only asset/fragment errors."""
+    titles = []
+    for path, label in [("/", "homepage")] + CITY_PAGES:
+        source = root / path.lstrip("/") / "index.html"
+        if not source.is_file():
+            continue  # fetch() already reports missing public pages.
+        page = Page(source.read_text(encoding="utf-8"))
+        titles.extend(page.titles)
+        check(f"{label}: unique element IDs", len(page.ids) == len(set(page.ids)))
+        for tag, attrs in page.tags:
+            attribute = "src" if tag in ("img", "script") else "href"
+            reference = attrs.get(attribute)
+            if not reference or tag not in ("a", "link", "img", "script", "use"):
+                continue
+            url = urlsplit(urljoin(SITE + path, reference))
+            if url.scheme not in ("http", "https") or url.netloc != urlsplit(SITE).netloc:
+                continue
+            target = root / unquote(url.path).lstrip("/")
+            if target.is_dir():
+                target /= "index.html"
+            check(f"{label}: local target exists: {reference}", target.is_file())
+            if url.fragment and target.is_file() and target.suffix == ".html":
+                target_page = page if target == source else Page(target.read_text(encoding="utf-8"))
+                check(f"{label}: fragment exists: {reference}", unquote(url.fragment) in target_page.ids)
+    check("public page titles are distinct", len(titles) == len(set(titles)))
+
+
+def main(argv=None):
+    global LOCAL_ROOT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--local", nargs="?", const=Path(__file__).resolve().parents[1],
+                        type=Path, help="check repository files (optionally at a supplied directory)")
+    args = parser.parse_args(argv)
+    LOCAL_ROOT = args.local.resolve() if args.local is not None else None
+    failures.clear()
     check_homepage()
     for path, city in CITY_PAGES:
         check_city_page(path, city)
     check_robots_and_sitemap()
+    if LOCAL_ROOT is not None:
+        check_local_links(LOCAL_ROOT)
 
     print()
     if failures:

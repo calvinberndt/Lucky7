@@ -1,0 +1,29 @@
+name: SEO source checks
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test SEO checker regressions
+        run: python -m unittest discover -s tests -v
+      - name: Check local pages, crawler files, links, and assets
+        run: python scripts/seo_health_check.py --local
+      - name: Validate JavaScript syntax
+        run: node --check script.js
