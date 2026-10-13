@@ -7,6 +7,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
 const playwright = require('playwright');
+const {waitForPageCondition} = require('./browser_wait.cjs');
 
 const ROUTES = ['/', '/towing-shawano-wi/', '/towing-bonduel-wi/', '/towing-pulaski-wi/'];
 const WIDTHS = [320, 375, 1440];
@@ -22,7 +23,7 @@ async function checkCallAccess(page) {
   for (const fraction of [0, 0.5, 1]) {
     await page.evaluate(value => scrollTo({top: document.body.scrollHeight * value, behavior: 'instant'}), fraction);
     // Poll the observable result rather than sleeping for a guessed animation duration.
-    await page.waitForFunction(() => [...document.querySelectorAll('a[href^="tel:"]')].some(link => {
+    await waitForPageCondition(page, () => [...document.querySelectorAll('a[href^="tel:"]')].some(link => {
       const r = link.getBoundingClientRect();
       const s = getComputedStyle(link);
       return r.width >= 44 && r.height >= 44 && r.left >= -0.5 && r.right <= innerWidth + 0.5 &&
@@ -55,12 +56,11 @@ async function checkFAQs(page) {
 async function checkAssets(page) {
   // Trigger native lazy loading before checking every image, including below the fold.
   await page.locator('img').evaluateAll(images => images.forEach(img => { img.loading = 'eager'; }));
-  await page.waitForFunction(() => [...document.images].every(img => img.complete));
+  await waitForPageCondition(page, () => [...document.images].every(img => img.complete));
   assert.deepEqual(await page.locator('img').evaluateAll(images =>
     images.filter(img => !img.naturalWidth).map(img => img.currentSrc)), [], 'Broken images');
-  // Returning document.fonts.ready can hang in Firefox with JavaScript disabled.
-  // Poll load state with a bounded timer, independent of background paint frames.
-  await page.waitForFunction(() => document.fonts.status === 'loaded', null, {polling: 100});
+  // Host-side polling works even when page JavaScript and its timers are disabled.
+  await waitForPageCondition(page, () => document.fonts.status === 'loaded');
   assert.deepEqual(await page.evaluate(() => [...document.fonts].filter(font => font.status === 'error')
     .map(font => font.family)), [], 'Failed fonts');
 }
@@ -81,7 +81,7 @@ async function checkNavigation(page) {
   const destination = new URL(await serviceLink.getAttribute('href'), page.url()).href;
   await serviceLink.click();
   await page.waitForURL(destination);
-  await page.waitForFunction(() => {
+  await waitForPageCondition(page, () => {
     const section = document.querySelector('#services');
     const r = section?.getBoundingClientRect();
     return r && r.top >= 0 && r.top < innerHeight && r.bottom > 0;
@@ -105,7 +105,7 @@ async function checkPage(browser, engine, route, width, mode) {
   try {
     const response = await page.goto(new URL(route, baseURL).href, {waitUntil: 'load'});
     assert.equal(response.status(), 200, 'Page response is not successful');
-    await page.waitForFunction(() => document.fonts.status === 'loaded', null, {polling: 100});
+    await waitForPageCondition(page, () => document.fonts.status === 'loaded');
     assert.equal(await page.locator('h1').count(), 1, 'Expected one main heading');
     assert(await page.locator('h1').isVisible(), 'Main heading is hidden');
     if (route !== '/') {
@@ -155,7 +155,7 @@ async function checkPage(browser, engine, route, width, mode) {
       assert(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches), 'Reduced motion was not applied');
       // Header state transitions may be finishing after keyboard scrolling; ongoing
       // decorative animation must stop, without guessing a fixed settling delay.
-      await page.waitForFunction(() => document.getAnimations().length === 0);
+      await waitForPageCondition(page, () => document.getAnimations().length === 0);
     }
     assert.deepEqual(errors, [], 'Browser or asset errors');
     result.status = 'PASS';
