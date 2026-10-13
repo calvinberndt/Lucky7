@@ -182,14 +182,16 @@ standard HTML, canonical URLs, sitemap, and universal robots rules support
 multiple engines without duplicate browser-specific pages.
 
 After a meaningful content release is deployed, preview and then send a single
-IndexNow notification for the public sitemap pages:
+IndexNow notification for the changed canonical pages:
 
 ```bash
 uv run --no-project python scripts/submit_indexnow.py
-uv run --no-project python scripts/submit_indexnow.py --submit
+uv run --no-project python scripts/submit_indexnow.py --submit --url https://lucky7towingtransport.com/
 ```
 
-The preview makes no network requests. Submission requires the live proof file,
+Repeat `--url` for each changed page. Submission requires explicit URLs from the
+canonical sitemap; do not resubmit untouched pages. The preview makes no network
+requests. Submission requires the live proof file,
 sitemap, and all submitted HTML pages to match this checkout, then sends one POST
 to the IndexNow endpoint. HTTP 200 means received; HTTP 202 means received with
 provider key validation pending. Neither means indexed or ranked. Do not run it

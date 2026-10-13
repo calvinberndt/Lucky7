@@ -51,6 +51,19 @@ class IndexNowTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         indexnow.build_payload(self.root)
 
+    def test_selection_only_accepts_distinct_sitemap_members(self):
+        home = indexnow.SITE + "/"
+        self.assertEqual(indexnow.build_payload(self.root, [home])["urlList"], [home])
+        for selected in [[], [home, home], [indexnow.SITE + "/unknown/"], ["https://example.com/"]]:
+            with self.subTest(selected=selected), self.assertRaises(ValueError):
+                indexnow.build_payload(self.root, selected)
+
+    def test_submit_requires_explicit_changed_urls(self):
+        with patch.object(indexnow, "ROOT", self.root), patch.object(
+                indexnow.urllib.request, "urlopen") as fetch, contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(indexnow.main(["--submit"]), 1)
+        fetch.assert_not_called()
+
     def test_rejects_noncanonical_external_missing_and_duplicate_urls(self):
         cases = [[], [indexnow.SITE + "/"] * 2, ["https://example.com/"],
                  [indexnow.SITE.replace("https", "http") + "/"],
@@ -137,7 +150,7 @@ class IndexNowTests(unittest.TestCase):
             with patch.object(indexnow, "ROOT", self.root), patch.object(
                     indexnow, "submit_urls", side_effect=[result]), contextlib.redirect_stdout(output), \
                     contextlib.redirect_stderr(output):
-                code = indexnow.main(["--submit"])
+                code = indexnow.main(["--submit", "--url", indexnow.SITE + "/"])
             self.assertEqual(code, 0 if result == 202 else 1)
             self.assertIn("validation is pending" if result == 202 else "HTTP 403", output.getvalue())
 

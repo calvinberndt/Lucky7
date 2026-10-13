@@ -12,6 +12,7 @@ listing can exist independently of the website's organic search results.
   Googlebot robots fallback when no Applebot group exists.
 - Provide an offline-first IndexNow notification tool. Before a POST, the public
   ownership file, sitemap, and every submitted page must match the checkout.
+  Submission requires explicit changed URLs selected from the canonical sitemap.
   IndexNow shares notifications with participating engines, including Bing;
   it does not prove indexing or cover every search provider.
 - Link the verified Apple Maps place and Bing Maps business search from the

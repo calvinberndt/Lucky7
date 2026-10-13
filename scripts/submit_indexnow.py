@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Notify IndexNow about the deployed public pages; default is an offline preview.
 
-Run --submit only after a content release is live. The public verification file,
+Run --submit --url URL (repeat --url for each changed page) after a release is live.
+The public verification file,
 sitemap, and every submitted page must match this checkout before any POST.
 An accepted notification is not proof of indexing or ranking.
 """
@@ -24,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 NAMESPACE = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
 
 
-def build_payload(root):
+def build_payload(root, selected_urls=None):
     """Use the canonical sitemap and intentionally public ownership proof."""
     key = (root / KEY_FILE).read_text(encoding="utf-8").strip()
     if not re.fullmatch(r"[A-Za-z0-9-]{8,128}", key):
@@ -43,6 +44,11 @@ def build_payload(root):
         source = (root / unquote(parsed.path).lstrip("/") / "index.html").resolve()
         if not source.is_relative_to(root.resolve()) or not source.is_file():
             raise ValueError("A sitemap page is missing from this checkout")
+    if selected_urls is not None:
+        if (not selected_urls or len(selected_urls) != len(set(selected_urls))
+                or not set(selected_urls).issubset(urls)):
+            raise ValueError("Select distinct changed URLs from the canonical sitemap")
+        urls = selected_urls
     return {"host": urlsplit(SITE).netloc, "key": key,
             "keyLocation": f"{SITE}/{KEY_FILE}", "urlList": urls}
 
@@ -77,13 +83,16 @@ def submit_urls(root, payload):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--submit", action="store_true", help="verify production and notify IndexNow")
+    parser.add_argument("--url", action="append", help="changed canonical URL; repeat for each changed page")
     args = parser.parse_args(argv)
     try:
-        payload = build_payload(ROOT)
+        if args.submit and not args.url:
+            raise ValueError("--submit requires --url for each changed page")
+        payload = build_payload(ROOT, args.url)
         for url in payload["urlList"]:
             print(url)
         if not args.submit:
-            print("Preview only: no network requests. Use --submit after deployment.")
+            print("Preview only: no network requests. Use --submit --url URL for changed pages after deployment.")
             return 0
         status = submit_urls(ROOT, payload)
     except urllib.error.HTTPError as exc:
