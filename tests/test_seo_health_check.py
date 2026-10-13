@@ -2,6 +2,7 @@
 
 from contextlib import redirect_stdout
 from email.message import Message
+import http.client
 import io
 from pathlib import Path
 import tempfile
@@ -44,6 +45,10 @@ class SEOTests(unittest.TestCase):
             ({}, '<meta name="robots" content="index"><meta name="robots" content="noindex">'),
             ({'x-robots-tag': 'none'}, ''),
             ({'x-robots-tag': 'googlebot: noindex'}, ''),
+            ({}, '<meta name="robots" content="noindex nofollow">'),
+            ({}, '<meta name="googlebot" content="index\tnoindex\nnofollow">'),
+            ({'x-robots-tag': 'googlebot: noindex nofollow'}, ''),
+            ({'x-robots-tag': 'otherbot: index, googlebot: noindex nofollow'}, ''),
         ]
         for headers, html in cases:
             with self.subTest(headers=headers, html=html):
@@ -61,7 +66,22 @@ class SEOTests(unittest.TestCase):
         headers = Message()
         headers.add_header('X-Robots-Tag', 'noindex')
         headers.add_header('X-Robots-Tag', 'follow')
-        self.assertEqual(seo.lower_keys(headers)['x-robots-tag'], 'noindex, follow')
+        self.assertEqual(seo.lower_keys(headers)['x-robots-tag'], 'noindex\nfollow')
+        scoped = Message()
+        scoped.add_header('X-Robots-Tag', 'otherbot: noindex')
+        scoped.add_header('X-Robots-Tag', 'noindex nofollow')
+        seo.check_indexable('fixture', seo.lower_keys(scoped), '')
+        self.assertTrue(seo.failures)
+
+    def test_indexability_keeps_parameter_values_and_other_bot_rules_separate(self):
+        for header in ['max-image-preview:none', 'max-image-preview: none',
+                       'otherbot: noindex, none', 'otherbot: noindex, googlebot: index follow']:
+            with self.subTest(header=header):
+                seo.failures.clear()
+                seo.check_indexable('fixture', {'x-robots-tag': header},
+                                    '<meta name="robots" content="index follow max-image-preview: none">'
+                                    '<meta name="otherbot" content="noindex">')
+                self.assertEqual(seo.failures, [])
 
     def test_common_accepts_current_contact_markup(self):
         seo.check_common('fixture', page_html(), seo.SITE + '/')
@@ -161,6 +181,29 @@ class SEOTests(unittest.TestCase):
             self.assertEqual(seo.fetch('/')[0], 200)
             self.assertEqual(network.call_count, 2)
             sleep.assert_called_once()
+
+    def test_incomplete_response_retries_then_succeeds(self):
+        response = unittest.mock.MagicMock()
+        response.__enter__.return_value = response
+        response.status, response.headers = 200, {}
+        response.read.side_effect = [http.client.IncompleteRead(b'partial', 50), b'<h1>Ready</h1>']
+        with patch.object(seo.urllib.request, 'urlopen', return_value=response) as network, patch.object(seo.time, 'sleep') as sleep:
+            self.assertEqual(seo.fetch('/'), (200, {}, '<h1>Ready</h1>'))
+            self.assertEqual(network.call_count, 2)
+            sleep.assert_called_once_with(seo.RETRY_BACKOFF_SECONDS)
+
+    def test_incomplete_response_exhaustion_reports_unreachable(self):
+        response = unittest.mock.MagicMock()
+        response.__enter__.return_value = response
+        response.status, response.headers = 200, {}
+        response.read.side_effect = http.client.IncompleteRead(b'partial', 50)
+        with patch.object(seo.urllib.request, 'urlopen', return_value=response) as network, patch.object(seo.time, 'sleep') as sleep:
+            status, headers, detail = seo.fetch('/')
+            self.assertEqual((status, headers), (0, {}))
+            self.assertIn('IncompleteRead', detail)
+            self.assertIn(f'after {seo.RETRIES} attempts', detail)
+            self.assertEqual(network.call_count, seo.RETRIES)
+            self.assertEqual(sleep.call_count, seo.RETRIES - 1)
 
     def test_local_links_cover_relative_root_asset_and_fragment(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -19,6 +19,7 @@ Two properties this script tries hard to keep:
 
 import argparse
 from html.parser import HTMLParser
+import http.client
 import json
 from pathlib import Path
 import re
@@ -157,7 +158,9 @@ def fetch(path):
             if exc.code < 500 and exc.code != 429:
                 return exc.code, lower_keys(exc.headers), body
             last_error = f"HTTP {exc.code}"
-        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        except (urllib.error.URLError, TimeoutError, OSError,
+                http.client.IncompleteRead, http.client.BadStatusLine,
+                http.client.LineTooLong) as exc:
             last_error = f"{exc.__class__.__name__}: {exc}"
         if attempt < RETRIES:
             time.sleep(RETRY_BACKOFF_SECONDS * attempt)
@@ -169,7 +172,10 @@ def lower_keys(headers):
     result = {}
     for key, value in (headers or {}).items():
         key = str(key).lower()
-        result[key] = f"{result[key]}, {value}" if key in result else value
+        # Preserve separate robots fields: a named bot in one field does not
+        # scope an unqualified directive in a later field.
+        separator = "\n" if key == "x-robots-tag" else ", "
+        result[key] = result[key] + separator + value if key in result else value
     return result
 
 
@@ -256,21 +262,37 @@ def check_reachable(label, status, detail=""):
     return status == 200
 
 
+def blocks_indexing(value, header=False):
+    """Distinguish standalone robots rules from parameter values and bot scopes."""
+    parameter_rules = {"max-snippet", "max-image-preview", "max-video-preview", "unavailable_after"}
+    for field in value.splitlines() if header else [value]:
+        agent = "*"
+        for group in re.split(r"[,;]", field.lower()):
+            prefix = re.match(r"\s*([\w*-]+)\s*:\s*", group)
+            if header and prefix and prefix.group(1) not in parameter_rules:
+                agent = prefix.group(1)
+                group = group[prefix.end():]
+            if agent not in ("*", "googlebot"):
+                continue
+            for rule in re.finditer(r"([\w-]+)(?:\s*:\s*([^\s,;]+))?", group):
+                if rule.group(2) is None and rule.group(1) in ("noindex", "none"):
+                    return True
+    return False
+
+
 def check_indexable(label, headers, html):
     header_directive = headers.get("x-robots-tag", "")
-    directives = [header_directive]
-    directives.extend(attrs.get("content", "") for tag, attrs in Page(html).tags
+    directives = [attrs.get("content", "") for tag, attrs in Page(html).tags
                       if tag == "meta" and attrs.get("name", "").lower()
-                      in ("robots", "googlebot"))
+                      in ("robots", "googlebot")]
     # `none` is equivalent to `noindex, nofollow`. Check every applicable meta
     # tag: Google combines multiple directives using the more restrictive value.
-    blocked = any(re.search(r"(?:^|[,;])\s*(?:(?:googlebot|\*)\s*:\s*)?"
-                            r"(?:noindex|none)\s*(?=$|[,;])", value.lower())
-                  for value in directives)
+    blocked = blocks_indexing(header_directive, header=True) or any(
+        blocks_indexing(value) for value in directives)
     check(
         f"{label}: robots directives allow indexing",
         not blocked,
-        "; ".join(value for value in directives if value),
+        "; ".join(value for value in [header_directive] + directives if value),
     )
 
 
