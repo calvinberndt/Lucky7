@@ -1,5 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const { createHash } = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
@@ -298,10 +299,19 @@ test('malformed referrers and missing preference markup are safe', () => {
   }
 });
 
-test('every marketing page includes one local analytics file and privacy controls', () => {
+test('every analytics script reference uses the current content hash', () => {
+  const hash = createHash('sha256').update(fs.readFileSync(path.join(root, 'analytics.js'))).digest('hex').slice(0, 12);
+  for (const file of ['index.html', 'towing-shawano-wi/index.html', 'towing-pulaski-wi/index.html',
+    'towing-bonduel-wi/index.html', 'privacy/index.html']) {
+    const html = fs.readFileSync(path.join(root, file), 'utf8');
+    const references = Array.from(html.matchAll(/<script\b[^>]*\bsrc="([^"]*analytics\.js[^"]*)"/g), match => match[1]);
+    assert.deepEqual(references, ['/analytics.js?v=' + hash], file);
+  }
+});
+
+test('every marketing page includes privacy controls without external tags', () => {
   for (const file of ['index.html', 'towing-shawano-wi/index.html', 'towing-pulaski-wi/index.html', 'towing-bonduel-wi/index.html']) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    assert.equal((html.match(/src="\/analytics\.js"/g) || []).length, 1, file);
     assert.match(html, /data-analytics-panel[^>]*hidden/);
     assert.match(html, /data-analytics-settings hidden/);
     assert.match(html, /href="\/privacy\/"/);
