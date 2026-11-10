@@ -68,6 +68,13 @@ dimensions may take time to populate; use Realtime for initial receipt verificat
 
 ## Verification
 
+The five HTML references to `analytics.js` (four marketing pages and privacy)
+include `?v=` followed by the first 12 characters of the script's SHA-256 hash.
+After changing the script, run `shasum -a 256 analytics.js` and update those five
+references in the same commit. The Node test rejects missing or stale hashes.
+This gives changed code a new asset URL instead of waiting for a browser's cached
+copy to expire; a visitor still needs to navigate or reload an already open page.
+
 ```sh
 node --check analytics.js
 node --test tests/analytics.test.cjs
