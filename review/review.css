@@ -1,0 +1,70 @@
+/* The review invitation is a small utility page using the site's brand tokens. */
+.review-page { --header-total: 88px; }
+.review-header .header-row { height: 88px; }
+.review-header .call-btn { min-height: 48px; width: auto; padding: .66rem 1.15rem; }
+.review-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  padding-block: clamp(3rem, 7vw, 5.5rem) 2rem;
+}
+.review-invitation { padding: 0; }
+.review-invitation h1 { color: var(--green-800); max-width: 13ch; }
+.review-invitation p { max-width: 48ch; }
+.review-kicker {
+  color: var(--green-700);
+  font: 700 1rem var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+.review-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 52px;
+  padding: .75rem 1.25rem;
+  margin: .5rem 0 .65rem;
+  border: 2px solid var(--green-800);
+  border-radius: 6px;
+  background: var(--green-800);
+  color: var(--cream-text);
+  font: 700 1.2rem var(--font-cond);
+  text-decoration: none;
+}
+.review-action:hover { background: var(--green-950); }
+.review-invitation .review-note { font-size: .95rem; }
+.review-paper {
+  background: var(--cream-100);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--cream-300);
+  border-radius: 4px;
+  box-shadow: 5px 6px 0 var(--cream-300);
+}
+.review-paper h2 { font-size: clamp(1.45rem, 2vw, 1.8rem); }
+.review-qr { width: 224px; max-width: 100%; margin: 1.25rem 0; }
+.review-address { overflow-wrap: anywhere; font-size: .95rem; }
+.review-download, .review-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--green-800);
+  text-underline-offset: .2em;
+}
+.review-footer { padding-block: 1rem 2rem; }
+.review-footer p { border-top: 1px solid var(--cream-300); padding-top: 1rem; }
+@media (max-width: 700px) {
+  .review-main { grid-template-columns: 1fr; }
+  .review-header .brand-text { display: none; }
+  .review-header .brand-badge { width: 48px; height: 48px; }
+  .review-header .call-btn { padding-inline: 1rem; font-size: 1.05rem; }
+  .review-invitation h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+}
+@media print {
+  .review-page { padding-top: 0; }
+  .review-header, .skip-link, .review-download, .review-footer { display: none; }
+  .review-main { display: block; padding: 0; }
+  .review-invitation { margin-bottom: 2rem; }
+  .review-paper { box-shadow: none; break-inside: avoid; }
+}

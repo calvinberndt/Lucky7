@@ -20,6 +20,7 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 | `towing-shawano-wi/index.html` | Shawano search landing page with Service and breadcrumb structured data. |
 | `towing-bonduel-wi/index.html` | Bonduel search landing page with Service and breadcrumb structured data. |
 | `towing-pulaski-wi/index.html` | Pulaski search landing page with Service and breadcrumb structured data. |
+| `review/` | Optional customer review invitation, printable 5 × 3 inch SVG card, and QR code. No customer data or scripts. |
 | `images/` | Approved brand, truck, fleet, owner, social-share, and favicon assets used by the static pages. |
 | `robots.txt` and `sitemap.xml` | Crawler instructions and the homepage/city-page URL list. |
 | `CNAME` | The GitHub Pages custom domain: `lucky7towingtransport.com`. |
@@ -140,6 +141,18 @@ change can therefore affect every public route. Review the homepage and all thre
 city pages after shared style changes.
 
 ## SEO and live-site checks
+
+### Staff-led review requests
+
+After a completed job, staff can share
+[lucky7towingtransport.com/review/](https://lucky7towingtransport.com/review/)
+or hand over the [printable card](review/review-card.svg). See the
+[review-request process](docs/seo/review-request-process.md) for the neutral
+message template, printing instructions, and QR verification commands. This
+utility page is deliberately `noindex` and absent from the marketing sitemap.
+It neither collects customer details nor sends messages.
+
+### Source and live checks
 
 Before deployment, run the dependency-free checks from the repository root:
 
