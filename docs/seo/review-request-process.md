@@ -59,7 +59,7 @@ uv run --no-project --with qrcode==8.2 python scripts/generate_review_assets.py 
 uv run --no-project --with qrcode==8.2 --with pillow==12.0.0 --with zxing-cpp==2.3.0 python -m unittest discover -s tests -p test_review_assets.py -v
 ```
 
-The dedicated `Review invitation assets` workflow runs all six checks, including
+The dedicated `Review invitation assets` workflow runs all seven checks, including
 ZXing decoding of the actual SVG modules. Standard dependency-free test runs
 check the HTML, links, indexing choice, card, and embedded badge; they skip the
 three QR-tooling checks when those tools are absent.

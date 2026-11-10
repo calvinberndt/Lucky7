@@ -66,6 +66,15 @@ class ReviewPageTests(unittest.TestCase):
         self.assertIn("lucky7towingtransport.com/review/", text)
         self.assertIn("Leaving a review is optional.", text)
 
+    def test_header_overrides_shared_icon_only_phone_button(self):
+        # Shared mobile styles collapse call buttons to a 48px icon. This
+        # utility page keeps the entire number visible, including at 700–899px.
+        css = (ROOT / "review/review.css").read_text()
+        header_rule = re.search(r"\.review-header \.call-btn\s*\{([^}]+)\}", css).group(1)
+        self.assertRegex(header_rule, r"width:\s*auto\s*;")
+        self.assertRegex(header_rule, r"min-height:\s*48px\s*;")
+        self.assertRegex(header_rule, r"padding:\s*[^;]+;")
+
 
 @unittest.skipUnless(HAS_QR_TOOLS, "QR tooling required; see review-asset-checks workflow")
 class ReviewQRTests(unittest.TestCase):

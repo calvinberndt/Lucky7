@@ -1,7 +1,7 @@
 /* The review invitation is a small utility page using the site's brand tokens. */
 .review-page { --header-total: 88px; }
 .review-header .header-row { height: 88px; }
-.review-header .call-btn { min-height: 48px; }
+.review-header .call-btn { min-height: 48px; width: auto; padding: .66rem 1.15rem; }
 .review-main {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
