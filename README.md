@@ -257,3 +257,4 @@ Account sign-in and ownership verification remain owner actions.
 - [SEO enhancement specification](docs/superpowers/specs/2026-07-18-lucky7-seo-enhancement-design.md)
 - [SEO audit and plan](docs/seo/2026-07-lucky7-seo-audit-and-plan.md)
 - [October 2026 SEO audit and release evidence](docs/seo/2026-10-12-seo-improvements.md)
+- [November 2026 Shawano and Pulaski content improvements](docs/seo/2026-11-09-city-page-content.md)
