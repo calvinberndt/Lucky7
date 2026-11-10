@@ -78,19 +78,22 @@
       analytics_storage: 'granted', ad_storage: 'denied',
       ad_user_data: 'denied', ad_personalization: 'denied'
     });
-    gtag('js', new Date());
-    gtag('config', MEASUREMENT_ID, {
+    var page = pageParameters();
+    // The managed Google tag initializes its destination itself. Set these before
+    // initialization; a later legacy config call can be ignored as a duplicate.
+    gtag('set', {
       send_page_view: false,
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
       cookie_domain: 'lucky7towingtransport.com',
       cookie_expires: 2592000,
       cookie_update: false,
-      page_location: SITE_ORIGIN + path,
-      page_title: 'Lucky 7 Towing — ' + PAGES[path],
-      page_referrer: safeReferrer()
+      page_location: page.page_location,
+      page_title: page.page_title,
+      page_referrer: page.page_referrer
     });
-    gtag('event', 'page_view');
+    gtag('js', new Date());
+    gtag('event', 'page_view', page);
     var tag = document.createElement('script');
     tag.async = true;
     tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + MEASUREMENT_ID;
@@ -119,6 +122,16 @@
     } catch (_) {
       return '';
     }
+  }
+
+  function pageParameters() {
+    // Event parameters have priority over provider defaults. Never inherit raw URLs.
+    return {
+      send_to: MEASUREMENT_ID,
+      page_location: SITE_ORIGIN + path,
+      page_title: 'Lucky 7 Towing — ' + PAGES[path],
+      page_referrer: safeReferrer()
+    };
   }
 
   function renderChoice() {
@@ -175,7 +188,10 @@
     }
     var link = target.closest('a[href="tel:7158538513"]');
     if (active && link && !event.defaultPrevented) {
-      gtag('event', 'phone_click', { page_name: PAGES[path], link_placement: placement(link) });
+      var call = pageParameters();
+      call.page_name = PAGES[path];
+      call.link_placement = placement(link);
+      gtag('event', 'phone_click', call);
     }
   });
 

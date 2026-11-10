@@ -55,6 +55,50 @@ function fixture(options = {}) {
     window, document, click, choose, phone, commands };
 }
 
+// Model the observed managed destination: it initializes on js with defaults,
+// then ignores later legacy config commands. This is a regression fixture, not
+// a replacement for verifying received events in the live Google property.
+function managedDestination(commands, documentDefaults) {
+  const globals = {}, events = [];
+  let initialized = false;
+  for (const [command, name, parameters] of commands) {
+    if (command === 'set') Object.assign(globals, name);
+    if (command === 'js' && !initialized) {
+      initialized = true;
+      if (globals.send_page_view !== false) events.push({ name: 'page_view', ...documentDefaults, ...globals });
+    }
+    if (command === 'event') events.push({ name, ...documentDefaults, ...globals, ...parameters });
+  }
+  return events;
+}
+
+test('managed initialization cannot duplicate views or substitute raw page fields', () => {
+  const raw = { page_location: 'https://lucky7towingtransport.com/towing-shawano-wi/?private=test#fragment',
+    page_title: 'Actual document title', page_referrer: 'https://example.com/private?secret=test' };
+  const f = fixture({ choice: 'granted', url: raw.page_location, referrer: raw.page_referrer });
+  f.phone();
+  const events = managedDestination(f.commands(), raw);
+  assert.equal(events.filter(event => event.name === 'page_view').length, 1);
+  for (const event of events) {
+    assert.equal(event.page_location, 'https://lucky7towingtransport.com/towing-shawano-wi/');
+    assert.equal(event.page_title, 'Lucky 7 Towing — Shawano');
+    assert.equal(event.page_referrer, 'https://example.com/');
+    assert.equal(event.send_to, 'G-TEST123');
+  }
+  assert.equal(f.commands().some(command => command[0] === 'config'), false);
+});
+
+test('each intentional event carries clean page fields even if provider defaults disagree', () => {
+  const f = fixture({ choice: 'granted', referrer: 'https://example.com/private?value=test#secret' });
+  f.phone();
+  for (const command of f.commands().filter(command => command[0] === 'event')) {
+    assert.equal(command[2]?.page_location, 'https://lucky7towingtransport.com/towing-shawano-wi/');
+    assert.equal(command[2]?.page_referrer, 'https://example.com/');
+    assert.equal(command[2]?.page_title, 'Lucky 7 Towing — Shawano');
+    assert.equal(command[2]?.send_to, 'G-TEST123');
+  }
+});
+
 test('first visit makes no Google request and call remains native', () => {
   const f = fixture();
   assert.equal(f.scripts.length, 0);
@@ -84,7 +128,7 @@ test('allow loads one tag, sanitized page view, and no advertising permission', 
   f.choose('allow');
   assert.equal(f.scripts.length, 1);
   assert.equal(f.scripts[0].src, 'https://www.googletagmanager.com/gtag/js?id=G-TEST123');
-  const config = f.commands().find(c => c[0] === 'config')[2];
+  const config = f.commands().find(c => c[0] === 'set')[1];
   assert.equal(config.page_location, 'https://lucky7towingtransport.com/towing-shawano-wi/');
   assert.equal(config.page_referrer, 'https://example.com/');
   assert.equal(config.page_title, 'Lucky 7 Towing — Shawano');
@@ -93,6 +137,7 @@ test('allow loads one tag, sanitized page view, and no advertising permission', 
   assert.equal(config.cookie_expires, 2592000);
   assert.equal(config.cookie_update, false);
   assert.equal(config.send_page_view, false);
+  assert.ok(f.commands().findIndex(c => c[0] === 'set') < f.commands().findIndex(c => c[0] === 'js'));
   const consent = f.commands().find(c => c[0] === 'consent')[2];
   assert.equal(consent.ad_storage, 'denied');
   assert.equal(consent.ad_user_data, 'denied');
@@ -114,7 +159,7 @@ test('nested icon and keyboard-style clicks report fixed placement without inter
     assert.equal(last[1], 'phone_click');
     assert.equal(last[2].link_placement, expected);
     assert.equal(last[2].page_name, 'Shawano');
-    assert.deepEqual(Object.keys(last[2]).sort(), ['link_placement', 'page_name']);
+    assert.deepEqual(Object.keys(last[2]).sort(), ['link_placement', 'page_location', 'page_name', 'page_referrer', 'page_title', 'send_to']);
   }
 });
 
@@ -248,7 +293,7 @@ test('preview hosts never attempt production cookie writes, while production pri
 test('malformed referrers and missing preference markup are safe', () => {
   for (const referrer of ['', 'not-a-url', 'data:text/plain,private']) {
     const f = fixture({ choice: 'granted', noPanel: true, referrer });
-    assert.equal(f.commands().find(c => c[0] === 'config')[2].page_referrer, '');
+    assert.equal(f.commands().find(c => c[0] === 'set')[1].page_referrer, '');
     assert.equal(f.phone().href, 'tel:7158538513');
   }
 });
