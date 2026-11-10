@@ -17,6 +17,8 @@ what is deployed. Local clones and worktrees are only copies and may be behind i
 | `styles.css` | Shared visual system and responsive styles for the homepage and city pages. |
 | `fonts.css` and `fonts/` | Self-hosted versions of the existing typefaces, their source references, and licenses. |
 | `script.js` | Mobile navigation, scroll/reveal behavior, animated fleet and service-area sections, routeable town map, and stat counters. |
+| `analytics.js` and `analytics.css` | Optional, consent-based Google Analytics page views and phone-button clicks; never required for calling. |
+| `privacy/index.html` | Website analytics disclosure and preference controls; excluded from search indexing and measurement. |
 | `towing-shawano-wi/index.html` | Shawano search landing page with Service and breadcrumb structured data. |
 | `towing-bonduel-wi/index.html` | Bonduel search landing page with Service and breadcrumb structured data. |
 | `towing-pulaski-wi/index.html` | Pulaski search landing page with Service and breadcrumb structured data. |
@@ -160,6 +162,8 @@ Before deployment, run the dependency-free checks from the repository root:
 uv run --no-project python -m unittest discover -s tests -v
 uv run --no-project python scripts/seo_health_check.py --local
 node --check script.js
+node --check analytics.js
+node --test tests/analytics.test.cjs
 ```
 
 The PR workflow runs these checks and a GitHub Pages/Jekyll build. It checks the
@@ -216,6 +220,21 @@ The scheduled GitHub Action runs the same check every Monday at 13:00 UTC. A
 failure creates a new GitHub issue or adds a report to the existing open SEO
 health issue. Because this test checks the live domain, it is a post-deployment
 verification, not a replacement for the local preview.
+
+## Phone-button measurement
+
+Google Analytics is optional. It loads only on the production HTTPS homepage and
+three city pages after the visitor chooses **Allow analytics**. The in-flow
+preference panel and footer **Analytics choices** button never cover the emergency
+call control. JavaScript disabled, blocked analytics, declined permission, privacy
+signals, and unavailable browser storage all leave the ordinary `tel:` links working.
+
+The `phone_click` event measures a tap on `(715) 853-8513`, not a connected call or
+completed job. Reports only include consenting visitors and can miss activity
+blocked by browsers or extensions. The `page_name` and `link_placement` parameters
+use fixed labels; no customer fields or URL queries/fragments are sent. Review and
+privacy utility pages remain unmeasured. See the [measurement runbook](docs/seo/call-click-measurement.md)
+for configuration, provider verification, and reporting limits.
 
 ## Discovery beyond Google
 
