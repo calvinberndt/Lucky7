@@ -20,6 +20,7 @@
     /^(1|yes)$/.test(navigator.doNotTrack || window.doNotTrack || '');
   var active = false;
   var tagStarted = false;
+  var tagFailed = false;
   var storageAvailable = true;
   var choice = null;
   var panel = document.querySelector('[data-analytics-panel]');
@@ -38,6 +39,8 @@
   }
 
   function clearCookies() {
+    // Preview hosts cannot own the production cookies; Firefox rejects those writes.
+    if (!production || !configured) return;
     var names = ['_ga', '_ga_' + MEASUREMENT_ID.slice(2)];
     try {
       names.forEach(function (name) {
@@ -68,6 +71,7 @@
     window['ga-disable-' + MEASUREMENT_ID] = false;
     if (tagStarted) return;
     tagStarted = true;
+    tagFailed = false;
     window.dataLayer = window.dataLayer || [];
     // No advertising storage or advertising features are enabled.
     gtag('consent', 'default', {
@@ -92,7 +96,13 @@
     tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + MEASUREMENT_ID;
     tag.onerror = function () {
       stopMeasurement();
-      if (status) status.textContent = 'Analytics could not load. Calling and browsing still work.';
+      tagStarted = false;
+      tagFailed = true;
+      // This tag never loaded: discard its pending events rather than replaying a
+      // stale visit/call queue if the visitor deliberately retries later.
+      window.dataLayer.length = 0;
+      tag.remove();
+      renderChoice();
     };
     try {
       document.head.appendChild(tag);
@@ -113,12 +123,13 @@
 
   function renderChoice() {
     if (!panel) return;
-    panel.hidden = choice !== null;
+    panel.hidden = choice !== null && !(choice === 'granted' && tagFailed);
     if (allow) allow.disabled = privacySignal || !storageAvailable;
     if (settings) settings.hidden = false;
     if (!status) return;
     status.textContent = privacySignal ? 'Analytics is off because your browser requests privacy.' :
       !storageAvailable ? 'Analytics is off because this browser cannot save your choice.' :
+      choice === 'granted' && tagFailed ? 'Analytics could not load. Calling and browsing still work. Choose Allow analytics to retry, or keep it off.' :
       choice === 'granted' ? 'Optional analytics allowed. You can turn it off below.' :
       'Optional analytics is off. Calling works either way.';
   }

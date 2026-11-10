@@ -18,7 +18,7 @@ function fixture(options = {}) {
   const document = {
     referrer: options.referrer || '',
     querySelector(selector) { return options.noPanel ? null : nodes[selector]; },
-    createElement(tag) { return { tagName: tag }; },
+    createElement(tag) { return { tagName: tag, remove() { this.removed = true; } }; },
     head: { appendChild(node) { if (options.insertionBlocked) throw new Error('blocked'); scripts.push(node); } },
     addEventListener(type, callback) { handlers[type] = callback; },
     set cookie(value) { if (options.cookieBlocked) throw new Error('blocked'); cookies.push(value); }
@@ -202,6 +202,25 @@ test('invalid configuration and unrecognized saved preference do not enable coll
   assert.equal(f.panel.hidden, false);
 });
 
+test('failed tag remains visibly failed and a deliberate retry starts one fresh queue', () => {
+  const f = fixture({ choice: 'granted' });
+  f.phone();
+  f.scripts[0].onerror();
+  assert.equal(f.panel.hidden, false);
+  assert.match(f.status.textContent, /could not load/);
+  assert.equal(f.commands().length, 0, 'failed-attempt events must not replay on retry');
+  f.click({ '[data-analytics-settings]': {} });
+  assert.match(f.status.textContent, /could not load/);
+  f.choose('allow');
+  assert.equal(f.scripts.length, 2);
+  assert.equal(f.commands().filter(c => c[1] === 'page_view').length, 1);
+  assert.equal(f.commands().filter(c => c[1] === 'phone_click').length, 0);
+  f.choose('allow');
+  assert.equal(f.scripts.length, 2, 'a pending retry must not start another tag');
+  f.phone();
+  assert.equal(f.commands().at(-1)[1], 'phone_click');
+});
+
 test('only production HTTPS marketing routes collect events', () => {
   for (const url of [
     'http://127.0.0.1:4173/', 'http://lucky7towingtransport.com/',
@@ -212,6 +231,18 @@ test('only production HTTPS marketing routes collect events', () => {
   for (const route of ['/', '/index.html', '/towing-pulaski-wi/', '/towing-bonduel-wi/']) {
     assert.equal(fixture({ choice: 'granted', url: 'https://www.lucky7towingtransport.com' + route }).scripts.length, 1);
   }
+});
+
+test('preview hosts never attempt production cookie writes, while production privacy opt-out clears cookies', () => {
+  for (const url of ['http://127.0.0.1:4173/', 'https://preview.example/', 'http://lucky7towingtransport.com/']) {
+    const f = fixture({ url });
+    f.choose('decline');
+    assert.equal(f.cookies.length, 0, url);
+  }
+  const f = fixture({ choice: 'granted', url: 'https://lucky7towingtransport.com/privacy/' });
+  f.choose('decline');
+  assert.equal(f.scripts.length, 0);
+  assert.ok(f.cookies.some(cookie => cookie.includes('domain=lucky7towingtransport.com')));
 });
 
 test('malformed referrers and missing preference markup are safe', () => {

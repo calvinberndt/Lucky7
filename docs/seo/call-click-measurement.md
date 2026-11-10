@@ -34,7 +34,10 @@ storage event. Previously sent data is not retroactively erased.
 
 Global Privacy Control, Do Not Track, or failed storage keep analytics disabled.
 The UI explains these states. Failed tag loading disables collection without
-affecting the link. The click handler never calls `preventDefault`, never changes
+affecting the link, keeps the failure visible, and lets the visitor retry with
+**Allow analytics**. A retry starts a fresh queue; events from the failed attempt
+are discarded. Cookie cleanup runs only on the production domain, avoiding
+invalid-domain errors in local previews. The click handler never calls `preventDefault`, never changes
 the number, and never waits for analytics delivery before opening the phone app.
 
 ## Events and reporting
@@ -46,8 +49,9 @@ the number, and never waits for analytics delivery before opening the phone app.
 | `page_name` | `Home`, `Shawano`, `Pulaski`, or `Bonduel`. |
 | `link_placement` | `topbar`, `navigation`, `header`, `hero`, `contact`, `faq`, `floating`, or `content`. |
 
-In GA4, register `page_name` and `link_placement` as event-scoped custom dimensions
-and mark `phone_click` as a key event to make it convenient to report. Those admin
+GA4 has event-scoped custom dimensions **Call page** (`page_name`) and **Call button
+placement** (`link_placement`). `phone_click` is a key event counted once per event,
+with no monetary value assigned. Those admin
 settings do not create or prove delivery of an event. Standard reports/custom
 dimensions may take time to populate; use Realtime for initial receipt verification.
 
