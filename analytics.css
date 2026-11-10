@@ -1,0 +1,36 @@
+/* Optional analytics stays in the page flow, clear of emergency call controls. */
+.analytics-panel {
+  background: var(--cream-100);
+  color: var(--ink-900);
+  border-top: 1px solid var(--cream-300);
+  padding: 1.25rem 0;
+}
+.analytics-panel[hidden], [data-analytics-settings][hidden] { display: none; }
+.analytics-panel .shell { max-width: 54rem; }
+.analytics-panel h2 { font: 700 1.15rem/1.4 var(--font-body); margin: 0 0 .4rem; }
+.analytics-panel p { margin: .4rem 0; }
+.analytics-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .75rem; }
+.analytics-actions button, .analytics-settings {
+  font: inherit;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: .5rem .9rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.analytics-actions button:hover:not(:disabled) { background: var(--cream-300); }
+.analytics-actions button:disabled { cursor: default; opacity: .65; }
+.analytics-actions button:focus-visible, .analytics-settings:focus-visible,
+.analytics-panel:focus-visible { outline: 3px solid var(--amber-400); outline-offset: 3px; }
+.analytics-footer { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1rem; padding: 1rem 0; }
+.analytics-footer a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+.analytics-settings { border-color: transparent; text-decoration: underline; text-underline-offset: .2em; }
+.privacy-copy { max-width: 52rem; padding-block: 3rem; }
+.privacy-copy h2 { margin-top: 2rem; font-size: 1.65rem; }
+.privacy-copy p, .privacy-copy ul { margin-block: 1rem; }
+.privacy-copy li { margin-block: .5rem; }
+.privacy-page { --header-total: 74px; }
+.privacy-page .call-btn { width: auto; min-height: 48px; padding: .5rem .8rem; font-size: 1rem; }
+@media (max-width: 479px) { .privacy-page .brand-text { display: none; } }

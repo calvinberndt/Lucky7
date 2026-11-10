@@ -28,6 +28,7 @@
   <link rel="preload" href="/fonts/alfa-slab-one-v21-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/analytics.css">
 </head>
 <body>
 
@@ -248,11 +249,27 @@
     </section>
   </main>
 
+  <section class="analytics-panel" data-analytics-panel aria-labelledby="analytics-title" tabindex="-1" hidden>
+    <div class="shell">
+      <h2 id="analytics-title">Optional website analytics</h2>
+      <p>May we use Google Analytics to count visits and taps on our phone number? It uses cookies. We do not record calls. <a href="/privacy/">Privacy details</a>.</p>
+      <p data-analytics-status role="status"></p>
+      <div class="analytics-actions">
+        <button type="button" data-analytics-allow>Allow analytics</button>
+        <button type="button" data-analytics-decline>Keep analytics off</button>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="shell footer-row">
       <img src="/images/badge-320.webp" width="160" height="87" alt="Lucky 7 Transport clover badge logo" loading="lazy">
       <p>&copy; 2026 Lucky 7 Towing &middot; N3026 State Hwy 47, Bonduel, WI 54107<br>
       <span>Professional towing you can trust. Licensed &amp; insured. USDOT 1237637.</span></p>
+    </div>
+    <div class="shell analytics-footer">
+      <a href="/privacy/">Privacy</a>
+      <button class="analytics-settings" type="button" data-analytics-settings hidden>Analytics choices</button>
     </div>
   </footer>
 
@@ -262,6 +279,7 @@
   </a>
 
   <script src="/script.js"></script>
+  <script src="/analytics.js"></script>
 
   <script type="application/ld+json">
   {
